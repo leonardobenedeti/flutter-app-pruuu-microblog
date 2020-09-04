@@ -12,6 +12,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  User user;
+
+  @override
+  void initState() {
+    user = new User(
+      id: "xpto",
+      username: "leonardobenedeti",
+      email: "leonardobenedeti@gmail.com",
+      nome: "Leonardo Benedeti",
+      picturePath:
+          "https://leonardobenedeti.github.io/assets/img/foto-perfil.png",
+    );
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Icon(Icons.add_comment),
         ),
         body: Container(
-          padding: EdgeInsets.all(16),
+          margin: EdgeInsets.only(top: 16),
           child: Stack(
             alignment: AlignmentDirectional.topEnd,
             children: [
@@ -34,9 +50,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   TrendingPage(),
                 ],
               ),
-              FloatingActionButton(
-                onPressed: () => _openBottomSheet(UserWidget()),
-                child: Icon(Icons.person_outline),
+              Container(
+                height: 40,
+                margin: EdgeInsets.only(top: 4),
+                child: FloatingActionButton(
+                  onPressed: () => _openBottomSheet(UserWidget()),
+                  child: user.picturePath != null
+                      ? ClipOval(
+                          child: Image.network(user.picturePath),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            child: Icon(
+                              Icons.person_outline,
+                              color: Colors.white,
+                            ),
+                            color: Colors.black,
+                          ),
+                        ),
+                ),
               )
             ],
           ),

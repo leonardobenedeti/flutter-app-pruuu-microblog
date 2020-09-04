@@ -40,7 +40,7 @@ class HomeWidgetState extends State<HomePageTabs>
         unselectedLabelColor: Colors.grey,
         labelColor: Colors.black,
         labelStyle: TextStyle(
-          fontSize: 24,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
         indicatorSize: TabBarIndicatorSize.tab,
