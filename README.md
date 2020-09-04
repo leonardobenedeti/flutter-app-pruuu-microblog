@@ -18,12 +18,15 @@ Com isso criei uma interface simples, com apenas duas cores e com ícones de pom
 
 ### Etapas do desafio:
 - [x] Criar uma ideia para abranger o contexto ( não precisava no desafio, mas prefiro seguir um protótipo do que ir fazendo sem rumo )
-- [ ] Splash Screen
-- [ ] Sign in
-- [ ] Sign up
-- [ ] Feed Screen dos últimos Pruuus(no meu caso rsrs)
+- [x] Splash Screen
+- [x] Feed Screen dos últimos Pruuus
 - [ ] Trending Screen
-- [ ] Pruuu It Screen (funcionalidade para inserir seu post no microblog, como um tweet mesmo)
+- [ ] Sign in Widget
+- [ ] Sign up Widget
+- [ ] Sign out Widget
+- [ ] Pruuu It Widget
+- [ ] Inclusão de arquitetura e gerência de estado
+- [ ] Ajeitar comportamentos de componentes funcionando
 
 
 ### Protótipo criado
