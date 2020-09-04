@@ -8,12 +8,8 @@ class TrendingPage extends StatefulWidget {
 class _TrendingPageState extends State<TrendingPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        child: Column(
-          children: [Text("Trending")],
-        ),
-      ),
+    return Container(
+      child: Text("Trending"),
     );
   }
 }
