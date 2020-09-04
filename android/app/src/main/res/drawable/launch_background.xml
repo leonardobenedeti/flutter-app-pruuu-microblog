@@ -4,9 +4,18 @@
     <item android:drawable="@android:color/white" />
 
     <!-- You can insert your own image assets here -->
-    <!-- <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@mipmap/launch_image" />
-    </item> -->
+
+    <item
+        android:width="320dp"
+        android:height="180dp"
+        android:gravity="center"
+        android:drawable="@mipmap/ic_banner_foreground"
+        />
+
+    <item
+        android:width="320dp"
+        android:height="180dp"
+        android:gravity="bottom|center_horizontal"
+        android:drawable="@mipmap/ic_banner_bottom_image"
+        />
 </layer-list>
