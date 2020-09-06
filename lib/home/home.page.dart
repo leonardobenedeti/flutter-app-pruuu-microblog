@@ -1,6 +1,6 @@
 import 'package:Pruuu/feed/feed.page.dart';
 import 'package:Pruuu/home/home.page.tabs.dart';
-import 'package:Pruuu/pruuu/pruuu.widget.dart';
+import 'package:Pruuu/home/pruuu.widget.dart';
 import 'package:Pruuu/trending/trending.page.dart';
 import 'package:Pruuu/user/user.component.dart';
 import 'package:flutter/material.dart';
