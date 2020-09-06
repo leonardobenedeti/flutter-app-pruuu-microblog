@@ -20,7 +20,7 @@ Com isso criei uma interface simples, com apenas duas cores e com ícones de pom
 - [x] Criar uma ideia para abranger o contexto ( não precisava no desafio, mas prefiro seguir um protótipo do que ir fazendo sem rumo )
 - [x] Splash Screen
 - [x] Feed Screen dos últimos Pruuus
-- [ ] Trending Screen
+- [x] Trending Screen
 - [ ] Sign in Widget
 - [ ] Sign up Widget
 - [ ] Sign out Widget
