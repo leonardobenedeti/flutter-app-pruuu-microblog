@@ -13,7 +13,7 @@ class _PruuuState extends State<PruuuWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -39,30 +39,34 @@ class _PruuuState extends State<PruuuWidget> {
               )
             ],
           ),
-          TextField(
-            autofocus: true,
-            cursorColor: Colors.black,
-            showCursor: true,
-            maxLength: _maxLengthField,
-            minLines: 8,
-            maxLines: 8,
-            onChanged: _handleChangeText,
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: "What's your pruuu for today?"),
-            buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-                Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "$currentLength ",
-                  style: TextStyle(
-                      color: currentLength > _maxLengthPruuu
-                          ? Colors.red
-                          : Colors.black),
-                ),
-                Text("/ $_maxLengthPruuu")
-              ],
+          Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: TextField(
+              autofocus: true,
+              cursorColor: Colors.black,
+              showCursor: true,
+              maxLength: _maxLengthField,
+              minLines: 8,
+              maxLines: 8,
+              onChanged: _handleChangeText,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "What's your pruuu for today?"),
+              buildCounter: (context, {currentLength, isFocused, maxLength}) =>
+                  Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "$currentLength ",
+                    style: TextStyle(
+                        color: currentLength > _maxLengthPruuu
+                            ? Colors.red
+                            : Colors.black),
+                  ),
+                  Text("/ $_maxLengthPruuu")
+                ],
+              ),
             ),
           )
         ],

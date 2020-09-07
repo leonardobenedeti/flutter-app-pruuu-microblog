@@ -79,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _openBottomSheet(Widget child) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
