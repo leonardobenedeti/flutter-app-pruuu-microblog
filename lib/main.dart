@@ -1,9 +1,17 @@
+import 'package:Pruuu/auth/bloc/auth_bloc.dart';
+import 'package:Pruuu/auth/screens/auth.page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'home/home.page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    BlocProvider<AuthBloc>(
+      create: (context) => AuthBloc()..add(StartApp()),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +28,15 @@ class MyApp extends StatelessWidget {
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthSigned) {
+            return MyHomePage();
+          }
+
+          return AuthPage();
+        },
+      ),
     );
   }
 }

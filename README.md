@@ -24,6 +24,8 @@ Com isso criei uma interface simples, com apenas duas cores e com ícones de pom
 - [x] Pruuu It Widget
 - [x] Sign out Widget(user já logado)
 - [ ] Sign in Widget / Sign up Widget
+- [ ] Validações de inputs
+- [ ] Error Widget
 - [ ] Inclusão de arquitetura e gerência de estado
 - [ ] Ajeitar comportamentos de componentes funcionando
 
