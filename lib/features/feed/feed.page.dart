@@ -1,3 +1,5 @@
+import 'package:Pruuu/models/pruuu.model.dart';
+import 'package:Pruuu/models/user.modal.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -132,32 +134,4 @@ class _FeedPageState extends State<FeedPage> {
       },
     );
   }
-}
-
-class Pruuu {
-  Pruuu(
-      {@required this.id,
-      @required this.timestamp,
-      @required this.content,
-      @required this.user});
-
-  String id;
-  DateTime timestamp;
-  String content;
-  User user;
-}
-
-class User {
-  User(
-      {@required this.id,
-      @required this.email,
-      @required this.nome,
-      @required this.username,
-      @required this.picturePath});
-
-  String id;
-  String email;
-  String nome;
-  String username;
-  String picturePath;
 }

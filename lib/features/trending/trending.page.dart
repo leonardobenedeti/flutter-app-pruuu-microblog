@@ -1,3 +1,4 @@
+import 'package:Pruuu/models/trending.model.dart';
 import 'package:flutter/material.dart';
 
 class TrendingPage extends StatefulWidget {
@@ -132,18 +133,4 @@ class _TrendingPageState extends State<TrendingPage> {
             ),
           );
   }
-}
-
-class Trending {
-  String id;
-  String hashtag;
-  String description;
-  String picture;
-
-  Trending({
-    @required this.id,
-    @required this.hashtag,
-    @required this.description,
-    this.picture,
-  });
 }

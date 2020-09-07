@@ -1,6 +1,6 @@
-import 'package:Pruuu/auth/bloc/auth_bloc.dart';
-import 'package:Pruuu/auth/screens/signin.page.dart';
-import 'package:Pruuu/auth/screens/signup.page.dart';
+import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
+import 'package:Pruuu/features/auth/screens/signin.page.dart';
+import 'package:Pruuu/features/auth/screens/signup.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

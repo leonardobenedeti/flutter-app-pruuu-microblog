@@ -10,3 +10,5 @@ class ChangeScreenAuth extends AuthEvent {
 
   ChangeScreenAuth(this.state);
 }
+
+class SignInApp extends AuthEvent {}

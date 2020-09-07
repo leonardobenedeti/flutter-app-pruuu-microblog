@@ -1,4 +1,4 @@
-import 'package:Pruuu/feed/feed.page.dart';
+import 'package:Pruuu/models/user.modal.dart';
 import 'package:flutter/material.dart';
 
 class UserWidget extends StatefulWidget {

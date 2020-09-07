@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:Pruuu/auth/repository/local_storage.dart';
-import 'package:Pruuu/feed/feed.page.dart';
+import 'package:Pruuu/features/auth/repository/local_storage.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 

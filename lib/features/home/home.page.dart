@@ -1,9 +1,9 @@
-import 'package:Pruuu/feed/feed.page.dart';
-import 'package:Pruuu/home/home.page.tabs.dart';
-import 'package:Pruuu/pruuu/pruuu.widget.dart';
-import 'package:Pruuu/trending/trending.page.dart';
-import 'package:Pruuu/auth/screens/signin.page.dart';
-import 'package:Pruuu/user/user.widget.dart';
+import 'package:Pruuu/features/feed/feed.page.dart';
+import 'package:Pruuu/features/home/home.page.tabs.dart';
+import 'package:Pruuu/features/pruuu/pruuu.widget.dart';
+import 'package:Pruuu/features/trending/trending.page.dart';
+import 'package:Pruuu/features/user/user.widget.dart';
+import 'package:Pruuu/models/user.modal.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
