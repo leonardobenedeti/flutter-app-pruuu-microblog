@@ -16,6 +16,17 @@ class AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return BlocProvider<AuthBloc>(
       create: (context) => AuthBloc()..add(ChangeScreenAuth(AuthSignIn())),
+      child: _listener(context),
+    );
+  }
+
+  Widget _listener(BuildContext contextBloc) {
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSigned) {
+          BlocProvider.of<AuthBloc>(contextBloc).add(StartApp());
+        }
+      },
       child: _build(context),
     );
   }
@@ -43,7 +54,10 @@ class AuthPageState extends State<AuthPage> {
                     if (state is AuthSignIn) {
                       return SignInWidget(contextBloc);
                     } else if (state is AuthSignUp) {
-                      return SignUpWidget(contextBloc);
+                      return SignUpWidget(contextBloc,
+                          alreadySigned: state.signed);
+                    } else if (state is AuthSignUp) {
+                      return Container();
                     } else {
                       return Container(
                           height: MediaQuery.of(context).size.height * .7,

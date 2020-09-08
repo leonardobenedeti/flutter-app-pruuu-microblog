@@ -7,10 +7,19 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthSignIn extends AuthState {}
+class AuthSignIn extends AuthState {
+  bool signing;
+  AuthSignIn({this.signing = false});
+}
 
-class AuthSignUp extends AuthState {}
+class AuthSignUp extends AuthState {
+  bool signed;
+  AuthSignUp({this.signed = false});
+}
 
-class AuthSigned extends AuthState {}
+class AuthSigned extends AuthState {
+  FirebaseUser user;
+  AuthSigned({this.user});
+}
 
 class AuthSignedOut extends AuthState {}

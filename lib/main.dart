@@ -18,25 +18,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.black,
-        buttonColor: Colors.black87,
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.black87,
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Colors.black,
+          buttonColor: Colors.black87,
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.black87,
+          ),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthSigned) {
-            return MyHomePage();
-          }
+        home: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSigned) {}
+          },
+          child: _blocChild(context),
+        ));
+  }
 
-          return AuthPage();
-        },
-      ),
+  Widget _blocChild(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthSigned) {
+          return MyHomePage();
+        }
+
+        return AuthPage();
+      },
     );
   }
 }

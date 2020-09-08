@@ -4,15 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignInWidget extends StatefulWidget {
   BuildContext blocContext;
+  bool loadingSignIn;
 
-  SignInWidget(this.blocContext);
+  SignInWidget(this.blocContext, {this.loadingSignIn = false});
 
   @override
   _SignInWidgetState createState() => _SignInWidgetState();
 }
 
 class _SignInWidgetState extends State<SignInWidget> {
-  bool _allCorrect = true;
+  bool _allCorrect = false;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: _allCorrect ? () => _signup() : null,
+                  onPressed: _signup,
                   textColor: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
@@ -56,6 +59,7 @@ class _SignInWidgetState extends State<SignInWidget> {
             TextField(
                 cursorColor: Colors.black,
                 showCursor: true,
+                controller: _emailController,
                 onChanged: _handleChangeText,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -72,6 +76,7 @@ class _SignInWidgetState extends State<SignInWidget> {
               cursorColor: Colors.black,
               showCursor: true,
               obscureText: true,
+              controller: _passwordController,
               onChanged: _handleChangeText,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -90,9 +95,12 @@ class _SignInWidgetState extends State<SignInWidget> {
             FlatButton(
               child: Container(
                 width: double.infinity,
-                child: Center(child: Text("Entrar")),
+                child: Center(
+                    child: widget.loadingSignIn
+                        ? CircularProgressIndicator()
+                        : Text("Entrar")),
               ),
-              onPressed: _allCorrect ? () => print("text") : null,
+              onPressed: _allCorrect ? () => _doSignIn() : null,
               textColor: Colors.white,
               color: Colors.black,
               shape: RoundedRectangleBorder(
@@ -106,8 +114,15 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   _handleChangeText(String text) {
     setState(() {
-      // _currentPruuu = text;
+      _allCorrect = _emailController.text.contains("@") &&
+          _passwordController.text.length > 3;
     });
+  }
+
+  _doSignIn() {
+    BlocProvider.of<AuthBloc>(widget.blocContext)
+      ..add(SignInApp(
+          email: _emailController.text, password: _passwordController.text));
   }
 
   _signup() {
