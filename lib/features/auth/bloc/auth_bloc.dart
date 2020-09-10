@@ -59,11 +59,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       authRepository.signOut(event.context);
       yield AuthInitial();
     }
-    // yield AuthLoading();
   }
 }
-
-// atual: 1500 bruto  / 1200 max liquido
-// 5k wirginia
-
-// ideal:
