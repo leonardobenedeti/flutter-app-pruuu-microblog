@@ -1,17 +1,11 @@
-import 'dart:convert';
-
-import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
 import 'package:Pruuu/features/auth/repository/local_storage.dart';
 import 'package:Pruuu/features/auth/repository/picture.repository.dart';
-import 'package:Pruuu/models/user.modal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final _localStorage = new LocalStorage();
-  final _pictureRepository = new PictureRepository();
 
   Future<bool> get hasUser async => await getUser() != null;
 

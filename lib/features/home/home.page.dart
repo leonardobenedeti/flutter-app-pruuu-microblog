@@ -1,10 +1,9 @@
 import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
-import 'package:Pruuu/features/feed/feed.page.dart';
+import 'package:Pruuu/features/feed/screens/feed.page.dart';
 import 'package:Pruuu/features/home/home.page.tabs.dart';
 import 'package:Pruuu/features/pruuu/pruuu.widget.dart';
 import 'package:Pruuu/features/trending/trending.page.dart';
 import 'package:Pruuu/features/user/user.widget.dart';
-import 'package:Pruuu/models/user.modal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

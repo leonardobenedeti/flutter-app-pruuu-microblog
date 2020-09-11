@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:Pruuu/features/auth/repository/auth.repository.dart';
 import 'package:Pruuu/features/auth/repository/local_storage.dart';
-import 'package:Pruuu/models/user.modal.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

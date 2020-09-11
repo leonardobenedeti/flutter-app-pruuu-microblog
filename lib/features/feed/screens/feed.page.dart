@@ -1,7 +1,9 @@
+import 'package:Pruuu/features/feed/bloc/feed_bloc.dart';
+import 'package:Pruuu/features/feed/screens/picture.widget.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
-import 'package:Pruuu/models/user.modal.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class FeedPage extends StatefulWidget {
@@ -10,51 +12,49 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  List<Pruuu> pruuus = [];
-
   @override
   void initState() {
-    pruuus.addAll([
-      new Pruuu(
-        id: "djiajiasi",
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non nunc vitae tellus molestie eleifend. Praesent feugiat sapien erat, ut aliquet ante varius in. Duis aliquam tincidunt nunc, elementum bibendum eros commodo aliquet. Nulla facilisi. Interdum et malesuada fames ac orci.",
-        timestamp: DateTime.now().subtract(Duration(days: 2)),
-        user: new User(
-          id: "xpto",
-          username: "leonardobenedeti",
-          email: "leonardobenedeti@gmail.com",
-          nome: "Leonardo Benedeti",
-          picturePath:
-              "https://leonardobenedeti.github.io/assets/img/foto-perfil.png",
-        ),
-      ),
-      new Pruuu(
-        id: "djiajiasi",
-        content: "Desafio aceito.",
-        timestamp: DateTime.now(),
-        user: new User(
-          id: "xpto",
-          username: "leonardobenedeti",
-          email: "leonardobenedeti@gmail.com",
-          nome: "Flutter dev",
-          picturePath: null,
-        ),
-      )
-    ]);
-
     super.initState();
   }
 
+  List<Pruuu> feed = [];
+
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<FeedBloc>(
+      create: (context) => FeedBloc()..add(FetchFeed()),
+      child: _listener(context),
+    );
+  }
+
+  Widget _listener(BuildContext contextBloc) {
+    return BlocListener<FeedBloc, FeedState>(
+      listener: (context, state) {
+        if (state is FeedReady) {
+          feed.clear();
+          feed.addAll(state.feed);
+        }
+      },
+      child: BlocBuilder<FeedBloc, FeedState>(builder: (contextBloc, state) {
+        if (state is FeedReady) {
+          feed.clear();
+          feed.addAll(state.feed);
+          return _build(context);
+        } else {
+          return CircularProgressIndicator();
+        }
+      }),
+    );
+  }
+
+  Widget _build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: ListView.builder(
-        itemCount: 20,
+        itemCount: feed.length,
         padding: EdgeInsets.only(bottom: 70),
         itemBuilder: (context, position) {
-          return _pruuu(pruuus[position % 2 > 0 ? 0 : 1]);
+          return _pruuu(feed[position]);
         },
       ),
     );
@@ -62,10 +62,10 @@ class _FeedPageState extends State<FeedPage> {
 
   Widget _pruuu(Pruuu pruuu) {
     DateTime now = DateTime.now().subtract(Duration(days: 1));
-    var format = pruuu.timestamp.isAfter(now)
-        ? DateFormat('HH:mm')
-        : DateFormat('dd/MM/yy');
-    String timeStamp = format.format(pruuu.timestamp);
+    DateTime datePruuu = pruuu.timestamp.toDate();
+    var format =
+        datePruuu.isAfter(now) ? DateFormat('HH:mm') : DateFormat('dd/MM/yy');
+    String timeStamp = format.format(datePruuu);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -77,25 +77,10 @@ class _FeedPageState extends State<FeedPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 50,
-                height: 50,
-                margin: EdgeInsets.only(right: 10),
-                child: pruuu.user.picturePath != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(pruuu.user.picturePath),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          child: Icon(
-                            Icons.person_outline,
-                            color: Colors.white,
-                          ),
-                          color: Colors.black,
-                        ),
-                      ),
-              ),
+                  width: 50,
+                  height: 50,
+                  margin: EdgeInsets.only(right: 10),
+                  child: PictureWidget(pruuu.authorUID)),
               Container(
                 width: constraints.maxWidth * .8,
                 child: Column(
@@ -104,7 +89,7 @@ class _FeedPageState extends State<FeedPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          pruuu.user.nome,
+                          pruuu.authorUsername,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
