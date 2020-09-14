@@ -46,12 +46,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ? AuthSigned(user: authResult.user)
           : AuthSignIn(signing: false);
     }
-    if (event is UpdateUser) {
-      yield (AuthSignIn(signing: true));
-      authRepository.fillUserInfo(
-          event.name, event.username, event.picturePath);
-      yield AuthSigned();
-    }
+    // if (event is UpdateUser) {
+    //   yield (AuthSignIn(signing: true));
+    //   authRepository.fillUserInfo(
+    //       event.name, event.username, event.picturePath);
+    //   yield AuthSigned();
+    // }
     if (event is SignOutApp) {
       yield (AuthSignedOut());
       authRepository.signOut(event.context);

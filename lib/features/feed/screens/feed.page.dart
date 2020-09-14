@@ -12,11 +12,6 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   List<Pruuu> feed = [];
 
   @override
@@ -34,30 +29,58 @@ class _FeedPageState extends State<FeedPage> {
           feed.clear();
           feed.addAll(state.feed);
         }
+        if (state is FeedReloaded) {
+          feed.clear();
+          feed.addAll(state.newItensForFeed);
+        }
       },
       child: BlocBuilder<FeedBloc, FeedState>(builder: (contextBloc, state) {
         if (state is FeedReady) {
           feed.clear();
           feed.addAll(state.feed);
-          return _build(context);
-        } else {
-          return CircularProgressIndicator();
+          return _build(context, false);
         }
+        if (state is FeedReloaded) {
+          feed.clear();
+          feed.addAll(state.newItensForFeed);
+          return _build(context, true);
+        }
+        return CircularProgressIndicator();
       }),
     );
   }
 
-  Widget _build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: ListView.builder(
-        itemCount: feed.length,
-        padding: EdgeInsets.only(bottom: 70),
-        itemBuilder: (context, position) {
-          return _pruuu(feed[position]);
-        },
+  Widget _build(BuildContext context, bool withReloadButton) {
+    return Stack(children: [
+      if (withReloadButton) ...[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 10,
+                  color: Colors.black,
+                  offset: Offset.fromDirection(1),
+                  spreadRadius: 10)
+            ],
+          ),
+          child: Text(
+            "Novos Pruuus",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: ListView.builder(
+          itemCount: feed.length,
+          padding: EdgeInsets.only(bottom: 70),
+          itemBuilder: (context, position) {
+            return _pruuu(feed[position]);
+          },
+        ),
       ),
-    );
+    ]);
   }
 
   Widget _pruuu(Pruuu pruuu) {
@@ -69,51 +92,54 @@ class _FeedPageState extends State<FeedPage> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Container(
-          width: constraints.maxWidth,
-          padding: EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                  width: 50,
-                  height: 50,
-                  margin: EdgeInsets.only(right: 10),
-                  child: PictureWidget(pruuu.authorUID)),
-              Container(
-                width: constraints.maxWidth * .8,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          pruuu.authorUsername,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+        return GestureDetector(
+          onLongPress: () => print("${pruuu.documentId()}"),
+          child: Container(
+            width: constraints.maxWidth,
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    width: 50,
+                    height: 50,
+                    margin: EdgeInsets.only(right: 10),
+                    child: PictureWidget(pruuu.authorUID)),
+                Container(
+                  width: constraints.maxWidth * .8,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            pruuu.authorUsername,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          timeStamp,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
+                          Text(
+                            timeStamp,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Bubble(
-                      margin: BubbleEdges.only(top: 10),
-                      alignment: Alignment.topLeft,
-                      nip: BubbleNip.leftTop,
-                      child: Text(pruuu.content),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                        ],
+                      ),
+                      Bubble(
+                        margin: BubbleEdges.only(top: 10),
+                        alignment: Alignment.topLeft,
+                        nip: BubbleNip.leftTop,
+                        child: Text(pruuu.content),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },

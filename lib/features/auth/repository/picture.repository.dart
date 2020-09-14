@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class PictureRepository {
-  static String bucket = "gs://pruuu-214a1.appspot.com/users/";
+  static String bucket = "gs://pruuu-214a1.appspot.com";
   final FirebaseStorage _storage = FirebaseStorage(storageBucket: bucket);
 
-  // TODO: Ajeitar isso aqui se precisar
   Future<String> pathPicture(String uid) async {
-    String url = bucket;
-    url += uid == "Nz9ihHwbmeanxY3yJFYo4Z0eHkh1" ? "foto-perfil.png" : uid;
+    String url = "$bucket/users/$uid.png";
     StorageReference storageRef = await _storage.getReferenceFromUrl(url);
     return await storageRef.getDownloadURL();
   }

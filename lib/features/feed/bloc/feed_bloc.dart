@@ -23,6 +23,10 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       yield FeedReady(feed: feed);
     }
 
+    if (event is UpdateFeed) {
+      yield FeedReloaded(newItensForFeed: event.feed);
+    }
+
     if (event is FetchPicture) {
       yield FeedLoading();
       String picture = await feedRepository.fetchPicture(event.authorUID);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
 import 'package:Pruuu/features/feed/screens/feed.page.dart';
 import 'package:Pruuu/features/home/home.page.tabs.dart';
@@ -62,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _pruuuFAB(FirebaseUser user) {
     return FloatingActionButton(
-      onPressed: () => _openBottomSheet(PruuuWidget()),
+      onPressed: () => _openBottomSheet(PruuuWidget(user: user)),
       child: Icon(Icons.add_comment),
     );
   }
@@ -89,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _wrapUserBloc(TypeUserBlocChild type) {
     return BlocProvider<AuthBloc>(
-      create: (context) => AuthBloc()..add(StartApp()),
+      create: (contextBloc) => AuthBloc()..add(StartApp()),
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthSigned) {

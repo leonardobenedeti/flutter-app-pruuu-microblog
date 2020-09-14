@@ -8,7 +8,7 @@ class FeedRepository {
   Future<List<Pruuu>> fetchFeed() async {
     return await _firestoreInstance
         .collection('feed')
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .getDocuments()
         .then((feedQuery) {
       return feedQuery.documents.map((doc) {

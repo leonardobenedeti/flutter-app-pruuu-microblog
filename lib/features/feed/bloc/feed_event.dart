@@ -10,3 +10,9 @@ class FetchPicture extends FeedEvent {
 
   FetchPicture({@required this.authorUID});
 }
+
+class UpdateFeed extends FeedEvent {
+  List<Pruuu> feed;
+
+  UpdateFeed({this.feed});
+}

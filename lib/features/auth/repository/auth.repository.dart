@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final _localStorage = new LocalStorage();
+  final _pictureRepository = new PictureRepository();
 
   Future<bool> get hasUser async => await getUser() != null;
 
@@ -36,13 +37,13 @@ class AuthRepository {
     await _localStorage.deleteStorage("user");
   }
 
-  void fillUserInfo(String name, String username, String picturePath) async {
+  void fillUserInfo(String uid, String displayName) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
 
-    // final picturePath = await _pictureRepository.pathPicture(user.uid);
+    final picturePath = await _pictureRepository.pathPicture(user.uid);
 
     var userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = "$name@$username";
+    userUpdateInfo.displayName = "@leonardobenedeti";
     userUpdateInfo.photoUrl = picturePath;
     await user.updateProfile(userUpdateInfo);
   }
