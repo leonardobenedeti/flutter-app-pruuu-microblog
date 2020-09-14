@@ -124,9 +124,7 @@ class _PruuuState extends State<PruuuWidget> {
               if (state is PruuuitPublished) {
                 Timer(Duration(milliseconds: 300), () {
                   Navigator.pop(context);
-                });
-                Timer(Duration(milliseconds: 400), () {
-                  return BlocProvider.of<FeedBloc>(contextFeed)
+                  BlocProvider.of<FeedBloc>(contextFeed)
                     ..add(UpdateFeed(feed: feed));
                 });
               }

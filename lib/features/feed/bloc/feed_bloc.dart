@@ -24,6 +24,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     }
 
     if (event is UpdateFeed) {
+      yield FeedLoading();
       yield FeedReloaded(newItensForFeed: event.feed);
     }
 

@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
 import 'package:Pruuu/features/feed/screens/feed.page.dart';
 import 'package:Pruuu/features/home/home.page.tabs.dart';
-import 'package:Pruuu/features/pruuu/pruuu.widget.dart';
+import 'package:Pruuu/features/pruuu/screens/pruuu.widget.dart';
 import 'package:Pruuu/features/trending/trending.page.dart';
 import 'package:Pruuu/features/user/user.widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';

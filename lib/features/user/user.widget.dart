@@ -88,11 +88,8 @@ class _UserWidgetState extends State<UserWidget> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    FlatButton(
-                      child: Text(
-                        "Fechar",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                    CloseButton(
+                      color: Colors.black,
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -141,60 +138,73 @@ class _UserWidgetState extends State<UserWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: 60,
-                    width: 60,
+                    height: 50,
+                    width: 50,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: Image.asset("assets/images/perfil-leo.png"),
                     ),
                   ),
+                  SizedBox(width: 10),
                   Container(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Bubble(
-                      margin: BubbleEdges.only(top: 10),
-                      alignment: Alignment.topLeft,
-                      nip: BubbleNip.leftTop,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Disclaimer",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
+                    width: MediaQuery.of(context).size.width - 120,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "@leonardobenedeti",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(
-                            height: 8,
+                        ),
+                        Bubble(
+                          margin: BubbleEdges.only(top: 10),
+                          alignment: Alignment.topLeft,
+                          nip: BubbleNip.leftTop,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Disclaimer",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
+                                maxLines: 10,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                "Todo código do app permanecerá aberto e livre para todos.",
+                                maxLines: 10,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              FlatButton(
+                                child: Text("Acessar repo"),
+                                color: Colors.black,
+                                onPressed: () {},
+                                textColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              )
+                            ],
                           ),
-                          Text(
-                            "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
-                            maxLines: 10,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            "Todo código do app permanecerá aberto e livre para todos.",
-                            maxLines: 10,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          FlatButton(
-                            child: Text("Acessar repo"),
-                            color: Colors.black,
-                            onPressed: () {},
-                            textColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
