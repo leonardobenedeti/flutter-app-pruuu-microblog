@@ -1,7 +1,6 @@
 import 'package:Pruuu/features/auth/repository/local_storage.dart';
 import 'package:Pruuu/features/auth/repository/picture.repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
@@ -32,7 +31,7 @@ class AuthRepository {
     return authResult != null;
   }
 
-  void signOut(BuildContext contextoBloc) async {
+  Future signOut() async {
     await _firebaseAuth.signOut();
     await _localStorage.deleteStorage("user");
   }

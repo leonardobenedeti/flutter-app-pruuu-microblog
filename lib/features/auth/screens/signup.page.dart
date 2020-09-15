@@ -1,13 +1,14 @@
-import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
+import 'package:Pruuu/features/auth/stores/auth.store.dart';
+import 'package:Pruuu/main.store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class SignUpWidget extends StatefulWidget {
-  BuildContext blocContext;
   bool alreadySigned;
 
-  SignUpWidget(this.blocContext, {this.alreadySigned = false});
+  SignUpWidget({
+    this.alreadySigned = false,
+  });
 
   @override
   _SignUpWidgetState createState() => _SignUpWidgetState();
@@ -23,6 +24,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   TextEditingController _confirmController = new TextEditingController();
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _usernameController = new TextEditingController();
+
+  AuthStore authStore = MainStore().authStore;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +55,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: _signin,
+                  onPressed: authStore.changePage,
                   textColor: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
@@ -246,18 +249,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   }
 
   _doSignUp(String email, String password) {
-    BlocProvider.of<AuthBloc>(widget.blocContext)
-      ..add(SignUpApp(email: email, password: password));
+    // BlocProvider.of<AuthBloc>(widget.blocContext)
+    //   ..add(SignUpApp(email: email, password: password));
   }
 
   _updateInfos(String name, String username, String picturePath) {
-    BlocProvider.of<AuthBloc>(widget.blocContext)
-      ..add(
-          UpdateUser(name: name, username: username, picturePath: picturePath));
-  }
-
-  _signin() {
-    BlocProvider.of<AuthBloc>(widget.blocContext)
-      ..add(ChangeScreenAuth(AuthSignIn()));
+    // BlocProvider.of<AuthBloc>(widget.blocContext)
+    //   ..add(
+    //       UpdateUser(name: name, username: username, picturePath: picturePath));
   }
 }

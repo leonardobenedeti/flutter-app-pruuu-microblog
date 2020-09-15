@@ -4,6 +4,7 @@ import 'package:Pruuu/features/feed/stores/feed.store.dart';
 import 'package:Pruuu/features/pruuu/stores/pruuuit.store.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
+import 'package:Pruuu/widgets/button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -89,35 +90,26 @@ class _PruuuState extends State<PruuuWidget> {
   }
 
   Widget _pruuuButton(BuildContext context) {
-    return FlatButton(
-      child: Observer(
-        builder: (_) {
-          switch (pruuuItStore.pruuuItState) {
-            case PruuuItState.pruuublished:
-              Timer(Duration(milliseconds: 300), () {
-                Navigator.pop(context);
-                feedStore.needRefresh();
-              });
-              return Icon(
+    return Observer(builder: (_) {
+      if (pruuuItStore.pruuuItState == PruuuItState.pruuublished) {
+        Timer(Duration(milliseconds: 300), () {
+          Navigator.pop(context);
+          feedStore.needRefresh();
+        });
+      }
+      return PruuuButton(
+        child: pruuuItStore.pruuuItState == PruuuItState.pruuublished
+            ? Icon(
                 Icons.check,
                 color: Colors.white,
-              );
-              break;
-            case PruuuItState.loading:
-              return CircularProgressIndicator();
-              break;
-            default:
-              return Text("Pruuu It");
-          }
-        },
-      ),
-      onPressed: (_currentPruuu.length) <= _maxLengthPruuu
-          ? () => _pruuuIt(context, _currentPruuu, widget.user)
-          : null,
-      textColor: Colors.white,
-      color: Colors.black,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    );
+              )
+            : Text("Pruuu It"),
+        loading: pruuuItStore.pruuuItState == PruuuItState.loading,
+        onPressed: (_currentPruuu.length) <= _maxLengthPruuu
+            ? () => _pruuuIt(context, _currentPruuu, widget.user)
+            : null,
+      );
+    });
   }
 
   _pruuuIt(BuildContext context, String content, FirebaseUser user) {

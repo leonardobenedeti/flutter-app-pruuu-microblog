@@ -1,14 +1,11 @@
-import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
+import 'package:Pruuu/features/auth/stores/auth.store.dart';
+import 'package:Pruuu/main.store.dart';
+import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 // ignore: must_be_immutable
 class SignInWidget extends StatefulWidget {
-  BuildContext blocContext;
-  bool loadingSignIn;
-
-  SignInWidget(this.blocContext, {this.loadingSignIn = false});
-
   @override
   _SignInWidgetState createState() => _SignInWidgetState();
 }
@@ -17,6 +14,8 @@ class _SignInWidgetState extends State<SignInWidget> {
   bool _allCorrect = false;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
+  AuthStore authStore = MainStore().authStore;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.bold),
                   ),
-                  onPressed: _signup,
+                  onPressed: authStore.changePage,
                   textColor: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
@@ -93,19 +92,22 @@ class _SignInWidgetState extends State<SignInWidget> {
             SizedBox(
               height: 16,
             ),
-            FlatButton(
-              child: Container(
+            Observer(
+              builder: (_) => Container(
                 width: double.infinity,
                 child: Center(
-                    child: widget.loadingSignIn
-                        ? CircularProgressIndicator()
-                        : Text("Entrar")),
+                  child: PruuuButton(
+                    child: Text("Entrar"),
+                    onPressed: _allCorrect
+                        ? () => authStore.doSignIn(
+                              _emailController.text,
+                              _passwordController.text,
+                            )
+                        : null,
+                    loading: authStore.authState == AuthState.signing,
+                  ),
+                ),
               ),
-              onPressed: _allCorrect ? () => _doSignIn() : null,
-              textColor: Colors.white,
-              color: Colors.black,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
             ),
           ],
         ),
@@ -118,16 +120,5 @@ class _SignInWidgetState extends State<SignInWidget> {
       _allCorrect = _emailController.text.contains("@") &&
           _passwordController.text.length > 3;
     });
-  }
-
-  _doSignIn() {
-    BlocProvider.of<AuthBloc>(widget.blocContext)
-      ..add(SignInApp(
-          email: _emailController.text, password: _passwordController.text));
-  }
-
-  _signup() {
-    BlocProvider.of<AuthBloc>(widget.blocContext)
-      ..add(ChangeScreenAuth(AuthSignUp()));
   }
 }

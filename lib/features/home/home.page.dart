@@ -1,12 +1,13 @@
-import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
+import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/features/feed/screens/feed.page.dart';
 import 'package:Pruuu/features/home/home.page.tabs.dart';
 import 'package:Pruuu/features/pruuu/screens/pruuu.widget.dart';
 import 'package:Pruuu/features/trending/trending.page.dart';
 import 'package:Pruuu/features/user/user.widget.dart';
+import 'package:Pruuu/main.store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -17,6 +18,8 @@ class MyHomePage extends StatefulWidget {
 enum TypeUserBlocChild { pruuu, userArea }
 
 class _MyHomePageState extends State<MyHomePage> {
+  AuthStore authStore = MainStore().authStore;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,19 +91,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _wrapUserBloc(TypeUserBlocChild type) {
-    return BlocProvider<AuthBloc>(
-      create: (contextBloc) => AuthBloc()..add(StartApp()),
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthSigned) {
-            return type == TypeUserBlocChild.pruuu
-                ? _pruuuFAB(state.user)
-                : _userAreaFAB(state.user);
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
-      ),
+    return Observer(
+      builder: (_) {
+        if (authStore.authState == AuthState.signed) {
+          return type == TypeUserBlocChild.pruuu
+              ? _pruuuFAB(authStore.user)
+              : _userAreaFAB(authStore.user);
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 }

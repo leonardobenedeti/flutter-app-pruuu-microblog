@@ -1,8 +1,9 @@
-import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
 import 'package:Pruuu/features/auth/screens/signin.page.dart';
 import 'package:Pruuu/features/auth/screens/signup.page.dart';
+import 'package:Pruuu/features/auth/stores/auth.store.dart';
+import 'package:Pruuu/main.store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -12,26 +13,10 @@ class AuthPage extends StatefulWidget {
 }
 
 class AuthPageState extends State<AuthPage> {
+  AuthStore authStore = MainStore().authStore;
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthBloc>(
-      create: (context) => AuthBloc()..add(ChangeScreenAuth(AuthSignIn())),
-      child: _listener(context),
-    );
-  }
-
-  Widget _listener(BuildContext contextBloc) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthSigned) {
-          BlocProvider.of<AuthBloc>(contextBloc).add(StartApp());
-        }
-      },
-      child: _build(context),
-    );
-  }
-
-  Widget _build(BuildContext context) {
     return new Scaffold(
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
@@ -49,23 +34,15 @@ class AuthPageState extends State<AuthPage> {
                 ),
               ),
               Container(
-                child: BlocBuilder<AuthBloc, AuthState>(
-                  builder: (contextBloc, state) {
-                    if (state is AuthSignIn) {
-                      return SignInWidget(contextBloc);
-                    } else if (state is AuthSignUp) {
-                      return SignUpWidget(contextBloc,
-                          alreadySigned: state.signed);
-                    } else if (state is AuthSignUp) {
-                      return Container();
+                child: Observer(
+                  builder: (_) {
+                    if (authStore.authPage == AuthPages.signin) {
+                      return SignInWidget();
                     } else {
-                      return Container(
-                          height: MediaQuery.of(context).size.height * .7,
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            valueColor:
-                                new AlwaysStoppedAnimation<Color>(Colors.black),
-                          )));
+                      return SignUpWidget(
+                        alreadySigned:
+                            authStore.authPage == AuthPages.signupData,
+                      );
                     }
                   },
                 ),
