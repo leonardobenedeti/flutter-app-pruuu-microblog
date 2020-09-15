@@ -1,9 +1,11 @@
 import 'package:Pruuu/features/feed/bloc/feed_bloc.dart';
 import 'package:Pruuu/features/feed/screens/picture.widget.dart';
+import 'package:Pruuu/features/feed/stores/feed.store.dart';
+import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 
 class FeedPage extends StatefulWidget {
@@ -12,75 +14,93 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
+  FeedStore feedStore = MainStore().feedStore;
+
   List<Pruuu> feed = [];
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider<FeedBloc>(
-      create: (context) => FeedBloc()..add(FetchFeed()),
-      child: _listener(context),
-    );
+  void initState() {
+    feedStore.fetchFeed();
+    super.initState();
   }
 
-  Widget _listener(BuildContext contextBloc) {
-    return BlocListener<FeedBloc, FeedState>(
-      listener: (context, state) {
-        if (state is FeedReady) {
-          feed.clear();
-          feed.addAll(state.feed);
-        }
-        if (state is FeedReloaded) {
-          feed.clear();
-          feed.addAll(state.newItensForFeed);
-        }
-      },
-      child: BlocBuilder<FeedBloc, FeedState>(builder: (contextBloc, state) {
-        if (state is FeedReady) {
-          feed.clear();
-          feed.addAll(state.feed);
-          return _build(context, false);
-        }
-        if (state is FeedReloaded) {
-          feed.clear();
-          feed.addAll(state.newItensForFeed);
-          return _build(context, true);
-        }
-        return CircularProgressIndicator();
-      }),
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: _screenState());
+  }
+
+  Widget _screenState() {
+    return Container(
+      child: Observer(
+        builder: (_) {
+          switch (feedStore.feedState) {
+            case FeedStateNew.loading:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+              break;
+            case FeedStateNew.error:
+              return Text("ERROR");
+              break;
+            case FeedStateNew.ready:
+              return _build(context, false);
+              break;
+            case FeedStateNew.reload:
+              return _build(context, true);
+              break;
+            default:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+        },
+      ),
     );
   }
 
   Widget _build(BuildContext context, bool withReloadButton) {
-    return Stack(children: [
-      if (withReloadButton) ...[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 10,
+    return LayoutBuilder(builder: (context, constraints) {
+      double sizeList =
+          withReloadButton ? constraints.maxHeight - 50 : constraints.maxHeight;
+      return Stack(
+        children: [
+          Positioned(
+              child: Container(
+            height: sizeList,
+            child: ListView.builder(
+                itemCount: feedStore.feed.length,
+                padding: EdgeInsets.only(bottom: 70),
+                itemBuilder: (context, position) {
+                  return _pruuu(feedStore.feed[position]);
+                }),
+          )),
+          if (withReloadButton) ...[
+            Align(
+                alignment: Alignment.topCenter,
+                child: MaterialButton(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.arrow_upward,
+                        size: 14,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text("Novos pruuus"),
+                    ],
+                  ),
                   color: Colors.black,
-                  offset: Offset.fromDirection(1),
-                  spreadRadius: 10)
-            ],
-          ),
-          child: Text(
-            "Novos Pruuus",
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      ],
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: ListView.builder(
-          itemCount: feed.length,
-          padding: EdgeInsets.only(bottom: 70),
-          itemBuilder: (context, position) {
-            return _pruuu(feed[position]);
-          },
-        ),
-      ),
-    ]);
+                  textColor: Colors.white,
+                  onPressed: feedStore.fetchFeed,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ))
+          ],
+        ],
+      );
+    });
   }
 
   Widget _pruuu(Pruuu pruuu) {

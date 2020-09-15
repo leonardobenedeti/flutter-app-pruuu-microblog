@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:Pruuu/features/feed/bloc/feed_bloc.dart';
+import 'package:Pruuu/features/feed/stores/feed.store.dart';
 import 'package:Pruuu/features/pruuu/bloc/pruuuit_bloc.dart';
+import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +23,8 @@ class _PruuuState extends State<PruuuWidget> {
   String _currentPruuu = "";
   int _maxLengthPruuu = 280;
   int _maxLengthField = 300;
+
+  FeedStore feedStore = MainStore().feedStore;
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +128,7 @@ class _PruuuState extends State<PruuuWidget> {
               if (state is PruuuitPublished) {
                 Timer(Duration(milliseconds: 300), () {
                   Navigator.pop(context);
-                  BlocProvider.of<FeedBloc>(contextFeed)
-                    ..add(UpdateFeed(feed: feed));
+                  feedStore.needRefresh();
                 });
               }
             },
