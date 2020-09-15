@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:Pruuu/features/feed/bloc/feed_bloc.dart';
 import 'package:Pruuu/features/feed/stores/feed.store.dart';
-import 'package:Pruuu/features/pruuu/bloc/pruuuit_bloc.dart';
+import 'package:Pruuu/features/pruuu/stores/pruuuit.store.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class PruuuWidget extends StatefulWidget {
   FirebaseUser user;
@@ -25,6 +24,7 @@ class _PruuuState extends State<PruuuWidget> {
   int _maxLengthField = 300;
 
   FeedStore feedStore = MainStore().feedStore;
+  PruuuItStore pruuuItStore = PruuuItStore();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _PruuuState extends State<PruuuWidget> {
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
-              _blocWrap()
+              _pruuuButton(context)
             ],
           ),
           Padding(
@@ -87,20 +87,29 @@ class _PruuuState extends State<PruuuWidget> {
     });
   }
 
-  Widget _pruuuButton(BuildContext context, dynamic state) {
-    Widget contentButton;
-    if (state is PruuuitPublished) {
-      contentButton = Icon(
-        Icons.check,
-        color: Colors.white,
-      );
-    } else if (state is PruuuitLoading) {
-      contentButton = CircularProgressIndicator();
-    } else {
-      contentButton = Text("Pruuu It");
-    }
+  Widget _pruuuButton(BuildContext context) {
     return FlatButton(
-      child: contentButton,
+      child: Observer(
+        builder: (_) {
+          switch (pruuuItStore.pruuuItState) {
+            case PruuuItState.pruuublished:
+              Timer(Duration(milliseconds: 300), () {
+                Navigator.pop(context);
+                feedStore.needRefresh();
+              });
+              return Icon(
+                Icons.check,
+                color: Colors.white,
+              );
+              break;
+            case PruuuItState.loading:
+              return CircularProgressIndicator();
+              break;
+            default:
+              return Text("Pruuu It");
+          }
+        },
+      ),
       onPressed: (_currentPruuu.length) <= _maxLengthPruuu
           ? () => _pruuuIt(context, _currentPruuu, widget.user)
           : null,
@@ -110,43 +119,12 @@ class _PruuuState extends State<PruuuWidget> {
     );
   }
 
-  Widget _blocWrap() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<PruuuitBloc>(
-          create: (contextPruuuBloc) => PruuuitBloc(),
-        ),
-        BlocProvider<FeedBloc>(
-          create: (contextFeedBloc) => FeedBloc()..add(FetchFeed()),
-        ),
-      ],
-      child: BlocBuilder<FeedBloc, FeedState>(
-        builder: (contextFeed, state) {
-          List<Pruuu> feed = state is FeedReady ? state.feed : [];
-          return BlocListener<PruuuitBloc, PruuuitState>(
-            listener: (context, state) {
-              if (state is PruuuitPublished) {
-                Timer(Duration(milliseconds: 300), () {
-                  Navigator.pop(context);
-                  feedStore.needRefresh();
-                });
-              }
-            },
-            child: BlocBuilder<PruuuitBloc, PruuuitState>(
-              builder: (context, state) => _pruuuButton(context, state),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   _pruuuIt(BuildContext context, String content, FirebaseUser user) {
     var pruuu = new Pruuu();
     pruuu.authorUID = user.uid;
     pruuu.authorUsername = user.displayName;
     pruuu.timestamp = Timestamp.now();
     pruuu.content = content;
-    BlocProvider.of<PruuuitBloc>(context)..add(Pruuublish(pruuu: pruuu));
+    pruuuItStore.pruuublish(pruuu);
   }
 }

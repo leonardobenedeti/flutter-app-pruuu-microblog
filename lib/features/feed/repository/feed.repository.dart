@@ -17,12 +17,4 @@ class FeedRepository {
       }).toList();
     });
   }
-
-  Future<String> fetchPicture(String uid) async {
-    String bucket = "gs://pruuu-214a1.appspot.com";
-    final FirebaseStorage _storage = FirebaseStorage(storageBucket: bucket);
-    String url = "$bucket/users/$uid.png";
-    StorageReference storageRef = await _storage.getReferenceFromUrl(url);
-    return await storageRef.getDownloadURL();
-  }
 }

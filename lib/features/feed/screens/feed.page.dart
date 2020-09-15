@@ -1,6 +1,5 @@
-import 'package:Pruuu/features/feed/bloc/feed_bloc.dart';
-import 'package:Pruuu/features/feed/screens/picture.widget.dart';
 import 'package:Pruuu/features/feed/stores/feed.store.dart';
+import 'package:Pruuu/features/user/picture_widget/widget/picture.widget.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
 import 'package:bubble/bubble.dart';
@@ -60,13 +59,11 @@ class _FeedPageState extends State<FeedPage> {
 
   Widget _build(BuildContext context, bool withReloadButton) {
     return LayoutBuilder(builder: (context, constraints) {
-      double sizeList =
-          withReloadButton ? constraints.maxHeight - 50 : constraints.maxHeight;
       return Stack(
         children: [
           Positioned(
               child: Container(
-            height: sizeList,
+            height: constraints.maxHeight,
             child: ListView.builder(
                 itemCount: feedStore.feed.length,
                 padding: EdgeInsets.only(bottom: 70),
