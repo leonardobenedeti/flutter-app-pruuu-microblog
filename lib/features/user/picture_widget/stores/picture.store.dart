@@ -1,13 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mobx/mobx.dart';
 
-// Include generated file
 part 'picture.store.g.dart';
 
-// This is the class used by rest of your codebase
 class PictureStore = _PictureStore with _$PictureStore;
 
-// The store-class
 abstract class _PictureStore with Store {
   @observable
   String picturePath = "";

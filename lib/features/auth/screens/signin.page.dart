@@ -2,6 +2,7 @@ import 'package:Pruuu/features/auth/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// ignore: must_be_immutable
 class SignInWidget extends StatefulWidget {
   BuildContext blocContext;
   bool loadingSignIn;

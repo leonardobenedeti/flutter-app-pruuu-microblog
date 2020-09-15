@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+// ignore: must_be_immutable
 class PruuuWidget extends StatefulWidget {
   FirebaseUser user;
 

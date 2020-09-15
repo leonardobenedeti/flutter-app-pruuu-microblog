@@ -2,6 +2,7 @@ import 'package:Pruuu/features/user/picture_widget/stores/picture.store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+// ignore: must_be_immutable
 class PictureWidget extends StatefulWidget {
   String authorUID;
 

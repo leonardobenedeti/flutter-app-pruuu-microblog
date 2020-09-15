@@ -57,15 +57,12 @@ class _UserWidgetState extends State<UserWidget> {
   }
 
   Widget _build(BuildContext context) {
-    String name;
     String username;
 
     var split = user.displayName != null ? user.displayName.split("@") : [];
     if (split.length > 1) {
-      name = split[0] != null ? split[0] : "";
       username = split[1] != null ? split[1] : "";
     } else {
-      name = "Vazio";
       username = "preencheai";
     }
 

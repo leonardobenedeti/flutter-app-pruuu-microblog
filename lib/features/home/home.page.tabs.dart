@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class HomePageTabs extends StatefulWidget {
   List<Tab> tabs;
   List<Widget> childTabs;
