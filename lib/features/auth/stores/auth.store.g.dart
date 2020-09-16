@@ -54,6 +54,21 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  final _$fillUserInfoStateAtom = Atom(name: '_AuthStore.fillUserInfoState');
+
+  @override
+  FillUserInfoState get fillUserInfoState {
+    _$fillUserInfoStateAtom.reportRead();
+    return super.fillUserInfoState;
+  }
+
+  @override
+  set fillUserInfoState(FillUserInfoState value) {
+    _$fillUserInfoStateAtom.reportWrite(value, super.fillUserInfoState, () {
+      super.fillUserInfoState = value;
+    });
+  }
+
   final _$getUserAsyncAction = AsyncAction('_AuthStore.getUser');
 
   @override
@@ -61,11 +76,33 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$getUserAsyncAction.run(() => super.getUser());
   }
 
+  final _$fillUserInfoAsyncAction = AsyncAction('_AuthStore.fillUserInfo');
+
+  @override
+  Future<dynamic> fillUserInfo(String username, {bool newUser = false}) {
+    return _$fillUserInfoAsyncAction
+        .run(() => super.fillUserInfo(username, newUser: newUser));
+  }
+
   final _$doSignInAsyncAction = AsyncAction('_AuthStore.doSignIn');
 
   @override
   Future<dynamic> doSignIn(String email, String password) {
     return _$doSignInAsyncAction.run(() => super.doSignIn(email, password));
+  }
+
+  final _$doSignUpAsyncAction = AsyncAction('_AuthStore.doSignUp');
+
+  @override
+  Future<dynamic> doSignUp(String email, String password) {
+    return _$doSignUpAsyncAction.run(() => super.doSignUp(email, password));
+  }
+
+  final _$doSignOutAsyncAction = AsyncAction('_AuthStore.doSignOut');
+
+  @override
+  Future<dynamic> doSignOut() {
+    return _$doSignOutAsyncAction.run(() => super.doSignOut());
   }
 
   final _$_AuthStoreActionController = ActionController(name: '_AuthStore');
@@ -93,11 +130,34 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
+  void openTextField() {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.openTextField');
+    try {
+      return super.openTextField();
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void closeTextField() {
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.closeTextField');
+    try {
+      return super.closeTextField();
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 authPage: ${authPage},
 authState: ${authState},
-user: ${user}
+user: ${user},
+fillUserInfoState: ${fillUserInfoState}
     ''';
   }
 }

@@ -38,6 +38,29 @@ abstract class _AuthStore with Store {
     }
   }
 
+  @observable
+  FillUserInfoState fillUserInfoState = FillUserInfoState.filled;
+
+  @action
+  void openTextField() => fillUserInfoState = FillUserInfoState.openField;
+
+  @action
+  void closeTextField() => fillUserInfoState = FillUserInfoState.filled;
+
+  @action
+  Future fillUserInfo(String username, {bool newUser = false}) async {
+    try {
+      fillUserInfoState = FillUserInfoState.loading;
+      bool userUpdated = await AuthRepository().fillUserInfo(username);
+      fillUserInfoState =
+          userUpdated ? FillUserInfoState.filled : FillUserInfoState.fillError;
+      getUser();
+    } catch (e) {
+      print(e);
+      fillUserInfoState = FillUserInfoState.fillError;
+    }
+  }
+
   @action
   Future doSignIn(String email, String password) async {
     try {
@@ -45,6 +68,18 @@ abstract class _AuthStore with Store {
       AuthResult authResult = await AuthRepository().signIn(email, password);
       _handleUserResult(firebaseUser: authResult.user);
     } catch (e) {
+      authState = AuthState.signError;
+    }
+  }
+
+  @action
+  Future doSignUp(String email, String password) async {
+    try {
+      authState = AuthState.signing;
+      AuthResult authResult = await AuthRepository().signUp(email, password);
+      _handleUserResult(firebaseUser: authResult.user, newUser: true);
+    } catch (e) {
+      print(e);
       authState = AuthState.signError;
     }
   }
@@ -59,10 +94,14 @@ abstract class _AuthStore with Store {
     }
   }
 
-  _handleUserResult({FirebaseUser firebaseUser}) {
+  _handleUserResult({FirebaseUser firebaseUser, bool newUser = false}) {
     if (firebaseUser != null) {
       user = firebaseUser;
-      authState = AuthState.signed;
+      if (newUser) {
+        authPage = AuthPages.signupData;
+      } else {
+        authState = AuthState.signed;
+      }
     } else {
       authState = AuthState.signedOut;
     }
@@ -70,4 +109,5 @@ abstract class _AuthStore with Store {
 }
 
 enum AuthPages { signin, signup, signupData }
-enum AuthState { signed, signedOut, signError, signing }
+enum AuthState { newUser, signed, signedOut, signError, signing }
+enum FillUserInfoState { openField, filled, fillError, loading }

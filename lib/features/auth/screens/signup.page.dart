@@ -1,6 +1,8 @@
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/main.store.dart';
+import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 // ignore: must_be_immutable
 class SignUpWidget extends StatefulWidget {
@@ -22,7 +24,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _confirmController = new TextEditingController();
-  TextEditingController _nameController = new TextEditingController();
   TextEditingController _usernameController = new TextEditingController();
 
   AuthStore authStore = MainStore().authStore;
@@ -94,27 +95,39 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
               ],
             ),
-            FlatButton(
-              child: Container(
-                width: double.infinity,
-                child: Center(child: Text("Criar conta")),
+            Observer(
+              builder: (_) => PruuuButton(
+                child: Container(
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      "Criar conta",
+                    ),
+                  ),
+                ),
+                loading:
+                    authStore.fillUserInfoState == FillUserInfoState.loading,
+                onPressed: _handlePressedButton(),
               ),
-              onPressed: _allCorrect1
-                  ? () => (widget.alreadySigned && _allCorrect2)
-                      ? _updateInfos(
-                          _nameController.text, _usernameController.text, "")
-                      : _doSignUp(
-                          _emailController.text, _passwordController.text)
-                  : null,
-              textColor: Colors.white,
-              color: Colors.black,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Function _handlePressedButton() {
+    if (_allCorrect1 &&
+        !_allCorrect2 &&
+        authStore.authPage != AuthPages.signupData) {
+      return () =>
+          authStore.doSignUp(_emailController.text, _passwordController.text);
+    }
+    if (_allCorrect1 && _allCorrect2) {
+      return () => authStore.fillUserInfo(_usernameController.text);
+    }
+
+    return null;
   }
 
   Widget _contentSecondStep() {
@@ -137,22 +150,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         SizedBox(
           height: 16,
         ),
-        TextField(
-            cursorColor: Colors.black,
-            showCursor: true,
-            onChanged: _handleChangeText,
-            controller: _nameController,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(width: .5),
-                    borderRadius: BorderRadius.circular(10)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: .8),
-                    borderRadius: BorderRadius.circular(10)),
-                hintText: "Como podemos te chamar ?"),
-            buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-                Text("")),
         TextFormField(
             cursorColor: Colors.black,
             showCursor: true,
@@ -167,7 +164,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(width: .8),
                     borderRadius: BorderRadius.circular(10)),
-                hintText: "@username"),
+                hintText: "Como podemos te chamar ?"),
             buildCounter: (context, {currentLength, isFocused, maxLength}) =>
                 Text("")),
       ],
@@ -241,21 +238,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           _confirmController.text.length > 3 &&
           _passwordController.text == _confirmController.text;
 
-      _allCorrect2 = _nameController.text.length > 3 &&
-          _usernameController.text.length > 3;
-
-      _allCorrect1 = (widget.alreadySigned && _allCorrect2);
+      if (authStore.authPage == AuthPages.signupData) {
+        _allCorrect2 = _usernameController.text.length > 3;
+      }
     });
-  }
-
-  _doSignUp(String email, String password) {
-    // BlocProvider.of<AuthBloc>(widget.blocContext)
-    //   ..add(SignUpApp(email: email, password: password));
-  }
-
-  _updateInfos(String name, String username, String picturePath) {
-    // BlocProvider.of<AuthBloc>(widget.blocContext)
-    //   ..add(
-    //       UpdateUser(name: name, username: username, picturePath: picturePath));
   }
 }

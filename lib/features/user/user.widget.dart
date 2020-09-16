@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/main.store.dart';
+import 'package:Pruuu/widgets/button.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -52,7 +53,7 @@ class _UserWidgetState extends State<UserWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "@leonardobenedeti",
+                          "Leonardo Benedeti",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -166,21 +167,96 @@ class _UserWidgetState extends State<UserWidget> {
                 width: 16,
               ),
               Container(
-                child: Observer(
-                  builder: (_) => Text(
-                    "${authStore.user.displayName}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
+                  child: Observer(
+                builder: (_) => new AnimatedCrossFade(
+                  crossFadeState:
+                      authStore.fillUserInfoState == FillUserInfoState.filled
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
+                  alignment: Alignment.center,
+                  duration: const Duration(milliseconds: 500),
+                  firstCurve: Curves.fastOutSlowIn,
+                  firstChild: _firstChild(),
+                  secondChild: _secondChild(),
                 ),
-              ),
+              )),
             ],
           ),
         ],
       ),
     );
+  }
+
+  _firstChild() {
+    return GestureDetector(
+      onTap: authStore.openTextField,
+      child: Container(
+        width: double.infinity,
+        color: Colors.transparent,
+        alignment: Alignment.center,
+        child: Text(
+          "${authStore.user.displayName}",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextEditingController _nameController = TextEditingController();
+
+  _secondChild() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        TextField(
+          cursorColor: Colors.black,
+          showCursor: true,
+          onChanged: _handleChangeText,
+          controller: _nameController,
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+              suffixIcon: SizedBox(
+                height: 20,
+                width: 20,
+                child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: authStore.closeTextField),
+              ),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(width: .5),
+                  borderRadius: BorderRadius.circular(10)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: .8),
+                  borderRadius: BorderRadius.circular(10)),
+              hintText: "Como podemos te chamar ?"),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Observer(builder: (_) {
+              return PruuuButton(
+                child: Text("Salvar"),
+                loading:
+                    authStore.fillUserInfoState == FillUserInfoState.loading,
+                onPressed: _allCorrect
+                    ? () => authStore.fillUserInfo(_nameController.text)
+                    : null,
+              );
+            }),
+          ],
+        )
+      ],
+    );
+  }
+
+  bool _allCorrect = false;
+  _handleChangeText(String value) {
+    setState(() {
+      _allCorrect = value.length >= 3;
+    });
   }
 
   Widget _pictureUser() {

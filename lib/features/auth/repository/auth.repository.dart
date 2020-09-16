@@ -1,11 +1,12 @@
+import 'dart:io';
+
 import 'package:Pruuu/features/auth/repository/local_storage.dart';
-import 'package:Pruuu/features/auth/repository/picture.repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
   final _localStorage = new LocalStorage();
-  final _pictureRepository = new PictureRepository();
+  // final _pictureRepository = new PictureRepository();
 
   Future<bool> get hasUser async => await getUser() != null;
 
@@ -24,11 +25,11 @@ class AuthRepository {
     return authResult;
   }
 
-  Future<bool> signUp(String email, String password) async {
+  Future<AuthResult> signUp(String email, String password) async {
     var authResult = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
 
-    return authResult != null;
+    return authResult;
   }
 
   Future signOut() async {
@@ -36,14 +37,19 @@ class AuthRepository {
     await _localStorage.deleteStorage("user");
   }
 
-  void fillUserInfo(String uid, String displayName) async {
+  Future<bool> fillUserInfo(String displayName, {File picture}) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
 
-    final picturePath = await _pictureRepository.pathPicture(user.uid);
+    // final picturePath = await _pictureRepository.pathPicture(user.uid);
 
     var userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = "@leonardobenedeti";
-    userUpdateInfo.photoUrl = picturePath;
-    await user.updateProfile(userUpdateInfo);
+    userUpdateInfo.displayName = displayName;
+    // userUpdateInfo.photoUrl = picturePath;
+    try {
+      await user.updateProfile(userUpdateInfo);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

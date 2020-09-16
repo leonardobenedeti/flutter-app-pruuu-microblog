@@ -36,14 +36,18 @@ class AuthPageState extends State<AuthPage> {
               Container(
                 child: Observer(
                   builder: (_) {
-                    if (authStore.authPage == AuthPages.signin) {
-                      return SignInWidget();
-                    } else {
-                      return SignUpWidget(
+                    return new AnimatedCrossFade(
+                      crossFadeState: authStore.authPage == AuthPages.signin
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
+                      duration: const Duration(milliseconds: 500),
+                      firstCurve: Curves.fastOutSlowIn,
+                      firstChild: SignInWidget(),
+                      secondChild: SignUpWidget(
                         alreadySigned:
                             authStore.authPage == AuthPages.signupData,
-                      );
-                    }
+                      ),
+                    );
                   },
                 ),
               )
