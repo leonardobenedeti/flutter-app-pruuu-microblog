@@ -39,10 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   TrendingPage(),
                 ],
               ),
-              Container(
-                  height: 40,
-                  margin: EdgeInsets.only(top: 4),
-                  child: _wrapUserBloc(TypeUserBlocChild.userArea))
+              _wrapUserBloc(TypeUserBlocChild.userArea)
             ],
           ),
         ));
@@ -71,22 +68,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _userAreaFAB(FirebaseUser user) {
-    return FloatingActionButton(
-      onPressed: () => _openBottomSheet(UserWidget()),
-      child: user != null && user.photoUrl != null
-          ? ClipOval(
-              child: Image.network(user.photoUrl),
-            )
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                child: Icon(
-                  Icons.person_outline,
-                  color: Colors.white,
+    return Container(
+      height: 35,
+      width: 35,
+      margin: EdgeInsets.fromLTRB(0, 4, 16, 0),
+      child: GestureDetector(
+        onTap: () => _openBottomSheet(UserWidget()),
+        child: user.photoUrl != null
+            ? ClipOval(
+                child: Image.network(
+                  authStore.user.photoUrl,
+                  fit: BoxFit.cover,
                 ),
-                color: Colors.black,
+              )
+            : ClipOval(
+                child: Container(
+                  child: Icon(
+                    Icons.person_outline,
+                    color: Colors.white,
+                  ),
+                  color: Colors.black,
+                ),
               ),
-            ),
+      ),
     );
   }
 

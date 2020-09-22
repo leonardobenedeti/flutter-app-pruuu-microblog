@@ -27,13 +27,14 @@ class _PictureWidgetState extends State<PictureWidget> {
       child: Observer(
         builder: (_) {
           if (pictureStore.pictureState == PictureState.ready) {
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(pictureStore.picturePath),
+            return ClipOval(
+              child: Image.network(
+                pictureStore.picturePath,
+                fit: BoxFit.cover,
+              ),
             );
           } else {
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+            return ClipOval(
               child: Container(
                 child: Icon(
                   Icons.person_outline,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Pruuu/features/auth/repository/local_storage.dart';
+import 'package:Pruuu/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
@@ -37,14 +38,13 @@ class AuthRepository {
     await _localStorage.deleteStorage("user");
   }
 
-  Future<bool> fillUserInfo(String displayName, {File picture}) async {
+  Future<bool> fillUserInfo({String displayName, String pictureUrl}) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
 
-    // final picturePath = await _pictureRepository.pathPicture(user.uid);
-
     var userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = displayName;
-    // userUpdateInfo.photoUrl = picturePath;
+    userUpdateInfo.displayName =
+        displayName == null ? user.displayName : displayName;
+    userUpdateInfo.photoUrl = pictureUrl == null ? user.photoUrl : pictureUrl;
     try {
       await user.updateProfile(userUpdateInfo);
       return true;

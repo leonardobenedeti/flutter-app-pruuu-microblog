@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Precisamos do acesso as suas fotos para selecionar uma para seu perfil.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Precisamos do acesso a sua câmera para tirar uma foto para seu perfil.</string>
 </dict>
 </plist>

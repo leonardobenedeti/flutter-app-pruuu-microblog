@@ -130,12 +130,24 @@ class _FeedPageState extends State<FeedPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            pruuu.authorUsername,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                pruuu.displayName,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                pruuu.authorUsername,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
                           ),
                           Text(
                             timeStamp,
@@ -147,7 +159,7 @@ class _FeedPageState extends State<FeedPage> {
                         ],
                       ),
                       Bubble(
-                        margin: BubbleEdges.only(top: 10),
+                        margin: BubbleEdges.only(top: 4),
                         alignment: Alignment.topLeft,
                         nip: BubbleNip.leftTop,
                         child: Text(pruuu.content),
@@ -160,6 +172,15 @@ class _FeedPageState extends State<FeedPage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _divider() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 4),
+      height: 1,
+      width: 1,
+      color: Colors.black54,
     );
   }
 }

@@ -124,7 +124,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           authStore.doSignUp(_emailController.text, _passwordController.text);
     }
     if (_allCorrect1 && _allCorrect2) {
-      return () => authStore.fillUserInfo(_usernameController.text);
+      return () => authStore.fillUserInfo(username: _usernameController.text);
     }
 
     return null;

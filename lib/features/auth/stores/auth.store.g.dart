@@ -79,9 +79,10 @@ mixin _$AuthStore on _AuthStore, Store {
   final _$fillUserInfoAsyncAction = AsyncAction('_AuthStore.fillUserInfo');
 
   @override
-  Future<dynamic> fillUserInfo(String username, {bool newUser = false}) {
-    return _$fillUserInfoAsyncAction
-        .run(() => super.fillUserInfo(username, newUser: newUser));
+  Future<dynamic> fillUserInfo(
+      {String username, String pictureUrl, bool newUser = false}) {
+    return _$fillUserInfoAsyncAction.run(() => super.fillUserInfo(
+        username: username, pictureUrl: pictureUrl, newUser: newUser));
   }
 
   final _$doSignInAsyncAction = AsyncAction('_AuthStore.doSignIn');

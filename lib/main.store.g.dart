@@ -39,11 +39,27 @@ mixin _$MainStore on _MainStore, Store {
     });
   }
 
+  final _$pictureStoreAtom = Atom(name: '_MainStore.pictureStore');
+
+  @override
+  PictureStore get pictureStore {
+    _$pictureStoreAtom.reportRead();
+    return super.pictureStore;
+  }
+
+  @override
+  set pictureStore(PictureStore value) {
+    _$pictureStoreAtom.reportWrite(value, super.pictureStore, () {
+      super.pictureStore = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 authStore: ${authStore},
-feedStore: ${feedStore}
+feedStore: ${feedStore},
+pictureStore: ${pictureStore}
     ''';
   }
 }

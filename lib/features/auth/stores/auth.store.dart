@@ -28,7 +28,7 @@ abstract class _AuthStore with Store {
   FirebaseUser user;
 
   @action
-  Future getUser() async {
+  Future<void> getUser() async {
     try {
       FirebaseUser firebaseUser = await AuthRepository().getUser();
       _handleUserResult(firebaseUser: firebaseUser);
@@ -48,13 +48,17 @@ abstract class _AuthStore with Store {
   void closeTextField() => fillUserInfoState = FillUserInfoState.filled;
 
   @action
-  Future fillUserInfo(String username, {bool newUser = false}) async {
+  Future fillUserInfo(
+      {String username, String pictureUrl, bool newUser = false}) async {
     try {
-      fillUserInfoState = FillUserInfoState.loading;
-      bool userUpdated = await AuthRepository().fillUserInfo(username);
+      fillUserInfoState = username != null
+          ? FillUserInfoState.loading
+          : FillUserInfoState.loadingPicture;
+      bool userUpdated = await AuthRepository()
+          .fillUserInfo(displayName: username, pictureUrl: pictureUrl);
+      await getUser();
       fillUserInfoState =
           userUpdated ? FillUserInfoState.filled : FillUserInfoState.fillError;
-      getUser();
     } catch (e) {
       print(e);
       fillUserInfoState = FillUserInfoState.fillError;
@@ -110,4 +114,4 @@ abstract class _AuthStore with Store {
 
 enum AuthPages { signin, signup, signupData }
 enum AuthState { newUser, signed, signedOut, signError, signing }
-enum FillUserInfoState { openField, filled, fillError, loading }
+enum FillUserInfoState { openField, filled, fillError, loading, loadingPicture }

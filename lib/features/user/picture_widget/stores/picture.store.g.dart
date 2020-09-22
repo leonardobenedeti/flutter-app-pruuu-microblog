@@ -39,6 +39,21 @@ mixin _$PictureStore on _PictureStore, Store {
     });
   }
 
+  final _$filePictureAtom = Atom(name: '_PictureStore.filePicture');
+
+  @override
+  File get filePicture {
+    _$filePictureAtom.reportRead();
+    return super.filePicture;
+  }
+
+  @override
+  set filePicture(File value) {
+    _$filePictureAtom.reportWrite(value, super.filePicture, () {
+      super.filePicture = value;
+    });
+  }
+
   final _$fetchPictureAsyncAction = AsyncAction('_PictureStore.fetchPicture');
 
   @override
@@ -46,11 +61,40 @@ mixin _$PictureStore on _PictureStore, Store {
     return _$fetchPictureAsyncAction.run(() => super.fetchPicture(uid));
   }
 
+  final _$pickImageAsyncAction = AsyncAction('_PictureStore.pickImage');
+
+  @override
+  Future<void> pickImage(ImageSource source, String uid) {
+    return _$pickImageAsyncAction.run(() => super.pickImage(source, uid));
+  }
+
+  final _$uploadImageAsyncAction = AsyncAction('_PictureStore.uploadImage');
+
+  @override
+  Future<void> uploadImage(String uid) {
+    return _$uploadImageAsyncAction.run(() => super.uploadImage(uid));
+  }
+
+  final _$_PictureStoreActionController =
+      ActionController(name: '_PictureStore');
+
+  @override
+  Future<void> changeState() {
+    final _$actionInfo = _$_PictureStoreActionController.startAction(
+        name: '_PictureStore.changeState');
+    try {
+      return super.changeState();
+    } finally {
+      _$_PictureStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 picturePath: ${picturePath},
-pictureState: ${pictureState}
+pictureState: ${pictureState},
+filePicture: ${filePicture}
     ''';
   }
 }

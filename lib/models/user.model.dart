@@ -1,27 +1,27 @@
-import 'package:flutter/foundation.dart';
+import 'package:Pruuu/models/base.model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
-  String nome;
-  String username;
-  String picturePath;
+class User extends BaseModel {
+  String _documentId;
+  String userName;
+  String displayName;
 
-  User({
-    @required this.nome,
-    @required this.username,
-    @required this.picturePath,
-  });
+  User();
 
-  User.fromJson(Map<String, dynamic> json) {
-    nome = json['nome'];
-    username = json['username'];
-    picturePath = json['picturePath'];
+  @override
+  String documentId() => _documentId;
+
+  @override
+  toMap() {
+    var map = new Map<String, dynamic>();
+    map['userName'] = this.userName;
+    map['displayName'] = this.displayName;
+    return map;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['nome'] = this.nome;
-    data['username'] = this.username;
-    data['picturePath'] = this.picturePath;
-    return data;
+  User.fromMap(DocumentSnapshot documentSnapshot) {
+    _documentId = documentSnapshot.documentID;
+    this.userName = documentSnapshot.data['userName'];
+    this.displayName = documentSnapshot.data['displayName'];
   }
 }

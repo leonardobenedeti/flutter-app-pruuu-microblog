@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
+import 'package:Pruuu/features/user/picture_widget/stores/picture.store.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserWidget extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class UserWidget extends StatefulWidget {
 
 class _UserWidgetState extends State<UserWidget> {
   AuthStore authStore = MainStore().authStore;
+  PictureStore pictureStore = MainStore().pictureStore;
 
   String textoDisclaimer =
       "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.";
@@ -158,11 +162,7 @@ class _UserWidgetState extends State<UserWidget> {
                   ),
                 ],
               ),
-              Container(
-                height: 160,
-                width: 160,
-                child: _pictureUser(),
-              ),
+              _pictureUser(),
               SizedBox(
                 width: 16,
               ),
@@ -170,9 +170,9 @@ class _UserWidgetState extends State<UserWidget> {
                   child: Observer(
                 builder: (_) => new AnimatedCrossFade(
                   crossFadeState:
-                      authStore.fillUserInfoState == FillUserInfoState.filled
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
+                      authStore.fillUserInfoState == FillUserInfoState.openField
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
                   alignment: Alignment.center,
                   duration: const Duration(milliseconds: 500),
                   firstCurve: Curves.fastOutSlowIn,
@@ -242,7 +242,8 @@ class _UserWidgetState extends State<UserWidget> {
                 loading:
                     authStore.fillUserInfoState == FillUserInfoState.loading,
                 onPressed: _allCorrect
-                    ? () => authStore.fillUserInfo(_nameController.text)
+                    ? () =>
+                        authStore.fillUserInfo(username: _nameController.text)
                     : null,
               );
             }),
@@ -260,22 +261,170 @@ class _UserWidgetState extends State<UserWidget> {
   }
 
   Widget _pictureUser() {
-    return Observer(
+    double sizePicture = 160;
+    return GestureDetector(
+      onTap: _selectSourcePictureBottomSheet,
+      child: Container(
+        height: sizePicture,
+        width: sizePicture,
+        child: Stack(
+          children: [
+            Observer(
+              builder: (context) {
+                if (pictureStore.pictureState == PictureState.uploading) {
+                  return SizedBox(
+                    height: sizePicture + 10,
+                    width: sizePicture + 10,
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            Observer(
+              builder: (context) {
+                return Container(
+                  height: sizePicture,
+                  width: sizePicture,
+                  child: authStore.user.photoUrl != null
+                      ? ClipOval(
+                          child: Image.network(
+                            authStore.user.photoUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : ClipOval(
+                          child: Container(
+                            child: Icon(
+                              Icons.person_outline,
+                              color: Colors.white,
+                            ),
+                            color: Colors.black,
+                          ),
+                        ),
+                );
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _selectSourcePictureBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
       builder: (context) {
-        return authStore.user != null && authStore.user.photoUrl != null
-            ? ClipOval(
-                child: Image.network(authStore.user.photoUrl),
-              )
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  child: Icon(
-                    Icons.person_outline,
-                    color: Colors.white,
-                  ),
-                  color: Colors.black,
+        return Observer(
+          builder: (_) {
+            if (pictureStore.pictureState == PictureState.askforCrop) {
+              return Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 200,
+                      width: 200,
+                      child: Image.file(pictureStore.filePicture),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        PruuuButton(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.crop,
+                                size: 30,
+                              ),
+                              Text("Cropp")
+                            ],
+                          ),
+                          onPressed: () => print("do cropp"),
+                          buttonType: ButtonType.clear,
+                        ),
+                        PruuuButton(
+                          child: Column(
+                            children: [
+                              Icon(
+                                pictureStore.pictureState ==
+                                        PictureState.uploaded
+                                    ? Icons.check
+                                    : Icons.play_circle_outline,
+                                size: 30,
+                              ),
+                              Text(pictureStore.pictureState ==
+                                      PictureState.uploaded
+                                  ? "Concluído"
+                                  : "Continuar sem crop")
+                            ],
+                          ),
+                          onPressed: () {
+                            pictureStore.uploadImage(authStore.user.uid);
+                            Timer(Duration(milliseconds: 300),
+                                () => Navigator.pop(context));
+                          },
+                          buttonType: ButtonType.clear,
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               );
+            } else {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 64),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        PruuuButton(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.photo_camera,
+                                size: 30,
+                              ),
+                              Text("Câmera")
+                            ],
+                          ),
+                          onPressed: () => pictureStore.pickImage(
+                              ImageSource.camera, authStore.user.uid),
+                          buttonType: ButtonType.clear,
+                        ),
+                        PruuuButton(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.photo_library,
+                                size: 30,
+                              ),
+                              Text("Galeria")
+                            ],
+                          ),
+                          onPressed: () => pictureStore.pickImage(
+                              ImageSource.gallery, authStore.user.uid),
+                          buttonType: ButtonType.clear,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+        );
       },
     );
   }
