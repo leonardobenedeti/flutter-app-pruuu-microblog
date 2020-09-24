@@ -5,6 +5,8 @@ import 'package:Pruuu/features/pruuu/screens/pruuu.widget.dart';
 import 'package:Pruuu/features/trending/trending.page.dart';
 import 'package:Pruuu/features/user/user.widget.dart';
 import 'package:Pruuu/main.store.dart';
+import 'package:Pruuu/models/user.model.dart';
+import 'package:Pruuu/themes/theme.store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -19,6 +21,7 @@ enum TypeUserBlocChild { pruuu, userArea }
 
 class _MyHomePageState extends State<MyHomePage> {
   AuthStore authStore = MainStore().authStore;
+  ThemeStore themeStore = MainStore().themeStore;
 
   @override
   Widget build(BuildContext context) {
@@ -63,21 +66,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _pruuuFAB(FirebaseUser user) {
     return FloatingActionButton(
       onPressed: () => _openBottomSheet(PruuuWidget(user: user)),
-      child: Icon(Icons.add_comment),
+      child: Icon(
+        Icons.add_comment,
+        color: Theme.of(context).primaryColor,
+      ),
     );
   }
 
-  Widget _userAreaFAB(FirebaseUser user) {
+  Widget _userAreaFAB(User user) {
     return Container(
       height: 35,
       width: 35,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Theme.of(context).accentColor,
+          width: 1.5,
+        ),
+      ),
       margin: EdgeInsets.fromLTRB(0, 4, 16, 0),
       child: GestureDetector(
         onTap: () => _openBottomSheet(UserWidget()),
-        child: user.photoUrl != null
+        child: user.profilePicture != null
             ? ClipOval(
                 child: Image.network(
-                  authStore.user.photoUrl,
+                  user.profilePicture,
                   fit: BoxFit.cover,
                 ),
               )
@@ -100,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (authStore.authState == AuthState.signed) {
           return type == TypeUserBlocChild.pruuu
               ? _pruuuFAB(authStore.user)
-              : _userAreaFAB(authStore.user);
+              : _userAreaFAB(authStore.userInfo);
         } else {
           return CircularProgressIndicator();
         }

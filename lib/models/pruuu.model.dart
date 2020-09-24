@@ -19,8 +19,6 @@ class Pruuu extends BaseModel {
   toMap() {
     var map = new Map<String, dynamic>();
     map['authorUID'] = this.authorUID;
-    map['authorUsername'] = this.authorUsername;
-    map['displayName'] = this.displayName;
     map['content'] = this.content;
     map['timestamp'] = this.timestamp;
     return map;

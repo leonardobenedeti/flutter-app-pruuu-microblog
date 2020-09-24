@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:Pruuu/features/auth/repository/auth.repository.dart';
+import 'package:Pruuu/models/user.model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobx/mobx.dart';
 
@@ -28,13 +31,26 @@ abstract class _AuthStore with Store {
   FirebaseUser user;
 
   @action
-  Future<void> getUser() async {
+  Future<void> getUser({bool newUser = false}) async {
     try {
       FirebaseUser firebaseUser = await AuthRepository().getUser();
-      _handleUserResult(firebaseUser: firebaseUser);
+      await getUserInfo();
+      _handleUserResult(firebaseUser: firebaseUser, newUser: newUser);
     } catch (e) {
       print(e);
       authState = AuthState.signedOut;
+    }
+  }
+
+  @observable
+  User userInfo = User();
+
+  @action
+  Future<void> getUserInfo() async {
+    try {
+      userInfo = await AuthRepository().getUserInfo();
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -49,14 +65,21 @@ abstract class _AuthStore with Store {
 
   @action
   Future fillUserInfo(
-      {String username, String pictureUrl, bool newUser = false}) async {
+      {String username,
+      String pictureUrl,
+      String displayName,
+      bool newUser = false}) async {
     try {
       fillUserInfoState = username != null
           ? FillUserInfoState.loading
           : FillUserInfoState.loadingPicture;
-      bool userUpdated = await AuthRepository()
-          .fillUserInfo(displayName: username, pictureUrl: pictureUrl);
-      await getUser();
+      bool userUpdated = await AuthRepository().fillUserInfo(
+          displayName: displayName,
+          pictureUrl: pictureUrl,
+          userName: username,
+          newUser: newUser);
+      await getUser(newUser: newUser);
+
       fillUserInfoState =
           userUpdated ? FillUserInfoState.filled : FillUserInfoState.fillError;
     } catch (e) {
@@ -70,6 +93,7 @@ abstract class _AuthStore with Store {
     try {
       authState = AuthState.signing;
       AuthResult authResult = await AuthRepository().signIn(email, password);
+      await getUser();
       _handleUserResult(firebaseUser: authResult.user);
     } catch (e) {
       authState = AuthState.signError;
@@ -102,16 +126,24 @@ abstract class _AuthStore with Store {
     if (firebaseUser != null) {
       user = firebaseUser;
       if (newUser) {
-        authPage = AuthPages.signupData;
+        if (userInfo.displayName != null && userInfo.profilePicture != null) {
+          authPage = AuthPages.signin;
+          authState = AuthState.signed;
+        } else {
+          authPage = AuthPages.signupData;
+          authState = AuthState.signedUp;
+        }
       } else {
         authState = AuthState.signed;
       }
     } else {
+      Timer(Duration(milliseconds: 800), () => userInfo = User());
       authState = AuthState.signedOut;
+      authPage = AuthPages.signin;
     }
   }
 }
 
 enum AuthPages { signin, signup, signupData }
-enum AuthState { newUser, signed, signedOut, signError, signing }
+enum AuthState { newUser, signed, signedOut, signedUp, signError, signing }
 enum FillUserInfoState { openField, filled, fillError, loading, loadingPicture }

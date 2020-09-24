@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
+import 'package:Pruuu/features/user/upload_picture_widget/upload_picture.widget.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 // ignore: must_be_immutable
 class SignUpWidget extends StatefulWidget {
@@ -19,12 +23,12 @@ class SignUpWidget extends StatefulWidget {
 class _SignUpWidgetState extends State<SignUpWidget> {
   bool _allCorrect1 = false;
   bool _allCorrect2 = false;
-  bool _loading = false;
 
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _confirmController = new TextEditingController();
   TextEditingController _usernameController = new TextEditingController();
+  TextEditingController _displayNameController = new TextEditingController();
 
   AuthStore authStore = MainStore().authStore;
 
@@ -44,22 +48,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               children: [
                 Text(
                   "Sign Up",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline1,
                 ),
-                FlatButton(
-                  child: Text(
-                    "Já tenho uma conta",
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.bold),
-                  ),
+                PruuuButton(
+                  child: Text("Já tenho uma conta"),
                   onPressed: authStore.changePage,
-                  textColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
                 ),
               ],
             ),
@@ -70,30 +63,16 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             SizedBox(
               height: 16,
             ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    height: 3,
-                    color: Colors.black,
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    height: 3,
-                    color: widget.alreadySigned ? Colors.black : Colors.black54,
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    height: 3,
-                    color: _loading ? Colors.black : Colors.black54,
-                  ),
-                ),
-              ],
+            Container(
+              child: LinearPercentIndicator(
+                lineHeight: 2.0,
+                percent: percentFilled,
+                backgroundColor: Theme.of(context).cardColor,
+                progressColor: Theme.of(context).accentColor,
+                animation: true,
+                animateFromLastPercent: true,
+                animationDuration: 1000,
+              ),
             ),
             Observer(
               builder: (_) => PruuuButton(
@@ -101,12 +80,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   width: double.infinity,
                   child: Center(
                     child: Text(
-                      "Criar conta",
+                      widget.alreadySigned ? "Criar conta" : "Próximo passo",
                     ),
                   ),
                 ),
                 loading:
-                    authStore.fillUserInfoState == FillUserInfoState.loading,
+                    authStore.fillUserInfoState == FillUserInfoState.loading ||
+                        authStore.authState == AuthState.signing,
                 onPressed: _handlePressedButton(),
               ),
             ),
@@ -124,7 +104,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           authStore.doSignUp(_emailController.text, _passwordController.text);
     }
     if (_allCorrect1 && _allCorrect2) {
-      return () => authStore.fillUserInfo(username: _usernameController.text);
+      return () => authStore.fillUserInfo(
+            username: _usernameController.text,
+            displayName: _displayNameController.text,
+            pictureUrl: authStore.user.photoUrl,
+            newUser: true,
+          );
     }
 
     return null;
@@ -133,40 +118,36 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   Widget _contentSecondStep() {
     return Column(
       children: [
-        Container(
-          height: 100,
-          width: 100,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              child: Icon(
-                Icons.person_outline,
-                color: Colors.white,
-              ),
-              color: Colors.black,
-            ),
-          ),
+        UploadPictureWidget(
+          newUser: true,
         ),
         SizedBox(
           height: 16,
         ),
         TextFormField(
-            cursorColor: Colors.black,
-            showCursor: true,
-            controller: _usernameController,
-            textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.emailAddress,
-            onChanged: _handleChangeText,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(width: .5),
-                    borderRadius: BorderRadius.circular(10)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: .8),
-                    borderRadius: BorderRadius.circular(10)),
-                hintText: "Como podemos te chamar ?"),
-            buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-                Text("")),
+          cursorColor: Theme.of(context).accentColor,
+          showCursor: true,
+          controller: _displayNameController,
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.emailAddress,
+          onChanged: _handleChangeText,
+          decoration: InputDecoration(hintText: "Como podemos te chamar ?"),
+          style: Theme.of(context).textTheme.bodyText1,
+          buildCounter: (context, {currentLength, isFocused, maxLength}) =>
+              Text(""),
+        ),
+        TextFormField(
+          cursorColor: Theme.of(context).accentColor,
+          showCursor: true,
+          controller: _usernameController,
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.emailAddress,
+          onChanged: _handleChangeText,
+          decoration: InputDecoration(hintText: "@usuario"),
+          style: Theme.of(context).textTheme.bodyText1,
+          buildCounter: (context, {currentLength, isFocused, maxLength}) =>
+              Text(""),
+        ),
       ],
     );
   }
@@ -175,55 +156,37 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     return Column(
       children: [
         TextField(
-            cursorColor: Colors.black,
+            cursorColor: Theme.of(context).accentColor,
             showCursor: true,
             controller: _emailController,
             onChanged: _handleChangeText,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(width: .5),
-                    borderRadius: BorderRadius.circular(10)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: .8),
-                    borderRadius: BorderRadius.circular(10)),
-                hintText: "Email"),
+            decoration: InputDecoration(hintText: "Email"),
+            style: Theme.of(context).textTheme.bodyText1,
             buildCounter: (context, {currentLength, isFocused, maxLength}) =>
                 Text("")),
         TextField(
-          cursorColor: Colors.black,
+          cursorColor: Theme.of(context).accentColor,
           showCursor: true,
           obscureText: true,
           controller: _passwordController,
           onChanged: _handleChangeText,
           textInputAction: TextInputAction.next,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(width: .5),
-                  borderRadius: BorderRadius.circular(10)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: .8),
-                  borderRadius: BorderRadius.circular(10)),
-              hintText: "Senha"),
+          decoration: InputDecoration(hintText: "Senha"),
+          style: Theme.of(context).textTheme.bodyText1,
           buildCounter: (context, {currentLength, isFocused, maxLength}) =>
               Text("ex.: Senha@123"),
         ),
         TextField(
-          cursorColor: Colors.black,
+          cursorColor: Theme.of(context).accentColor,
           showCursor: true,
           obscureText: true,
           controller: _confirmController,
           onChanged: _handleChangeText,
           textInputAction: TextInputAction.next,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(width: .5),
-                  borderRadius: BorderRadius.circular(10)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: .8),
-                  borderRadius: BorderRadius.circular(10)),
-              hintText: "Confirmação de Senha"),
+          decoration: InputDecoration(hintText: "Confirmação de Senha"),
+          style: Theme.of(context).textTheme.bodyText1,
           buildCounter: (context, {currentLength, isFocused, maxLength}) =>
               Text("ex.: Senha@123"),
         ),
@@ -231,15 +194,28 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     );
   }
 
+  double percentFilled = 0;
+  File filePicture;
+
   _handleChangeText(String text) {
     setState(() {
+      double perStep = .15;
+      percentFilled = .04;
+      percentFilled += _emailController.text.contains("@") ? perStep : 0;
+      percentFilled += _passwordController.text.length > 5 ? perStep : 0;
+      percentFilled += _confirmController.text.length > 5 ? perStep : 0;
+      percentFilled += filePicture != null ? perStep : 0;
+      percentFilled += _usernameController.text.length >= 3 ? perStep : 0;
+      percentFilled += _displayNameController.text.length >= 3 ? perStep : 0;
+
       _allCorrect1 = _emailController.text.contains("@") &&
-          _passwordController.text.length > 3 &&
-          _confirmController.text.length > 3 &&
+          _passwordController.text.length > 5 &&
+          _confirmController.text.length > 5 &&
           _passwordController.text == _confirmController.text;
 
       if (authStore.authPage == AuthPages.signupData) {
-        _allCorrect2 = _usernameController.text.length > 3;
+        _allCorrect2 = _usernameController.text.length > 3 &&
+            _displayNameController.text.length > 3;
       }
     });
   }

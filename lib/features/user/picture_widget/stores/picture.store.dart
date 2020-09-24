@@ -1,13 +1,9 @@
 import 'dart:io';
 
-import 'package:Pruuu/features/auth/repository/auth.repository.dart';
-import 'package:Pruuu/features/auth/repository/picture.repository.dart';
 import 'package:Pruuu/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 
 part 'picture.store.g.dart';
 
@@ -40,17 +36,15 @@ abstract class _PictureStore with Store {
   @observable
   File filePicture;
 
-  final ImagePicker _picker = ImagePicker();
-
   @action
   Future<void> pickImage(ImageSource source, String uid) async {
     pictureState = PictureState.loading;
     try {
+      ImagePicker _picker = ImagePicker();
+
       PickedFile pickedFile = await _picker.getImage(source: source);
 
-      String dir = path.dirname(pickedFile.path);
-      String newPath = path.join(dir, '$uid.png');
-      filePicture = await File(pickedFile.path).copy(newPath);
+      filePicture = File(pickedFile.path);
 
       pictureState = PictureState.askforCrop;
     } catch (e) {
@@ -59,7 +53,7 @@ abstract class _PictureStore with Store {
   }
 
   @action
-  Future<void> uploadImage(String uid) async {
+  Future<void> uploadImage(String uid, {bool newUser = false}) async {
     pictureState = PictureState.uploading;
 
     StorageReference storage = _storage.ref().child("users/$uid.png");
@@ -70,7 +64,9 @@ abstract class _PictureStore with Store {
       await putFile.onComplete;
       if (putFile.isSuccessful) {
         bool userSyncronized = await authStore.fillUserInfo(
-            pictureUrl: await storage.getDownloadURL());
+          pictureUrl: await storage.getDownloadURL(),
+          newUser: newUser,
+        );
         pictureState =
             userSyncronized ? PictureState.uploaded : PictureState.uploading;
       } else if (putFile.isInProgress) {
@@ -84,7 +80,7 @@ abstract class _PictureStore with Store {
   }
 
   @action
-  Future<void> changeState() {
+  changeState() {
     pictureState = pictureState == PictureState.uploading
         ? PictureState.uploaded
         : PictureState.uploading;

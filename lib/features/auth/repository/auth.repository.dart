@@ -1,18 +1,23 @@
-import 'dart:io';
-
-import 'package:Pruuu/features/auth/repository/local_storage.dart';
 import 'package:Pruuu/main.dart';
+import 'package:Pruuu/models/user.model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
-  final _localStorage = new LocalStorage();
-  // final _pictureRepository = new PictureRepository();
+  final _firestore = Firestore.instance;
 
   Future<bool> get hasUser async => await getUser() != null;
 
   Future<FirebaseUser> getUser() async {
     return await _firebaseAuth.currentUser();
+  }
+
+  Future<User> getUserInfo() async {
+    FirebaseUser user = await getUser();
+    return User.fromMap(
+      await _firestore.collection('users').document(user.uid).get(),
+    );
   }
 
   Future<AuthResult> signIn(
@@ -35,18 +40,32 @@ class AuthRepository {
 
   Future signOut() async {
     await _firebaseAuth.signOut();
-    await _localStorage.deleteStorage("user");
   }
 
-  Future<bool> fillUserInfo({String displayName, String pictureUrl}) async {
+  Future<bool> fillUserInfo(
+      {String displayName,
+      String userName,
+      String pictureUrl,
+      bool newUser = false}) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
 
-    var userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName =
-        displayName == null ? user.displayName : displayName;
-    userUpdateInfo.photoUrl = pictureUrl == null ? user.photoUrl : pictureUrl;
+    authStore.userInfo.displayName =
+        displayName != null && displayName.isNotEmpty
+            ? displayName
+            : authStore.userInfo.displayName;
+    authStore.userInfo.userName = userName != null && userName.isNotEmpty
+        ? userName
+        : authStore.userInfo.userName;
+    authStore.userInfo.profilePicture =
+        pictureUrl != null && pictureUrl.isNotEmpty
+            ? pictureUrl
+            : authStore.userInfo.profilePicture;
+
     try {
-      await user.updateProfile(userUpdateInfo);
+      await _firestore
+          .collection('users')
+          .document(user.uid)
+          .setData(authStore.userInfo.toMap());
       return true;
     } catch (e) {
       return false;

@@ -37,11 +37,11 @@ dependencies:
   cloud_firestore: ^0.13.4+1
   firebase_messaging: ^6.0.13
   firebase_auth: ^0.16.0
-  percent_indicator: "^2.1.5"
   firebase_storage: 3.0.4
   image_cropper: 1.0.2
   image_picker: 0.6.7+10
   path_provider: ^1.6.16
+  percent_indicator: "^2.1.7+2"
 
 dev_dependencies:
   build_runner: ^1.7.2
@@ -62,7 +62,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/bannerAuth.png
+    - assets/images/bannerAuthLight.png
+    - assets/images/bannerAuthDark.png
     - assets/images/perfil-leo.png
   
 

@@ -24,6 +24,13 @@ class _PictureWidgetState extends State<PictureWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Theme.of(context).accentColor,
+          width: 1.5,
+        ),
+      ),
       child: Observer(
         builder: (_) {
           if (pictureStore.pictureState == PictureState.ready) {

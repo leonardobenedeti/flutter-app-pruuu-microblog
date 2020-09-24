@@ -54,6 +54,21 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  final _$userInfoAtom = Atom(name: '_AuthStore.userInfo');
+
+  @override
+  User get userInfo {
+    _$userInfoAtom.reportRead();
+    return super.userInfo;
+  }
+
+  @override
+  set userInfo(User value) {
+    _$userInfoAtom.reportWrite(value, super.userInfo, () {
+      super.userInfo = value;
+    });
+  }
+
   final _$fillUserInfoStateAtom = Atom(name: '_AuthStore.fillUserInfoState');
 
   @override
@@ -72,17 +87,30 @@ mixin _$AuthStore on _AuthStore, Store {
   final _$getUserAsyncAction = AsyncAction('_AuthStore.getUser');
 
   @override
-  Future<dynamic> getUser() {
-    return _$getUserAsyncAction.run(() => super.getUser());
+  Future<void> getUser({bool newUser = false}) {
+    return _$getUserAsyncAction.run(() => super.getUser(newUser: newUser));
+  }
+
+  final _$getUserInfoAsyncAction = AsyncAction('_AuthStore.getUserInfo');
+
+  @override
+  Future<void> getUserInfo() {
+    return _$getUserInfoAsyncAction.run(() => super.getUserInfo());
   }
 
   final _$fillUserInfoAsyncAction = AsyncAction('_AuthStore.fillUserInfo');
 
   @override
   Future<dynamic> fillUserInfo(
-      {String username, String pictureUrl, bool newUser = false}) {
+      {String username,
+      String pictureUrl,
+      String displayName,
+      bool newUser = false}) {
     return _$fillUserInfoAsyncAction.run(() => super.fillUserInfo(
-        username: username, pictureUrl: pictureUrl, newUser: newUser));
+        username: username,
+        pictureUrl: pictureUrl,
+        displayName: displayName,
+        newUser: newUser));
   }
 
   final _$doSignInAsyncAction = AsyncAction('_AuthStore.doSignIn');
@@ -158,6 +186,7 @@ mixin _$AuthStore on _AuthStore, Store {
 authPage: ${authPage},
 authState: ${authState},
 user: ${user},
+userInfo: ${userInfo},
 fillUserInfoState: ${fillUserInfoState}
     ''';
   }

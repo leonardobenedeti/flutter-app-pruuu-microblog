@@ -38,8 +38,8 @@ class HomeWidgetState extends State<HomePageTabs>
     return new Scaffold(
       appBar: new TabBar(
         isScrollable: true,
-        unselectedLabelColor: Colors.grey,
-        labelColor: Colors.black,
+        labelColor: Theme.of(context).textTheme.headline1.color,
+        unselectedLabelColor: Theme.of(context).textTheme.headline2.color,
         labelStyle: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,

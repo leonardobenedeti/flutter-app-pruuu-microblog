@@ -34,22 +34,11 @@ class _SignInWidgetState extends State<SignInWidget> {
               children: [
                 Text(
                   "Sign In",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline1,
                 ),
-                FlatButton(
-                  child: Text(
-                    "Criar conta",
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.bold),
-                  ),
+                PruuuButton(
+                  child: Text("Criar conta"),
                   onPressed: authStore.changePage,
-                  textColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
                 ),
               ],
             ),
@@ -57,35 +46,23 @@ class _SignInWidgetState extends State<SignInWidget> {
               height: 32,
             ),
             TextField(
-                cursorColor: Colors.black,
+                cursorColor: Theme.of(context).accentColor,
                 showCursor: true,
                 controller: _emailController,
                 onChanged: _handleChangeText,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(width: .5),
-                        borderRadius: BorderRadius.circular(10)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: .8),
-                        borderRadius: BorderRadius.circular(10)),
-                    hintText: "Email"),
+                decoration: InputDecoration(hintText: "Email"),
+                style: Theme.of(context).textTheme.bodyText1,
                 buildCounter: (context,
                         {currentLength, isFocused, maxLength}) =>
                     Text("")),
             TextField(
-              cursorColor: Colors.black,
+              cursorColor: Theme.of(context).accentColor,
               showCursor: true,
               obscureText: true,
               controller: _passwordController,
               onChanged: _handleChangeText,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(width: .5),
-                      borderRadius: BorderRadius.circular(10)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: .8),
-                      borderRadius: BorderRadius.circular(10)),
-                  hintText: "Senha"),
+              decoration: InputDecoration(hintText: "Senha"),
+              style: Theme.of(context).textTheme.bodyText1,
               buildCounter: (context, {currentLength, isFocused, maxLength}) =>
                   Text("ex.: Senha@123"),
             ),
@@ -118,7 +95,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   _handleChangeText(String text) {
     setState(() {
       _allCorrect = _emailController.text.contains("@") &&
-          _passwordController.text.length > 3;
+          _passwordController.text.length > 5;
     });
   }
 }

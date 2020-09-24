@@ -62,34 +62,39 @@ class _FeedPageState extends State<FeedPage> {
       return Stack(
         children: [
           Positioned(
-              child: Container(
-            height: constraints.maxHeight,
-            child: ListView.builder(
-                itemCount: feedStore.feed.length,
-                padding: EdgeInsets.only(bottom: 70),
-                itemBuilder: (context, position) {
-                  return _pruuu(feedStore.feed[position]);
-                }),
-          )),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              height: constraints.maxHeight,
+              child: ListView.builder(
+                  itemCount: feedStore.feed.length,
+                  padding: EdgeInsets.only(bottom: 70),
+                  itemBuilder: (context, position) {
+                    return _pruuu(feedStore.feed[position]);
+                  }),
+            ),
+          ),
           if (withReloadButton) ...[
             Align(
                 alignment: Alignment.topCenter,
                 child: MaterialButton(
+                  color: Theme.of(context).accentColor,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.arrow_upward,
                         size: 14,
+                        color: Theme.of(context).textTheme.bodyText2.color,
                       ),
                       SizedBox(
                         width: 8,
                       ),
-                      Text("Novos pruuus"),
+                      Text(
+                        "Novos pruuus",
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
                     ],
                   ),
-                  color: Colors.black,
-                  textColor: Colors.white,
                   onPressed: feedStore.fetchFeed,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
@@ -135,26 +140,17 @@ class _FeedPageState extends State<FeedPage> {
                             children: [
                               Text(
                                 pruuu.displayName,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context).textTheme.headline3,
                               ),
                               Text(
                                 pruuu.authorUsername,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                ),
+                                style: Theme.of(context).textTheme.headline4,
                               ),
                             ],
                           ),
                           Text(
                             timeStamp,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                            ),
+                            style: Theme.of(context).textTheme.headline4,
                           ),
                         ],
                       ),
@@ -162,7 +158,11 @@ class _FeedPageState extends State<FeedPage> {
                         margin: BubbleEdges.only(top: 4),
                         alignment: Alignment.topLeft,
                         nip: BubbleNip.leftTop,
-                        child: Text(pruuu.content),
+                        color: Theme.of(context).cardColor,
+                        child: Text(
+                          pruuu.content,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                     ],
                   ),
@@ -172,15 +172,6 @@ class _FeedPageState extends State<FeedPage> {
           ),
         );
       },
-    );
-  }
-
-  Widget _divider() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      height: 1,
-      width: 1,
-      color: Colors.black54,
     );
   }
 }

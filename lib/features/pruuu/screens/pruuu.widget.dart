@@ -53,27 +53,48 @@ class _PruuuState extends State<PruuuWidget> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: TextField(
               autofocus: true,
-              cursorColor: Colors.black,
+              cursorColor: Theme.of(context).accentColor,
               showCursor: true,
               maxLength: _maxLengthField,
               minLines: 8,
               maxLines: 8,
+              style: Theme.of(context).textTheme.bodyText1,
               onChanged: _handleChangeText,
               decoration: InputDecoration(
                   border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
                   hintText: "What's your pruuu for today?"),
               buildCounter: (context, {currentLength, isFocused, maxLength}) =>
                   Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  if (currentLength > _maxLengthPruuu) ...[
+                    Container(
+                      margin: EdgeInsets.only(right: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Theme.of(context).accentColor),
+                      child: Text(
+                        "$currentLength ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Theme.of(context).errorColor,
+                        ),
+                      ),
+                    )
+                  ] else ...[
+                    Text(
+                      "$currentLength ",
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                  ],
                   Text(
-                    "$currentLength ",
-                    style: TextStyle(
-                        color: currentLength > _maxLengthPruuu
-                            ? Colors.red
-                            : Colors.black),
-                  ),
-                  Text("/ $_maxLengthPruuu")
+                    "/ $_maxLengthPruuu",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )
                 ],
               ),
             ),
@@ -99,13 +120,11 @@ class _PruuuState extends State<PruuuWidget> {
       }
       return PruuuButton(
         child: pruuuItStore.pruuuItState == PruuuItState.pruuublished
-            ? Icon(
-                Icons.check,
-                color: Colors.white,
-              )
+            ? Icon(Icons.check)
             : Text("Pruuu It"),
         loading: pruuuItStore.pruuuItState == PruuuItState.loading,
-        onPressed: (_currentPruuu.length) <= _maxLengthPruuu
+        onPressed: (_currentPruuu.length <= _maxLengthPruuu &&
+                _currentPruuu.length > 0)
             ? () => _pruuuIt(context, _currentPruuu, widget.user)
             : null,
       );
@@ -115,7 +134,6 @@ class _PruuuState extends State<PruuuWidget> {
   _pruuuIt(BuildContext context, String content, FirebaseUser user) {
     var pruuu = new Pruuu();
     pruuu.authorUID = user.uid;
-    pruuu.authorUsername = user.displayName;
     pruuu.timestamp = Timestamp.now();
     pruuu.content = content;
     pruuuItStore.pruuublish(pruuu);

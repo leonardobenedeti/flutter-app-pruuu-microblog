@@ -54,12 +54,28 @@ mixin _$MainStore on _MainStore, Store {
     });
   }
 
+  final _$themeStoreAtom = Atom(name: '_MainStore.themeStore');
+
+  @override
+  ThemeStore get themeStore {
+    _$themeStoreAtom.reportRead();
+    return super.themeStore;
+  }
+
+  @override
+  set themeStore(ThemeStore value) {
+    _$themeStoreAtom.reportWrite(value, super.themeStore, () {
+      super.themeStore = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 authStore: ${authStore},
 feedStore: ${feedStore},
-pictureStore: ${pictureStore}
+pictureStore: ${pictureStore},
+themeStore: ${themeStore}
     ''';
   }
 }

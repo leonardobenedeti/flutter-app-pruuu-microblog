@@ -71,15 +71,16 @@ mixin _$PictureStore on _PictureStore, Store {
   final _$uploadImageAsyncAction = AsyncAction('_PictureStore.uploadImage');
 
   @override
-  Future<void> uploadImage(String uid) {
-    return _$uploadImageAsyncAction.run(() => super.uploadImage(uid));
+  Future<void> uploadImage(String uid, {bool newUser = false}) {
+    return _$uploadImageAsyncAction
+        .run(() => super.uploadImage(uid, newUser: newUser));
   }
 
   final _$_PictureStoreActionController =
       ActionController(name: '_PictureStore');
 
   @override
-  Future<void> changeState() {
+  dynamic changeState() {
     final _$actionInfo = _$_PictureStoreActionController.startAction(
         name: '_PictureStore.changeState');
     try {

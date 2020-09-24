@@ -107,26 +107,18 @@ class _TrendingPageState extends State<TrendingPage> {
               children: [
                 Text(
                   trending.hashtag,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                  style: Theme.of(context).textTheme.headline3,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    trending.description,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.black),
-                  ),
+                  child: Text(trending.description,
+                      style: Theme.of(context).textTheme.headline4),
                 ),
                 if (!last) ...[
                   Container(
                     margin: EdgeInsets.only(top: 16),
                     height: .5,
-                    color: Colors.black,
+                    color: Theme.of(context).accentColor,
                   )
                 ]
               ],

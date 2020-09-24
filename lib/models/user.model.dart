@@ -5,6 +5,7 @@ class User extends BaseModel {
   String _documentId;
   String userName;
   String displayName;
+  String profilePicture;
 
   User();
 
@@ -16,6 +17,7 @@ class User extends BaseModel {
     var map = new Map<String, dynamic>();
     map['userName'] = this.userName;
     map['displayName'] = this.displayName;
+    map['profilePicture'] = this.profilePicture;
     return map;
   }
 
@@ -23,5 +25,6 @@ class User extends BaseModel {
     _documentId = documentSnapshot.documentID;
     this.userName = documentSnapshot.data['userName'];
     this.displayName = documentSnapshot.data['displayName'];
+    this.profilePicture = documentSnapshot.data['profilePicture'];
   }
 }

@@ -2,6 +2,7 @@ import 'package:Pruuu/features/auth/screens/signin.page.dart';
 import 'package:Pruuu/features/auth/screens/signup.page.dart';
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/main.store.dart';
+import 'package:Pruuu/themes/theme.store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -13,7 +14,16 @@ class AuthPage extends StatefulWidget {
 }
 
 class AuthPageState extends State<AuthPage> {
-  AuthStore authStore = MainStore().authStore;
+  MainStore mainStore = MainStore();
+  AuthStore authStore;
+  ThemeStore themeStore;
+
+  @override
+  void initState() {
+    authStore = mainStore.authStore;
+    themeStore = mainStore.themeStore;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +39,7 @@ class AuthPageState extends State<AuthPage> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * .3,
                 child: Image.asset(
-                  "assets/images/bannerAuth.png",
+                  "assets/images/bannerAuth${themeStore.themeString}.png",
                   fit: BoxFit.cover,
                 ),
               ),
