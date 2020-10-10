@@ -7,6 +7,7 @@ import 'package:Pruuu/features/user/user.widget.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/user.model.dart';
 import 'package:Pruuu/themes/theme.store.dart';
+import 'package:Pruuu/widgets/bottomSheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -49,18 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _openBottomSheet(Widget child) {
-    showModalBottomSheet(
+    PruuuBottomSheet(
+      child: child,
       context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (context) {
-        return child;
-      },
-    );
+    ).show();
   }
 
   Widget _pruuuFAB(FirebaseUser user) {

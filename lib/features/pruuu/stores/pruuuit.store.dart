@@ -23,6 +23,16 @@ abstract class _PruuuItStore with Store {
     }
     return pruuuItState;
   }
+
+  @action
+  Future<bool> removePruuu(Pruuu pruuu) async {
+    try {
+      await PruuuRepository().removePruuu(pruuu);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
 
 enum PruuuItState { initial, loading, pruuublished, error }

@@ -11,4 +11,11 @@ class PruuuRepository {
         await _firestoreInstance.collection('feed').add(pruuu.toMap());
     return documentReference != null;
   }
+
+  Future<void> removePruuu(Pruuu pruuu) async {
+    await _firestoreInstance
+        .collection('feed')
+        .document(pruuu.documentId())
+        .delete();
+  }
 }

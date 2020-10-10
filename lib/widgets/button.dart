@@ -7,17 +7,20 @@ class PruuuButton extends StatelessWidget {
   Function onPressed;
   bool loading;
   ButtonType buttonType;
+  bool fullButton;
 
-  PruuuButton(
-      {@required this.child,
-      @required this.onPressed,
-      this.loading = false,
-      this.buttonType = ButtonType.primary});
+  PruuuButton({
+    @required this.child,
+    @required this.onPressed,
+    this.loading = false,
+    this.buttonType = ButtonType.primary,
+    this.fullButton = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      child: loading ? _loading(context) : child,
+      child: _fullWrap(context, loading ? _loading(context) : child),
       onPressed: onPressed,
       color: buttonType.getColor(context),
       textColor: buttonType.getTextColor(context),
@@ -35,6 +38,13 @@ class PruuuButton extends StatelessWidget {
               new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
         ),
       ),
+    );
+  }
+
+  Widget _fullWrap(BuildContext context, Widget child) {
+    return Container(
+      width: fullButton ? MediaQuery.of(context).size.width * .8 : null,
+      child: Center(child: child),
     );
   }
 }
