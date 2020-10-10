@@ -42,10 +42,15 @@ class PruuuButton extends StatelessWidget {
   }
 
   Widget _fullWrap(BuildContext context, Widget child) {
-    return Container(
-      width: fullButton ? MediaQuery.of(context).size.width * .8 : null,
-      child: Center(child: child),
-    );
+    return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: fullButton ? MediaQuery.of(context).size.width * .8 : null,
+            child: Center(child: child),
+          ),
+        ]);
   }
 }
 

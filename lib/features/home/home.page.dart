@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
     PruuuBottomSheet(
       child: child,
       context: context,
+      fullscreenDialog: true,
     ).show();
   }
 

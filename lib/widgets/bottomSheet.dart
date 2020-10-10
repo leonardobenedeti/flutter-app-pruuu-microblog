@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 class PruuuBottomSheet extends StatelessWidget {
   BuildContext context;
   Widget child;
+  bool fullscreenDialog;
 
-  PruuuBottomSheet({
-    @required this.context,
-    @required this.child,
-  });
+  PruuuBottomSheet(
+      {@required this.context,
+      @required this.child,
+      this.fullscreenDialog = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class PruuuBottomSheet extends StatelessWidget {
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
+            top: Radius.circular(fullscreenDialog ? 0 : 20),
           ),
         ),
         builder: build);

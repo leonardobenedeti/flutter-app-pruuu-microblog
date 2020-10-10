@@ -103,6 +103,7 @@ class _UserWidgetState extends State<UserWidget> {
                                   height: 8,
                                 ),
                                 PruuuButton(
+                                  fullButton: false,
                                   child: Text("Acessar repo"),
                                   buttonType: ButtonType.primary,
                                   onPressed: () {},
@@ -116,21 +117,25 @@ class _UserWidgetState extends State<UserWidget> {
                   ],
                 ),
               ),
-              PruuuButton(
-                child: Text(
-                  "Sair do app",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
+              Positioned(
+                bottom: 10,
+                child: PruuuButton(
+                  fullButton: false,
+                  child: Text(
+                    "Sair do app",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
+                  onPressed: () {
+                    Timer(Duration(milliseconds: 300), () {
+                      Navigator.pop(context);
+                    });
+                    authStore.doSignOut();
+                  },
+                  buttonType: ButtonType.danger,
                 ),
-                onPressed: () {
-                  Timer(Duration(milliseconds: 300), () {
-                    Navigator.pop(context);
-                  });
-                  authStore.doSignOut();
-                },
-                buttonType: ButtonType.danger,
               )
             ],
           ),
@@ -264,6 +269,7 @@ class _UserWidgetState extends State<UserWidget> {
           Observer(builder: (_) {
             return PruuuButton(
               child: Text("Salvar"),
+              fullButton: false,
               loading: authStore.fillUserInfoState == FillUserInfoState.loading,
               onPressed: _allCorrect
                   ? () => authStore.fillUserInfo(
