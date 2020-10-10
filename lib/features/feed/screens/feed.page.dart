@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Pruuu/features/feed/stores/feed.store.dart';
+import 'package:Pruuu/features/pruuu/stores/pruuuit.store.dart';
 import 'package:Pruuu/features/user/picture_widget/widget/picture.widget.dart';
 import 'package:Pruuu/main.dart';
 import 'package:Pruuu/main.store.dart';
@@ -8,6 +9,7 @@ import 'package:Pruuu/models/pruuu.model.dart';
 import 'package:Pruuu/widgets/bottomSheet.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:bubble/bubble.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +21,7 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   FeedStore feedStore = MainStore().feedStore;
+  PruuuItStore pruuuItStore = PruuuItStore();
 
   List<Pruuu> feed = [];
 
@@ -122,14 +125,23 @@ class _FeedPageState extends State<FeedPage> {
       child: new Wrap(
         alignment: WrapAlignment.center,
         children: <Widget>[
-          PruuuButton(
-            child: Text("Remove pruuu"),
-            buttonType: ButtonType.danger,
-            onPressed: () {
-              feedStore.removePruuuFromFeed(pruuu);
-              Timer(Duration(milliseconds: 500), () => Navigator.pop(context));
-            },
-          ),
+          if (pruuu.authorUID == authStore.user.uid) ...[
+            PruuuButton(
+              child: Text("Remove pruuu"),
+              buttonType: ButtonType.danger,
+              onPressed: () {
+                feedStore.removePruuuFromFeed(pruuu);
+                Timer(
+                    Duration(milliseconds: 500), () => Navigator.pop(context));
+              },
+            ),
+          ] else ...[
+            PruuuButton(
+              child: Text("Re-Pruuu It"),
+              buttonType: ButtonType.primary,
+              onPressed: () => _repruuuit(pruuu),
+            ),
+          ],
           PruuuButton(
             child: Text("cancel"),
             buttonType: ButtonType.clear,
@@ -138,6 +150,20 @@ class _FeedPageState extends State<FeedPage> {
         ],
       ),
     );
+  }
+
+  void _repruuuit(Pruuu pruuu) {
+    var newPruuu = Pruuu();
+    newPruuu.content = "RP: ${pruuu.authorUsername}\n${pruuu.content}";
+    newPruuu.authorUID = authStore.user.uid;
+    newPruuu.timestamp = Timestamp.now();
+
+    pruuuItStore.pruuublish(newPruuu);
+
+    Timer(Duration(milliseconds: 300), () {
+      Navigator.pop(context);
+      feedStore.needRefresh();
+    });
   }
 
   Widget _pruuu(Pruuu pruuu) {
@@ -187,20 +213,18 @@ class _FeedPageState extends State<FeedPage> {
                               timeStamp,
                               style: Theme.of(context).textTheme.headline4,
                             ),
-                            if (pruuu.authorUID == authStore.user.uid) ...[
-                              SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: Material(
-                                  child: InkWell(
-                                    child: Center(
-                                      child: Icon(Icons.keyboard_arrow_down),
-                                    ),
-                                    onTap: () => showSettingsPruuu(pruuu),
+                            SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Material(
+                                child: InkWell(
+                                  child: Center(
+                                    child: Icon(Icons.keyboard_arrow_down),
                                   ),
+                                  onTap: () => showSettingsPruuu(pruuu),
                                 ),
-                              )
-                            ]
+                              ),
+                            )
                           ],
                         ),
                       ],
