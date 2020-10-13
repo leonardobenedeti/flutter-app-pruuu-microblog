@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 
 part 'theme.store.g.dart';
@@ -26,6 +27,15 @@ abstract class _ThemeStore with Store {
   void changeCurrentTheme() {
     currentThemeType =
         currentThemeType == ThemeType.light ? ThemeType.dark : ThemeType.light;
+    changeStatusBar();
+  }
+
+  @action
+  void changeStatusBar() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarBrightness: currentThemeType == ThemeType.light
+            ? Brightness.light
+            : Brightness.dark));
   }
 
   final ThemeData _lightTheme = ThemeData.light().copyWith(

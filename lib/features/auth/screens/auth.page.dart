@@ -28,40 +28,42 @@ class AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * .3,
-                child: Image.asset(
-                  "assets/images/bannerAuth${themeStore.themeString}.png",
-                  fit: BoxFit.cover,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * .3,
+                  child: Image.asset(
+                    "assets/images/bannerAuth${themeStore.themeString}.png",
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Container(
-                child: Observer(
-                  builder: (_) {
-                    return new AnimatedCrossFade(
-                      crossFadeState: authStore.authPage == AuthPages.signin
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      duration: const Duration(milliseconds: 500),
-                      firstCurve: Curves.fastOutSlowIn,
-                      firstChild: SignInWidget(),
-                      secondChild: SignUpWidget(
-                        alreadySigned:
-                            authStore.authPage == AuthPages.signupData,
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
+                Container(
+                  child: Observer(
+                    builder: (_) {
+                      return new AnimatedCrossFade(
+                        crossFadeState: authStore.authPage == AuthPages.signin
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 500),
+                        firstCurve: Curves.fastOutSlowIn,
+                        firstChild: SignInWidget(),
+                        secondChild: SignUpWidget(
+                          alreadySigned:
+                              authStore.authPage == AuthPages.signupData,
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -59,6 +59,17 @@ mixin _$ThemeStore on _ThemeStore, Store {
   }
 
   @override
+  void changeStatusBar() {
+    final _$actionInfo = _$_ThemeStoreActionController.startAction(
+        name: '_ThemeStore.changeStatusBar');
+    try {
+      return super.changeStatusBar();
+    } finally {
+      _$_ThemeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentThemeType: ${currentThemeType},

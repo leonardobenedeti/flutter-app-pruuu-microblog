@@ -18,6 +18,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    themeStore.changeStatusBar();
     return Observer(
       builder: (context) => MaterialApp(
           title: 'Flutter Demo',
