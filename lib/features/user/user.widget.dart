@@ -102,12 +102,6 @@ class _UserWidgetState extends State<UserWidget> {
                                 SizedBox(
                                   height: 8,
                                 ),
-                                PruuuButton(
-                                  fullButton: false,
-                                  child: Text("Acessar repo"),
-                                  buttonType: ButtonType.primary,
-                                  onPressed: () {},
-                                )
                               ],
                             ),
                           ),
@@ -117,25 +111,25 @@ class _UserWidgetState extends State<UserWidget> {
                   ],
                 ),
               ),
-              Positioned(
-                bottom: 10,
-                child: PruuuButton(
-                  fullButton: false,
-                  child: Text(
-                    "Sair do app",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ),
+              SizedBox(
+                height: 32,
+              ),
+              PruuuButton(
+                fullButton: false,
+                child: Text(
+                  "Sair do app",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
                   ),
-                  onPressed: () {
-                    Timer(Duration(milliseconds: 300), () {
-                      Navigator.pop(context);
-                    });
-                    authStore.doSignOut();
-                  },
-                  buttonType: ButtonType.danger,
                 ),
+                onPressed: () {
+                  Timer(Duration(milliseconds: 300), () {
+                    Navigator.pop(context);
+                  });
+                  authStore.doSignOut();
+                },
+                buttonType: ButtonType.danger,
               )
             ],
           ),
@@ -162,6 +156,7 @@ class _UserWidgetState extends State<UserWidget> {
   }
 
   Widget _build(BuildContext context) {
+    final sizeChild = MediaQuery.of(context).size.width * .85;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Column(
@@ -199,8 +194,8 @@ class _UserWidgetState extends State<UserWidget> {
                     alignment: Alignment.center,
                     duration: const Duration(milliseconds: 500),
                     firstCurve: Curves.fastOutSlowIn,
-                    firstChild: _firstChild(),
-                    secondChild: _secondChild(),
+                    firstChild: _firstChild(sizeChild),
+                    secondChild: _secondChild(sizeChild),
                   ),
                 ),
               ),
@@ -211,12 +206,12 @@ class _UserWidgetState extends State<UserWidget> {
     );
   }
 
-  _firstChild() {
+  _firstChild(double maxSize) {
     return GestureDetector(
       onTap: authStore.openTextField,
       child: Container(
         height: 50,
-        width: double.infinity,
+        width: maxSize,
         color: Colors.transparent,
         alignment: Alignment.center,
         child: Column(
@@ -238,14 +233,14 @@ class _UserWidgetState extends State<UserWidget> {
 
   TextEditingController _nameController = TextEditingController();
 
-  _secondChild() {
+  _secondChild(double maxSize) {
     return Container(
-      width: 400,
+      width: maxSize,
       height: 50,
       child: Row(
         children: [
           SizedBox(
-            width: 250,
+            width: maxSize * .65,
             child: TextField(
               cursorColor: Theme.of(context).accentColor,
               showCursor: true,
@@ -266,17 +261,26 @@ class _UserWidgetState extends State<UserWidget> {
               ),
             ),
           ),
+          SizedBox(
+            width: maxSize * .05,
+          ),
           Observer(builder: (_) {
-            return PruuuButton(
-              child: Text("Salvar"),
-              fullButton: false,
-              loading: authStore.fillUserInfoState == FillUserInfoState.loading,
-              onPressed: _allCorrect
-                  ? () => authStore.fillUserInfo(
-                        displayName: _nameController.text,
-                        newUser: false,
-                      )
-                  : null,
+            return Center(
+              child: SizedBox(
+                width: maxSize * .25,
+                child: PruuuButton(
+                  child: Text("Salvar"),
+                  fullButton: false,
+                  loading:
+                      authStore.fillUserInfoState == FillUserInfoState.loading,
+                  onPressed: _allCorrect
+                      ? () => authStore.fillUserInfo(
+                            displayName: _nameController.text,
+                            newUser: false,
+                          )
+                      : null,
+                ),
+              ),
             );
           }),
         ],

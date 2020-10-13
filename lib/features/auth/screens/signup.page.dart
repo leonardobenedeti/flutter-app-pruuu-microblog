@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/features/user/upload_picture_widget/upload_picture.widget.dart';
 import 'package:Pruuu/main.store.dart';
+import 'package:Pruuu/utils/validators/string_validator.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -51,6 +52,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 PruuuButton(
+                  fullButton: false,
                   child: Text("Já tenho uma conta"),
                   onPressed: authStore.changePage,
                 ),
@@ -134,7 +136,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           decoration: InputDecoration(hintText: "Como podemos te chamar ?"),
           style: Theme.of(context).textTheme.bodyText1,
           buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-              Text(""),
+              Text(
+            "ex.: Tiozinho da praça",
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
         ),
         TextFormField(
           cursorColor: Theme.of(context).accentColor,
@@ -146,7 +151,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           decoration: InputDecoration(hintText: "@usuario"),
           style: Theme.of(context).textTheme.bodyText1,
           buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-              Text(""),
+              Text(
+            "ex.: @tiozinho",
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
         ),
       ],
     );
@@ -155,17 +163,31 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   Widget _contentFirstStep() {
     return Column(
       children: [
-        TextField(
-            cursorColor: Theme.of(context).accentColor,
-            showCursor: true,
-            controller: _emailController,
-            onChanged: _handleChangeText,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(hintText: "Email"),
-            style: Theme.of(context).textTheme.bodyText1,
-            buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-                Text("")),
+        TextFormField(
+          cursorColor: Theme.of(context).accentColor,
+          showCursor: true,
+          controller: _emailController,
+          onChanged: _handleChangeText,
+          textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(hintText: "Email"),
+          style: Theme.of(context).textTheme.bodyText1,
+          buildCounter: (context, {currentLength, isFocused, maxLength}) {
+            bool valid = _emailController.text.isValidEmail() ||
+                _emailController.text.isEmpty;
+            String text =
+                valid ? "ex.: user@email.com" : "Digite um email válido";
+            return Text(
+              text,
+              style: valid
+                  ? Theme.of(context).textTheme.bodyText1
+                  : TextStyle(color: Colors.red),
+            );
+          },
+        ),
+        SizedBox(
+          height: 16,
+        ),
         TextField(
           cursorColor: Theme.of(context).accentColor,
           showCursor: true,
@@ -175,8 +197,20 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(hintText: "Senha"),
           style: Theme.of(context).textTheme.bodyText1,
-          buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-              Text("ex.: Senha@123"),
+          buildCounter: (context, {currentLength, isFocused, maxLength}) {
+            bool valid = _passwordController.text.isValidPassword() ||
+                _passwordController.text.isEmpty;
+            String text = valid ? "ex.: Senha@123" : "Digite uma senha válida";
+            return Text(
+              text,
+              style: valid
+                  ? Theme.of(context).textTheme.bodyText1
+                  : TextStyle(color: Colors.red),
+            );
+          },
+        ),
+        SizedBox(
+          height: 16,
         ),
         TextField(
           cursorColor: Theme.of(context).accentColor,
@@ -187,8 +221,22 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(hintText: "Confirmação de Senha"),
           style: Theme.of(context).textTheme.bodyText1,
-          buildCounter: (context, {currentLength, isFocused, maxLength}) =>
-              Text("ex.: Senha@123"),
+          buildCounter: (context, {currentLength, isFocused, maxLength}) {
+            bool valid = (_confirmController.text.isValidPassword() &&
+                    _confirmController.text == _passwordController.text) ||
+                _confirmController.text.isEmpty;
+            String text = valid
+                ? "ex.: Senha@123"
+                : _confirmController.text != _passwordController.text
+                    ? "As senhas devem ser iguais"
+                    : "Digite uma senha válida";
+            return Text(
+              text,
+              style: valid
+                  ? Theme.of(context).textTheme.bodyText1
+                  : TextStyle(color: Colors.red),
+            );
+          },
         ),
       ],
     );
