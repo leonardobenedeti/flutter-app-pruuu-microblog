@@ -65,6 +65,8 @@ flutter:
     - assets/images/bannerAuthLight.png
     - assets/images/bannerAuthDark.png
     - assets/images/perfil-leo.png
+    - assets/images/empty_state.png
+    - assets/images/error_state.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

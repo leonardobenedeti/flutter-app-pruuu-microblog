@@ -41,18 +41,21 @@ class _FeedPageState extends State<FeedPage> {
       child: Observer(
         builder: (_) {
           switch (feedStore.feedState) {
-            case FeedStateNew.loading:
+            case FeedState.loading:
               return Center(
                 child: CircularProgressIndicator(),
               );
               break;
-            case FeedStateNew.error:
-              return Text("ERROR");
+            case FeedState.error:
+              return _emptyState(withError: true);
               break;
-            case FeedStateNew.ready:
+            case FeedState.empty:
+              return _emptyState();
+              break;
+            case FeedState.ready:
               return _build(context, false);
               break;
-            case FeedStateNew.reload:
+            case FeedState.reload:
               return _build(context, true);
               break;
             default:
@@ -68,19 +71,24 @@ class _FeedPageState extends State<FeedPage> {
   Widget _build(BuildContext context, bool withReloadButton) {
     return LayoutBuilder(builder: (context, constraints) {
       return Stack(
+        alignment: Alignment.topCenter,
         children: [
-          Positioned(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              height: constraints.maxHeight,
-              child: ListView.builder(
-                  itemCount: feedStore.feed.length,
-                  padding: EdgeInsets.only(bottom: 70),
-                  itemBuilder: (context, position) {
-                    return _pruuu(feedStore.feed[position]);
-                  }),
-            ),
-          ),
+          if (feedStore.feed.length > 0) ...[
+            Positioned(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                height: constraints.maxHeight,
+                child: ListView.builder(
+                    itemCount: feedStore.feed.length,
+                    padding: EdgeInsets.only(bottom: 70),
+                    itemBuilder: (context, position) {
+                      return _pruuu(feedStore.feed[position]);
+                    }),
+              ),
+            )
+          ] else ...[
+            _emptyState()
+          ],
           if (withReloadButton) ...[
             Align(
                 alignment: Alignment.topCenter,
@@ -246,6 +254,28 @@ class _FeedPageState extends State<FeedPage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _emptyState({bool withError = false}) {
+    var image = "assets/images/";
+    image += withError ? "error_state.png" : "empty_state.png";
+    double sizeState = withError ? .6 : .8;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          withError ? "Something is wrong" : "No Pruuus yet",
+          style: Theme.of(context).textTheme.headline1,
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * sizeState,
+          child: Image.asset(image),
+        ),
+      ],
     );
   }
 }

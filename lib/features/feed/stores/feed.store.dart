@@ -12,40 +12,40 @@ abstract class _FeedStore with Store {
   List<Pruuu> feed = [];
 
   @observable
-  FeedStateNew feedState = FeedStateNew.initial;
+  FeedState feedState = FeedState.initial;
 
   @action
-  Future<FeedStateNew> fetchFeed() async {
-    feedState = FeedStateNew.loading;
+  Future<FeedState> fetchFeed() async {
+    feedState = FeedState.loading;
     try {
       feed.clear();
       feed.addAll(await FeedRepository().fetchFeed());
-      feedState = FeedStateNew.ready;
+      feedState = feed.length > 0 ? FeedState.ready : FeedState.empty;
     } catch (e) {
-      feedState = FeedStateNew.error;
+      feedState = FeedState.error;
     }
     return feedState;
   }
 
   @action
   void needRefresh() {
-    feedState = FeedStateNew.reload;
+    feedState = FeedState.reload;
   }
 
   PruuuItStore pruuuStore = PruuuItStore();
 
   @action
-  Future<FeedStateNew> removePruuuFromFeed(Pruuu pruuu) async {
-    feedState = FeedStateNew.loading;
+  Future<FeedState> removePruuuFromFeed(Pruuu pruuu) async {
+    feedState = FeedState.loading;
     try {
       feed.remove(pruuu);
       pruuuStore.removePruuu(pruuu);
-      feedState = FeedStateNew.ready;
+      feedState = feed.length > 0 ? FeedState.ready : FeedState.empty;
     } catch (e) {
-      feedState = FeedStateNew.error;
+      feedState = FeedState.error;
     }
     return feedState;
   }
 }
 
-enum FeedStateNew { initial, loading, ready, reload, error }
+enum FeedState { initial, loading, ready, reload, error, empty }

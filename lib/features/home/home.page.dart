@@ -49,17 +49,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  _openBottomSheet(Widget child) {
+  _openBottomSheet(Widget child, bool fullscreenDialog) {
     PruuuBottomSheet(
       child: child,
       context: context,
-      fullscreenDialog: true,
+      fullscreenDialog: fullscreenDialog,
     ).show();
   }
 
   Widget _pruuuFAB(FirebaseUser user) {
     return FloatingActionButton(
-      onPressed: () => _openBottomSheet(PruuuWidget(user: user)),
+      onPressed: () => _openBottomSheet(PruuuWidget(user: user), false),
       child: Icon(
         Icons.add_comment,
         color: Theme.of(context).primaryColor,
@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       margin: EdgeInsets.fromLTRB(0, 4, 16, 0),
       child: GestureDetector(
-        onTap: () => _openBottomSheet(UserWidget()),
+        onTap: () => _openBottomSheet(UserWidget(), true),
         child: user.profilePicture != null
             ? ClipOval(
                 child: Image.network(

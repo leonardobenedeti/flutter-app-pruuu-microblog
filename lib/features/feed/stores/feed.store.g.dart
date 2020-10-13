@@ -27,13 +27,13 @@ mixin _$FeedStore on _FeedStore, Store {
   final _$feedStateAtom = Atom(name: '_FeedStore.feedState');
 
   @override
-  FeedStateNew get feedState {
+  FeedState get feedState {
     _$feedStateAtom.reportRead();
     return super.feedState;
   }
 
   @override
-  set feedState(FeedStateNew value) {
+  set feedState(FeedState value) {
     _$feedStateAtom.reportWrite(value, super.feedState, () {
       super.feedState = value;
     });
@@ -42,8 +42,17 @@ mixin _$FeedStore on _FeedStore, Store {
   final _$fetchFeedAsyncAction = AsyncAction('_FeedStore.fetchFeed');
 
   @override
-  Future<FeedStateNew> fetchFeed() {
+  Future<FeedState> fetchFeed() {
     return _$fetchFeedAsyncAction.run(() => super.fetchFeed());
+  }
+
+  final _$removePruuuFromFeedAsyncAction =
+      AsyncAction('_FeedStore.removePruuuFromFeed');
+
+  @override
+  Future<FeedState> removePruuuFromFeed(Pruuu pruuu) {
+    return _$removePruuuFromFeedAsyncAction
+        .run(() => super.removePruuuFromFeed(pruuu));
   }
 
   final _$_FeedStoreActionController = ActionController(name: '_FeedStore');

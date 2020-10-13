@@ -31,6 +31,13 @@ mixin _$PruuuItStore on _PruuuItStore, Store {
     return _$pruuublishAsyncAction.run(() => super.pruuublish(pruuu));
   }
 
+  final _$removePruuuAsyncAction = AsyncAction('_PruuuItStore.removePruuu');
+
+  @override
+  Future<bool> removePruuu(Pruuu pruuu) {
+    return _$removePruuuAsyncAction.run(() => super.removePruuu(pruuu));
+  }
+
   @override
   String toString() {
     return '''
