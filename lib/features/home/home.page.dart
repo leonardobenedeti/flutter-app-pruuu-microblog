@@ -28,23 +28,24 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: _wrapUserBloc(TypeUserBlocChild.pruuu),
-        body: Container(
-          margin: EdgeInsets.only(top: 16),
-          child: Stack(
-            alignment: AlignmentDirectional.topEnd,
-            children: [
-              HomePageTabs(
-                tabs: [
-                  new Tab(text: "Feed"),
-                  new Tab(text: "Trending"),
-                ],
-                childTabs: [
-                  FeedPage(),
-                  TrendingPage(),
-                ],
-              ),
-              _wrapUserBloc(TypeUserBlocChild.userArea)
-            ],
+        body: SafeArea(
+          child: Container(
+            child: Stack(
+              alignment: AlignmentDirectional.topEnd,
+              children: [
+                HomePageTabs(
+                  tabs: [
+                    new Tab(text: "Feed"),
+                    new Tab(text: "Trending"),
+                  ],
+                  childTabs: [
+                    FeedPage(),
+                    TrendingPage(),
+                  ],
+                ),
+                _wrapUserBloc(TypeUserBlocChild.userArea)
+              ],
+            ),
           ),
         ));
   }

@@ -26,10 +26,14 @@ Com isso criei uma interface simples, com apenas duas cores e com ícones de pom
 - [x] Sign in Widget / Sign up Widget
 - [x] Validações de inputs
 - [x] Inclusão de gerência de estado
-- [ ] Avaliar arquitetura
-- [ ] Error Widget
-- [ ] Ajeitar comportamentos de componentes funcionando
-
+- [x] Empty/Error Widget
+- [x] Ajeitar comportamentos de componentes funcionando
+- [x] Remover pruuu
+- [x] RePruuuIt 
+- [ ] Tratamento de erros, como: Login incorreto mesmo estando dentro do padrão de regex
+- [ ] Remover mock do trending
+- [ ] Dark theme = device settings + user choice
+- [ ] Pente fino
 
 ### Protótipo criado
 
