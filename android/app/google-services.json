@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "345672413530",
+    "firebase_url": "https://pruuu-214a1.firebaseio.com",
+    "project_id": "pruuu-214a1",
+    "storage_bucket": "pruuu-214a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345672413530:android:3532b3c2d9f1d18fd30363",
+        "android_client_info": {
+          "package_name": "br.com.leonardobenedeti.pruuu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345672413530-q0pu767e1ke700eok92hg9sshuvfo8kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY76aSp0ULosrv-H6_i3lUFWZTu0G4niw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345672413530-q0pu767e1ke700eok92hg9sshuvfo8kq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "345672413530-104h64jcabhpn1rdqorpiv9vgnphcva7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.leonardobenedeti.pruuu"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
