@@ -113,7 +113,6 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         PruuuButton(
-                          fullButton: false,
                           child: Column(
                             children: [
                               Icon(
@@ -127,7 +126,6 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                           buttonType: ButtonType.clear,
                         ),
                         PruuuButton(
-                          fullButton: false,
                           child: Column(
                             children: [
                               Icon(
@@ -169,7 +167,6 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         PruuuButton(
-                          fullButton: false,
                           child: Column(
                             children: [
                               Icon(
@@ -184,7 +181,6 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                           buttonType: ButtonType.clear,
                         ),
                         PruuuButton(
-                          fullButton: false,
                           child: Column(
                             children: [
                               Icon(

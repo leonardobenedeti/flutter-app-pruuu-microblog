@@ -119,7 +119,6 @@ class _PruuuState extends State<PruuuWidget> {
         });
       }
       return PruuuButton(
-        fullButton: false,
         child: pruuuItStore.pruuuItState == PruuuItState.pruuublished
             ? Icon(Icons.check)
             : Text("Pruuu It"),

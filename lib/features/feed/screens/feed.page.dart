@@ -6,7 +6,7 @@ import 'package:Pruuu/features/user/picture_widget/widget/picture.widget.dart';
 import 'package:Pruuu/main.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
-import 'package:Pruuu/widgets/bottomSheet.dart';
+import 'package:Pruuu/widgets/bottom_sheet.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -135,6 +135,7 @@ class _FeedPageState extends State<FeedPage> {
         children: <Widget>[
           if (pruuu.authorUID == authStore.user.uid) ...[
             PruuuButton(
+              fullButton: true,
               child: Text("Remove pruuu"),
               buttonType: ButtonType.danger,
               onPressed: () {
@@ -145,12 +146,14 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ] else ...[
             PruuuButton(
+              fullButton: true,
               child: Text("Re-Pruuu It"),
               buttonType: ButtonType.primary,
               onPressed: () => _repruuuit(pruuu),
             ),
           ],
           PruuuButton(
+            fullButton: true,
             child: Text("cancel"),
             buttonType: ButtonType.clear,
             onPressed: () => Navigator.pop(context),
@@ -178,7 +181,7 @@ class _FeedPageState extends State<FeedPage> {
     DateTime now = DateTime.now().subtract(Duration(days: 1));
     DateTime datePruuu = pruuu.timestamp.toDate();
     var format =
-        datePruuu.isAfter(now) ? DateFormat('HH:mm') : DateFormat('dd/MM/yy');
+        datePruuu.isAfter(now) ? DateFormat('HH:mm') : DateFormat('dd/MM/yyyy');
     String timeStamp = format.format(datePruuu);
 
     return LayoutBuilder(

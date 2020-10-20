@@ -14,18 +14,37 @@ class PruuuButton extends StatelessWidget {
     @required this.onPressed,
     this.loading = false,
     this.buttonType = ButtonType.primary,
-    this.fullButton = true,
+    this.fullButton = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      child: _fullWrap(context, loading ? _loading(context) : child),
-      onPressed: onPressed,
-      color: buttonType.getColor(context),
-      textColor: buttonType.getTextColor(context),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    );
+    switch (buttonType) {
+      case ButtonType.icon:
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: Material(
+            color: Colors.white10,
+            child: InkWell(
+              onTap: onPressed,
+              child: Container(
+                padding: const EdgeInsets.all(4.0),
+                child: Center(child: child),
+              ),
+            ),
+          ),
+        );
+        break;
+      default:
+        return FlatButton(
+          child: _fullWrap(context, loading ? _loading(context) : child),
+          onPressed: onPressed,
+          color: buttonType.getColor(context),
+          textColor: buttonType.getTextColor(context),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        );
+    }
   }
 
   Widget _loading(BuildContext context) {
@@ -54,7 +73,7 @@ class PruuuButton extends StatelessWidget {
   }
 }
 
-enum ButtonType { primary, clear, danger }
+enum ButtonType { primary, clear, danger, icon }
 
 extension ThemeForType on ButtonType {
   String get name => describeEnum(this);

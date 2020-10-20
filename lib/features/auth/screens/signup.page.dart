@@ -52,7 +52,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 PruuuButton(
-                  fullButton: false,
                   child: Text("Já tenho uma conta"),
                   onPressed: authStore.changePage,
                 ),
@@ -78,6 +77,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             ),
             Observer(
               builder: (_) => PruuuButton(
+                fullButton: true,
                 child: Container(
                   width: double.infinity,
                   child: Center(

@@ -38,7 +38,6 @@ class _SignInWidgetState extends State<SignInWidget> {
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 PruuuButton(
-                  fullButton: false,
                   child: Text("Criar conta"),
                   onPressed: authStore.changePage,
                 ),
@@ -99,6 +98,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 width: double.infinity,
                 child: Center(
                   child: PruuuButton(
+                    fullButton: true,
                     child: Text("Entrar"),
                     onPressed: _allCorrect
                         ? () => authStore.doSignIn(

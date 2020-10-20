@@ -13,11 +13,13 @@ class PruuuBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: child,
-    ));
+    return fullscreenDialog
+        ? child
+        : SafeArea(
+            child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: child,
+          ));
   }
 
   void show() {

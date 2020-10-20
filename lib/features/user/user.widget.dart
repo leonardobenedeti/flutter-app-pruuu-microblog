@@ -37,6 +37,7 @@ class _UserWidgetState extends State<UserWidget> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          margin: EdgeInsets.only(top: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
@@ -115,7 +116,6 @@ class _UserWidgetState extends State<UserWidget> {
                 height: 32,
               ),
               PruuuButton(
-                fullButton: false,
                 child: Text(
                   "Sair do app",
                   style: TextStyle(
@@ -158,7 +158,10 @@ class _UserWidgetState extends State<UserWidget> {
   Widget _build(BuildContext context) {
     final sizeChild = MediaQuery.of(context).size.width * .85;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: EdgeInsets.symmetric(
+        vertical: 16,
+        horizontal: 16,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -172,7 +175,9 @@ class _UserWidgetState extends State<UserWidget> {
                     "Usuário conectado",
                     style: Theme.of(context).textTheme.headline1,
                   ),
-                  CloseButton(
+                  PruuuButton(
+                    buttonType: ButtonType.icon,
+                    child: Icon(Icons.close),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -270,7 +275,6 @@ class _UserWidgetState extends State<UserWidget> {
                 width: maxSize * .25,
                 child: PruuuButton(
                   child: Text("Salvar"),
-                  fullButton: false,
                   loading:
                       authStore.fillUserInfoState == FillUserInfoState.loading,
                   onPressed: _allCorrect
