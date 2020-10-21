@@ -13,7 +13,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 class SignUpWidget extends StatefulWidget {
   bool alreadySigned;
 
-  SignUpWidget({
+  final _scaffoldKey;
+
+  SignUpWidget(
+    this._scaffoldKey, {
     this.alreadySigned = false,
   });
 
@@ -102,8 +105,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     if (_allCorrect1 &&
         !_allCorrect2 &&
         authStore.authPage != AuthPages.signupData) {
-      return () =>
-          authStore.doSignUp(_emailController.text, _passwordController.text);
+      return () => authStore.doSignUp(
+          _emailController.text, _passwordController.text, widget._scaffoldKey);
     }
     if (_allCorrect1 && _allCorrect2) {
       return () => authStore.fillUserInfo(

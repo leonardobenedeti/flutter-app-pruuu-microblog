@@ -16,6 +16,7 @@ class UserWidget extends StatefulWidget {
 }
 
 class _UserWidgetState extends State<UserWidget> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   MainStore mainStore = MainStore();
   AuthStore authStore;
   PictureStore pictureStore;
@@ -35,6 +36,7 @@ class _UserWidgetState extends State<UserWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.only(top: 16),
@@ -127,7 +129,7 @@ class _UserWidgetState extends State<UserWidget> {
                   Timer(Duration(milliseconds: 300), () {
                     Navigator.pop(context);
                   });
-                  authStore.doSignOut();
+                  authStore.doSignOut(_scaffoldKey);
                 },
                 buttonType: ButtonType.danger,
               )

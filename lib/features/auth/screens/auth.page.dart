@@ -14,6 +14,7 @@ class AuthPage extends StatefulWidget {
 }
 
 class AuthPageState extends State<AuthPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   MainStore mainStore = MainStore();
   AuthStore authStore;
   ThemeStore themeStore;
@@ -28,6 +29,7 @@ class AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
@@ -53,8 +55,9 @@ class AuthPageState extends State<AuthPage> {
                             : CrossFadeState.showSecond,
                         duration: const Duration(milliseconds: 500),
                         firstCurve: Curves.fastOutSlowIn,
-                        firstChild: SignInWidget(),
+                        firstChild: SignInWidget(_scaffoldKey),
                         secondChild: SignUpWidget(
+                          _scaffoldKey,
                           alreadySigned:
                               authStore.authPage == AuthPages.signupData,
                         ),

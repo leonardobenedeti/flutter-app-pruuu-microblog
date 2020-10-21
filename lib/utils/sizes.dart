@@ -18,6 +18,8 @@ extension PruuuSizes on PruuuSize {
       case PruuuSize.l:
         return 32.0;
         break;
+      default:
+        return 0;
     }
   }
 }

@@ -116,22 +116,26 @@ mixin _$AuthStore on _AuthStore, Store {
   final _$doSignInAsyncAction = AsyncAction('_AuthStore.doSignIn');
 
   @override
-  Future<dynamic> doSignIn(String email, String password) {
-    return _$doSignInAsyncAction.run(() => super.doSignIn(email, password));
+  Future<dynamic> doSignIn(
+      String email, String password, dynamic _scaffoldKey) {
+    return _$doSignInAsyncAction
+        .run(() => super.doSignIn(email, password, _scaffoldKey));
   }
 
   final _$doSignUpAsyncAction = AsyncAction('_AuthStore.doSignUp');
 
   @override
-  Future<dynamic> doSignUp(String email, String password) {
-    return _$doSignUpAsyncAction.run(() => super.doSignUp(email, password));
+  Future<dynamic> doSignUp(
+      String email, String password, dynamic _scaffoldKey) {
+    return _$doSignUpAsyncAction
+        .run(() => super.doSignUp(email, password, _scaffoldKey));
   }
 
   final _$doSignOutAsyncAction = AsyncAction('_AuthStore.doSignOut');
 
   @override
-  Future<dynamic> doSignOut() {
-    return _$doSignOutAsyncAction.run(() => super.doSignOut());
+  Future<dynamic> doSignOut(dynamic _scaffoldKey) {
+    return _$doSignOutAsyncAction.run(() => super.doSignOut(_scaffoldKey));
   }
 
   final _$_AuthStoreActionController = ActionController(name: '_AuthStore');

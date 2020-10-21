@@ -7,6 +7,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 // ignore: must_be_immutable
 class SignInWidget extends StatefulWidget {
+  final _scaffoldKey;
+
+  SignInWidget(this._scaffoldKey);
+
   @override
   _SignInWidgetState createState() => _SignInWidgetState();
 }
@@ -101,10 +105,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                     fullButton: true,
                     child: Text("Entrar"),
                     onPressed: _allCorrect
-                        ? () => authStore.doSignIn(
-                              _emailController.text,
-                              _passwordController.text,
-                            )
+                        ? () => authStore.doSignIn(_emailController.text,
+                            _passwordController.text, widget._scaffoldKey)
                         : null,
                     loading: authStore.authState == AuthState.signing,
                   ),

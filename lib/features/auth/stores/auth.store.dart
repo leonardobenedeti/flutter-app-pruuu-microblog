@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:Pruuu/features/auth/repository/auth.repository.dart';
 import 'package:Pruuu/models/user.model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
+import 'package:Pruuu/utils/error_handler.dart';
 
 part 'auth.store.g.dart';
 
@@ -89,36 +92,44 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  Future doSignIn(String email, String password) async {
+  Future doSignIn(String email, String password, _scaffoldKey) async {
     try {
       authState = AuthState.signing;
       AuthResult authResult = await AuthRepository().signIn(email, password);
       await getUser();
       _handleUserResult(firebaseUser: authResult.user);
-    } catch (e) {
+    } on PlatformException catch (e) {
       authState = AuthState.signError;
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(e.code.getError().getMessage()),
+      ));
     }
   }
 
   @action
-  Future doSignUp(String email, String password) async {
+  Future doSignUp(String email, String password, _scaffoldKey) async {
     try {
       authState = AuthState.signing;
       AuthResult authResult = await AuthRepository().signUp(email, password);
       _handleUserResult(firebaseUser: authResult.user, newUser: true);
-    } catch (e) {
-      print(e);
+    } on PlatformException catch (e) {
       authState = AuthState.signError;
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(e.code.getError().getMessage()),
+      ));
     }
   }
 
   @action
-  Future doSignOut() async {
+  Future doSignOut(_scaffoldKey) async {
     try {
       await AuthRepository().signOut();
       _handleUserResult();
-    } catch (e) {
+    } on PlatformException catch (e) {
       authState = AuthState.signError;
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(e.code.getError().getMessage()),
+      ));
     }
   }
 
