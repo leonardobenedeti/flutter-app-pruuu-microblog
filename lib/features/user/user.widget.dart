@@ -4,9 +4,11 @@ import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/features/picture/stores/picture.store.dart';
 import 'package:Pruuu/features/picture/widgets/upload_picture.widget.dart';
 import 'package:Pruuu/main.store.dart';
+import 'package:Pruuu/remote_configs/remote_config.store.dart';
 import 'package:Pruuu/themes/theme.store.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:bubble/bubble.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -21,6 +23,7 @@ class _UserWidgetState extends State<UserWidget> {
   AuthStore authStore;
   PictureStore pictureStore;
   ThemeStore themeStore;
+  RemoteConfigStore remoteConfigStore;
 
   String textoDisclaimer =
       "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.";
@@ -30,6 +33,7 @@ class _UserWidgetState extends State<UserWidget> {
     authStore = mainStore.authStore;
     pictureStore = mainStore.pictureStore;
     themeStore = mainStore.themeStore;
+    remoteConfigStore = mainStore.remoteConfigStore;
     super.initState();
   }
 
@@ -237,76 +241,86 @@ class _UserWidgetState extends State<UserWidget> {
   }
 
   Widget _messageInfo() {
-    return Visibility(
-      visible: true,
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 50,
-              width: 50,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset("assets/images/perfil-leo.png"),
-              ),
-            ),
-            SizedBox(width: 10),
-            Container(
-              width: MediaQuery.of(context).size.width - 120,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Leonardo Benedeti",
-                    style: Theme.of(context).textTheme.headline3,
+    return FutureBuilder<RemoteConfig>(
+      future: remoteConfigStore.switchDisclaimer(),
+      builder: (BuildContext context, AsyncSnapshot<RemoteConfig> snapshot) {
+        return snapshot.hasData
+            ? Visibility(
+                visible: snapshot.data.getBool('disclaimer_switch'),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.asset("assets/images/perfil-leo.png"),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 120,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Leonardo Benedeti",
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            Bubble(
+                              margin: BubbleEdges.only(top: 10),
+                              alignment: Alignment.topLeft,
+                              nip: BubbleNip.leftTop,
+                              color: Theme.of(context).cardColor,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Disclaimer",
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
+                                    maxLines: 10,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    "Todo código do app permanecerá aberto e livre para todos.",
+                                    maxLines: 10,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Bubble(
-                    margin: BubbleEdges.only(top: 10),
-                    alignment: Alignment.topLeft,
-                    nip: BubbleNip.leftTop,
-                    color: Theme.of(context).cardColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Disclaimer",
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
-                          maxLines: 10,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "Todo código do app permanecerá aberto e livre para todos.",
-                          maxLines: 10,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+                ),
+              )
+            : Container();
+      },
     );
   }
 }

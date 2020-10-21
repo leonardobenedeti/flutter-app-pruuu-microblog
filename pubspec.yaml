@@ -38,6 +38,7 @@ dependencies:
   firebase_messaging: ^6.0.13
   firebase_auth: ^0.16.0
   firebase_storage: 3.0.4
+  firebase_remote_config:
   image_cropper: 1.0.2
   image_picker: 0.6.7+10
   path_provider: ^1.6.16

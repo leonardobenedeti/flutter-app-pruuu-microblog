@@ -69,13 +69,29 @@ mixin _$MainStore on _MainStore, Store {
     });
   }
 
+  final _$remoteConfigStoreAtom = Atom(name: '_MainStore.remoteConfigStore');
+
+  @override
+  RemoteConfigStore get remoteConfigStore {
+    _$remoteConfigStoreAtom.reportRead();
+    return super.remoteConfigStore;
+  }
+
+  @override
+  set remoteConfigStore(RemoteConfigStore value) {
+    _$remoteConfigStoreAtom.reportWrite(value, super.remoteConfigStore, () {
+      super.remoteConfigStore = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 authStore: ${authStore},
 feedStore: ${feedStore},
 pictureStore: ${pictureStore},
-themeStore: ${themeStore}
+themeStore: ${themeStore},
+remoteConfigStore: ${remoteConfigStore}
     ''';
   }
 }

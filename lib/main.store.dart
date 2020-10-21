@@ -1,6 +1,7 @@
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/features/feed/stores/feed.store.dart';
 import 'package:Pruuu/features/picture/stores/picture.store.dart';
+import 'package:Pruuu/remote_configs/remote_config.store.dart';
 import 'package:Pruuu/themes/theme.store.dart';
 import 'package:mobx/mobx.dart';
 
@@ -12,6 +13,7 @@ final _feedStore = FeedStore();
 final _authStore = AuthStore();
 final _pictureStore = PictureStore();
 final _themeStore = ThemeStore();
+final _remoteConfigStore = RemoteConfigStore();
 
 abstract class _MainStore with Store {
   @observable
@@ -25,4 +27,7 @@ abstract class _MainStore with Store {
 
   @observable
   ThemeStore themeStore = _themeStore;
+
+  @observable
+  RemoteConfigStore remoteConfigStore = _remoteConfigStore;
 }
