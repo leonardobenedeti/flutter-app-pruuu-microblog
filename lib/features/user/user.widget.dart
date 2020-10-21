@@ -44,77 +44,7 @@ class _UserWidgetState extends State<UserWidget> {
               children: [
                 _build(context),
                 ..._listSettings(),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.asset("assets/images/perfil-leo.png"),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 120,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Leonardo Benedeti",
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                            Bubble(
-                              margin: BubbleEdges.only(top: 10),
-                              alignment: Alignment.topLeft,
-                              nip: BubbleNip.leftTop,
-                              color: Theme.of(context).cardColor,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Disclaimer",
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
-                                    maxLines: 10,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: false,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    "Todo código do app permanecerá aberto e livre para todos.",
-                                    maxLines: 10,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: false,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                _messageInfo(),
                 SizedBox(
                   height: 32,
                 ),
@@ -304,5 +234,79 @@ class _UserWidgetState extends State<UserWidget> {
     setState(() {
       _allCorrect = value.length >= 3;
     });
+  }
+
+  Widget _messageInfo() {
+    return Visibility(
+      visible: true,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.asset("assets/images/perfil-leo.png"),
+              ),
+            ),
+            SizedBox(width: 10),
+            Container(
+              width: MediaQuery.of(context).size.width - 120,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Leonardo Benedeti",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  Bubble(
+                    margin: BubbleEdges.only(top: 10),
+                    alignment: Alignment.topLeft,
+                    nip: BubbleNip.leftTop,
+                    color: Theme.of(context).cardColor,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Disclaimer",
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
+                          maxLines: 10,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Todo código do app permanecerá aberto e livre para todos.",
+                          maxLines: 10,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
