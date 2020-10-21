@@ -1,6 +1,6 @@
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/features/feed/stores/feed.store.dart';
-import 'package:Pruuu/features/user/picture_widget/stores/picture.store.dart';
+import 'package:Pruuu/features/picture/stores/picture.store.dart';
 import 'package:Pruuu/themes/theme.store.dart';
 import 'package:mobx/mobx.dart';
 

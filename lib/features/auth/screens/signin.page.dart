@@ -1,6 +1,6 @@
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
 import 'package:Pruuu/main.store.dart';
-import 'package:Pruuu/utils/validators/string_validator.dart';
+import 'package:Pruuu/utils/string_validator.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

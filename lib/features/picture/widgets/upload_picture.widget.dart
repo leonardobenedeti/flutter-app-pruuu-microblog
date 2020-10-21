@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:Pruuu/features/auth/stores/auth.store.dart';
-import 'package:Pruuu/features/user/picture_widget/stores/picture.store.dart';
+import 'package:Pruuu/features/picture/stores/picture.store.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';

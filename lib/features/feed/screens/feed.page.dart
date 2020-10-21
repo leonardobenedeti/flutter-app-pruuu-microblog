@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:Pruuu/features/feed/stores/feed.store.dart';
 import 'package:Pruuu/features/pruuu/stores/pruuuit.store.dart';
-import 'package:Pruuu/features/user/picture_widget/widget/picture.widget.dart';
+import 'package:Pruuu/features/picture/widgets/picture.widget.dart';
 import 'package:Pruuu/main.dart';
 import 'package:Pruuu/main.store.dart';
 import 'package:Pruuu/models/pruuu.model.dart';
