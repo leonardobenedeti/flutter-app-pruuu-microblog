@@ -24,7 +24,6 @@ class PruuuButton extends StatelessWidget {
         return ClipRRect(
           borderRadius: BorderRadius.circular(50),
           child: Material(
-            color: Colors.white10,
             child: InkWell(
               onTap: onPressed,
               child: Container(

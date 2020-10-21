@@ -20,6 +20,8 @@ class _SignInWidgetState extends State<SignInWidget> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  bool obscurePassword = true;
+
   AuthStore authStore = MainStore().authStore;
 
   @override
@@ -76,10 +78,24 @@ class _SignInWidgetState extends State<SignInWidget> {
             TextField(
               cursorColor: Theme.of(context).accentColor,
               showCursor: true,
-              obscureText: true,
+              obscureText: obscurePassword,
               controller: _passwordController,
               onChanged: _handleChangeText,
-              decoration: InputDecoration(hintText: "Senha"),
+              decoration: InputDecoration(
+                hintText: "Senha",
+                suffixIconConstraints: BoxConstraints.tight(Size.square(50)),
+                suffixIcon: Container(
+                  margin: EdgeInsets.only(right: 8),
+                  child: PruuuButton(
+                    buttonType: ButtonType.icon,
+                    child: Icon(obscurePassword
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    onPressed: () =>
+                        setState(() => obscurePassword = !obscurePassword),
+                  ),
+                ),
+              ),
               style: Theme.of(context).textTheme.bodyText1,
               buildCounter: (context, {currentLength, isFocused, maxLength}) {
                 bool valid = _passwordController.text.isValidPassword() ||

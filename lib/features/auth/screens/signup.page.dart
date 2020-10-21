@@ -36,6 +36,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   AuthStore authStore = MainStore().authStore;
 
+  bool obscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -194,11 +196,24 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         TextField(
           cursorColor: Theme.of(context).accentColor,
           showCursor: true,
-          obscureText: true,
+          obscureText: obscurePassword,
           controller: _passwordController,
           onChanged: _handleChangeText,
           textInputAction: TextInputAction.next,
-          decoration: InputDecoration(hintText: "Senha"),
+          decoration: InputDecoration(
+            hintText: "Senha",
+            suffixIconConstraints: BoxConstraints.tight(Size.square(50)),
+            suffixIcon: Container(
+              margin: EdgeInsets.only(right: 8),
+              child: PruuuButton(
+                buttonType: ButtonType.icon,
+                child: Icon(
+                    obscurePassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () =>
+                    setState(() => obscurePassword = !obscurePassword),
+              ),
+            ),
+          ),
           style: Theme.of(context).textTheme.bodyText1,
           buildCounter: (context, {currentLength, isFocused, maxLength}) {
             bool valid = _passwordController.text.isValidPassword() ||
@@ -218,11 +233,24 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         TextField(
           cursorColor: Theme.of(context).accentColor,
           showCursor: true,
-          obscureText: true,
+          obscureText: obscurePassword,
           controller: _confirmController,
           onChanged: _handleChangeText,
           textInputAction: TextInputAction.next,
-          decoration: InputDecoration(hintText: "Confirmação de Senha"),
+          decoration: InputDecoration(
+            hintText: "Confirmação de Senha",
+            suffixIconConstraints: BoxConstraints.tight(Size.square(50)),
+            suffixIcon: Container(
+              margin: EdgeInsets.only(right: 8),
+              child: PruuuButton(
+                buttonType: ButtonType.icon,
+                child: Icon(
+                    obscurePassword ? Icons.visibility : Icons.visibility_off),
+                onPressed: () =>
+                    setState(() => obscurePassword = !obscurePassword),
+              ),
+            ),
+          ),
           style: Theme.of(context).textTheme.bodyText1,
           buildCounter: (context, {currentLength, isFocused, maxLength}) {
             bool valid = (_confirmController.text.isValidPassword() &&
