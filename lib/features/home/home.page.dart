@@ -81,7 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       margin: EdgeInsets.fromLTRB(0, 4, 16, 0),
       child: GestureDetector(
-        onTap: () => _openBottomSheet(UserWidget(), true),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UserWidget(), fullscreenDialog: true),
+        ),
         child: user.profilePicture != null
             ? ClipOval(
                 child: Image.network(

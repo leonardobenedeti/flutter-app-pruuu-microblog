@@ -37,103 +37,105 @@ class _UserWidgetState extends State<UserWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(top: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              _build(context),
-              ..._listSettings(),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.asset("assets/images/perfil-leo.png"),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                _build(context),
+                ..._listSettings(),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.asset("assets/images/perfil-leo.png"),
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Container(
-                      width: MediaQuery.of(context).size.width - 120,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Leonardo Benedeti",
-                            style: Theme.of(context).textTheme.headline3,
-                          ),
-                          Bubble(
-                            margin: BubbleEdges.only(top: 10),
-                            alignment: Alignment.topLeft,
-                            nip: BubbleNip.leftTop,
-                            color: Theme.of(context).cardColor,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Disclaimer",
-                                  style: Theme.of(context).textTheme.headline3,
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
-                                  maxLines: 10,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: false,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  "Todo código do app permanecerá aberto e livre para todos.",
-                                  maxLines: 10,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: false,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                              ],
+                      SizedBox(width: 10),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 120,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Leonardo Benedeti",
+                              style: Theme.of(context).textTheme.headline3,
                             ),
-                          ),
-                        ],
+                            Bubble(
+                              margin: BubbleEdges.only(top: 10),
+                              alignment: Alignment.topLeft,
+                              nip: BubbleNip.leftTop,
+                              color: Theme.of(context).cardColor,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Disclaimer",
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
+                                    maxLines: 10,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    "Todo código do app permanecerá aberto e livre para todos.",
+                                    maxLines: 10,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: false,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 32,
-              ),
-              PruuuButton(
-                child: Text(
-                  "Sair do app",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
+                    ],
                   ),
                 ),
-                onPressed: () {
-                  Timer(Duration(milliseconds: 300), () {
-                    Navigator.pop(context);
-                  });
-                  authStore.doSignOut(_scaffoldKey);
-                },
-                buttonType: ButtonType.danger,
-              )
-            ],
+                SizedBox(
+                  height: 32,
+                ),
+                PruuuButton(
+                  child: Text(
+                    "Sair do app",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  onPressed: () {
+                    Timer(Duration(milliseconds: 300), () {
+                      Navigator.pop(context);
+                    });
+                    authStore.doSignOut(_scaffoldKey);
+                  },
+                  buttonType: ButtonType.danger,
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -160,22 +162,20 @@ class _UserWidgetState extends State<UserWidget> {
   Widget _build(BuildContext context) {
     final sizeChild = MediaQuery.of(context).size.width * .85;
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 16,
-        horizontal: 16,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
         children: [
           Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Usuário conectado",
-                    style: Theme.of(context).textTheme.headline1,
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      "Usuário conectado",
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
                   ),
                   PruuuButton(
                     buttonType: ButtonType.icon,
@@ -184,14 +184,16 @@ class _UserWidgetState extends State<UserWidget> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 16,
+              ),
               UploadPictureWidget(
                 newUser: false,
               ),
               SizedBox(
-                width: 16,
+                height: 16,
               ),
               Container(
-                margin: EdgeInsets.only(top: 8),
                 child: Observer(
                   builder: (_) => new AnimatedCrossFade(
                     crossFadeState: authStore.fillUserInfoState ==
@@ -205,6 +207,9 @@ class _UserWidgetState extends State<UserWidget> {
                     secondChild: _secondChild(sizeChild),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 16,
               ),
             ],
           ),

@@ -40,10 +40,7 @@ class HomeWidgetState extends State<HomePageTabs>
         isScrollable: true,
         labelColor: Theme.of(context).textTheme.headline1.color,
         unselectedLabelColor: Theme.of(context).textTheme.headline2.color,
-        labelStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+        labelStyle: Theme.of(context).textTheme.headline1,
         indicatorSize: TabBarIndicatorSize.tab,
         indicator: BoxDecoration(),
         tabs: widget.tabs,
