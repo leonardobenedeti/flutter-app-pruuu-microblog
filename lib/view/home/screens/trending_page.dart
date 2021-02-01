@@ -1,5 +1,7 @@
 import 'package:Pruuu/model/trending_model.dart';
+import 'package:Pruuu/view_model/trendings/trendings_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class TrendingPage extends StatefulWidget {
   @override
@@ -7,52 +9,30 @@ class TrendingPage extends StatefulWidget {
 }
 
 class _TrendingPageState extends State<TrendingPage> {
-  List<Trending> trendings = [];
-
-  Trending defaultTrending = new Trending(
-    id: "tr2",
-    hashtag: "#COVID19",
-    description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non nunc vitae tellus molestie eleifend. Praesent feugiat sapien erat.",
-  );
+  final trendingsViewModel = TrendingsViewModel();
 
   @override
   void initState() {
-    trendings.addAll([
-      new Trending(
-        id: "tr1",
-        hashtag: "#Séries",
-        description: "Descubra o que estão comentando das melhores séries",
-        picture:
-            "https://cloud.estacaonerd.com/wp-content/uploads/2019/12/24151840/3627282.jpg-r_640_360-f_jpg-q_x-xxyxx.jpg",
-      ),
-      defaultTrending,
-      defaultTrending,
-      defaultTrending,
-      defaultTrending,
-      defaultTrending,
-      defaultTrending,
-      defaultTrending,
-      defaultTrending,
-      defaultTrending,
-    ]);
+    trendingsViewModel.fetchTrendings();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 8),
-      child: ListView.builder(
-          itemCount: trendings.length,
-          padding: EdgeInsets.only(bottom: 70),
-          itemBuilder: _buildTrending),
+    return Observer(
+      builder: (context) => Container(
+        margin: EdgeInsets.only(top: 8),
+        child: ListView.builder(
+            itemCount: trendingsViewModel.trendings.length,
+            padding: EdgeInsets.only(bottom: 70),
+            itemBuilder: _buildTrending),
+      ),
     );
   }
 
   Widget _buildTrending(BuildContext context, int position) {
-    Trending trending = trendings[position];
-    bool last = position == (trendings.length - 1);
+    Trending trending = trendingsViewModel.trendings[position];
+    bool last = position == (trendingsViewModel.trendings.length - 1);
 
     return trending.picture != null
         ? Container(
