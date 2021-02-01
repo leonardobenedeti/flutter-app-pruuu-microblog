@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class PruuuBottomSheet extends StatelessWidget {
-  BuildContext context;
-  Widget child;
-  bool fullscreenDialog;
+  final BuildContext context;
+  final Widget child;
+  final bool fullscreenDialog;
 
   PruuuBottomSheet(
       {@required this.context,

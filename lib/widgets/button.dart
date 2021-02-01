@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class PruuuButton extends StatelessWidget {
-  Widget child;
-  Function onPressed;
-  bool loading;
-  ButtonType buttonType;
-  bool fullButton;
+  final Widget child;
+  final Function onPressed;
+  final bool loading;
+  final ButtonType buttonType;
+  final bool fullButton;
 
   PruuuButton({
     @required this.child,

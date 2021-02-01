@@ -1,17 +1,17 @@
-import 'package:Pruuu/features/auth/stores/auth.store.dart';
-import 'package:Pruuu/main.store.dart';
-import 'package:Pruuu/themes/theme.store.dart';
+import 'package:Pruuu/main_store.dart';
+import 'package:Pruuu/themes/theme_store.dart';
+import 'package:Pruuu/view/auth/auth_page.dart';
+import 'package:Pruuu/view_model/auth/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'features/auth/screens/auth.page.dart';
-import 'features/home/home.page.dart';
+import 'view/home/home_page.dart';
 
-AuthStore authStore = MainStore().authStore;
+AuthViewModel authViewModel = MainStore().authViewModel;
 ThemeStore themeStore = MainStore().themeStore;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await authStore.getUser();
+  await authViewModel.getUser();
   runApp(MyApp());
 }
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
           theme: themeStore.currentThemeData,
-          home: authStore.authState == AuthState.signed
+          home: authViewModel.authState == AuthState.signed
               ? MyHomePage()
               : AuthPage()),
     );
