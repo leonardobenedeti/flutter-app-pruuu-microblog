@@ -1,3 +1,4 @@
+import 'package:Pruuu/utils/strings.dart';
 import 'package:flutter/foundation.dart';
 
 enum Errors {
@@ -21,22 +22,22 @@ extension ErrorHandler on Errors {
   String getMessage() {
     switch (this) {
       case Errors.ERROR_WRONG_PASSWORD:
-        return "Senha incorreta!";
+        return Strings.wrongPassword;
         break;
       case Errors.ERROR_USER_NOT_FOUND:
-        return "Usuário não encontrado!";
+        return Strings.userNotFound;
         break;
       case Errors.ERROR_USER_DISABLED:
-        return "Usuário desabilitado!";
+        return Strings.userDisabled;
         break;
       case Errors.ERROR_TOO_MANY_REQUESTS:
-        return "Guenta mão ai, tente novamente mais tarde!";
+        return Strings.tryAgain;
         break;
       case Errors.ERROR_EMAIL_ALREADY_IN_USE:
-        return "Email já utilizado em outra conta! Go to SignIn";
+        return Strings.emailAlreadyInUse;
         break;
       default:
-        return "An undefined Error happened.";
+        return Strings.defaultError;
     }
   }
 }
