@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Pruuu/utils/strings.dart';
 import 'package:Pruuu/widgets/picture/upload_picture_widget.dart';
 import 'package:Pruuu/main_store.dart';
 import 'package:Pruuu/utils/string_validator.dart';
@@ -52,11 +53,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Sign Up",
+                  Strings.signUp,
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 PruuuButton(
-                  child: Text("Já tenho uma conta"),
+                  child: Text(Strings.alreadyHaveAnAccount),
                   onPressed: authViewModel.changePage,
                 ),
               ],
@@ -86,7 +87,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   width: double.infinity,
                   child: Center(
                     child: Text(
-                      widget.alreadySigned ? "Criar conta" : "Próximo passo",
+                      widget.alreadySigned ? Strings.signUp : Strings.nextStep,
                     ),
                   ),
                 ),

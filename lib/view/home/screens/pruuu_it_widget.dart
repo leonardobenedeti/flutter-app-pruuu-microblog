@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Pruuu/utils/strings.dart';
 import 'package:Pruuu/view_model/feed/feed_view_model.dart';
 import 'package:Pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
 import 'package:Pruuu/main_store.dart';
@@ -39,7 +40,7 @@ class _PruuuState extends State<PruuuWidget> {
             children: [
               FlatButton(
                 child: Text(
-                  "Cancel",
+                  Strings.cancel,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 onPressed: () => Navigator.pop(context),
@@ -60,9 +61,10 @@ class _PruuuState extends State<PruuuWidget> {
               style: Theme.of(context).textTheme.bodyText1,
               onChanged: _handleChangeText,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  hintText: "What's your pruuu for today?"),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: Strings.pruuuItPlaceholder,
+              ),
               buildCounter: (context, {currentLength, isFocused, maxLength}) =>
                   Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -120,7 +122,7 @@ class _PruuuState extends State<PruuuWidget> {
       return PruuuButton(
         child: pruuuItViewModel.pruuuItState == PruuuItState.pruuublished
             ? Icon(Icons.check)
-            : Text("Pruuu It"),
+            : Text(Strings.pruuuIt),
         loading: pruuuItViewModel.pruuuItState == PruuuItState.loading,
         onPressed: (_currentPruuu.length <= _maxLengthPruuu &&
                 _currentPruuu.length > 0)

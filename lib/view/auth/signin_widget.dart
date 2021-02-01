@@ -1,5 +1,6 @@
 import 'package:Pruuu/main_store.dart';
 import 'package:Pruuu/utils/string_validator.dart';
+import 'package:Pruuu/utils/strings.dart';
 import 'package:Pruuu/view_model/auth/auth_view_model.dart';
 import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +40,11 @@ class _SignInWidgetState extends State<SignInWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Sign In",
+                  Strings.signIn,
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 PruuuButton(
-                  child: Text("Criar conta"),
+                  child: Text(Strings.signUp),
                   onPressed: authViewModel.changePage,
                 ),
               ],
@@ -56,13 +57,13 @@ class _SignInWidgetState extends State<SignInWidget> {
               showCursor: true,
               controller: _emailController,
               onChanged: _handleChangeText,
-              decoration: InputDecoration(hintText: "Email"),
+              decoration: InputDecoration(hintText: Strings.email),
               style: Theme.of(context).textTheme.bodyText1,
               buildCounter: (context, {currentLength, isFocused, maxLength}) {
                 bool valid = _emailController.text.isValidEmail() ||
                     _emailController.text.isEmpty;
                 String text =
-                    valid ? "ex.: user@email.com" : "Digite um email válido";
+                    valid ? Strings.tipEmail : Strings.placeholderEmail;
                 return Text(
                   text,
                   style: valid
@@ -81,7 +82,7 @@ class _SignInWidgetState extends State<SignInWidget> {
               controller: _passwordController,
               onChanged: _handleChangeText,
               decoration: InputDecoration(
-                hintText: "Senha",
+                hintText: Strings.password,
                 suffixIconConstraints: BoxConstraints.tight(Size.square(50)),
                 suffixIcon: Container(
                   margin: EdgeInsets.only(right: 8),
@@ -100,7 +101,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 bool valid = _passwordController.text.isValidPassword() ||
                     _passwordController.text.isEmpty;
                 String text =
-                    valid ? "ex.: Senha@123" : "Digite uma senha válida";
+                    valid ? Strings.tipPassword : Strings.placeholderPassword;
                 return Text(
                   text,
                   style: valid
@@ -118,7 +119,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 child: Center(
                   child: PruuuButton(
                     fullButton: true,
-                    child: Text("Entrar"),
+                    child: Text(Strings.signIn),
                     onPressed: _allCorrect
                         ? () => authViewModel.doSignIn(_emailController.text,
                             _passwordController.text, widget._scaffoldKey)

@@ -1,5 +1,6 @@
 import 'package:Pruuu/main_store.dart';
 import 'package:Pruuu/themes/theme_store.dart';
+import 'package:Pruuu/utils/assets.dart';
 import 'package:Pruuu/view/auth/signin_widget.dart';
 import 'package:Pruuu/view/auth/signup_widget.dart';
 import 'package:Pruuu/view_model/auth/auth_view_model.dart';
@@ -42,7 +43,7 @@ class AuthPageState extends State<AuthPage> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * .3,
                   child: Image.asset(
-                    "assets/images/bannerAuth${themeStore.themeString}.png",
+                    '${Assets.bannerAuth}${themeStore.themeString}${Assets.defaultExtension}',
                     fit: BoxFit.cover,
                   ),
                 ),

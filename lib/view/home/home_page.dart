@@ -1,3 +1,4 @@
+import 'package:Pruuu/utils/strings.dart';
 import 'package:Pruuu/view/user_page.dart';
 import 'package:Pruuu/view/home/screens/feed_page.dart';
 import 'package:Pruuu/view/home/home_tabs.dart';
@@ -35,8 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 HomePageTabs(
                   tabs: [
-                    new Tab(text: "Feed"),
-                    new Tab(text: "Trending"),
+                    new Tab(text: Strings.feed),
+                    new Tab(text: Strings.trending),
                   ],
                   childTabs: [
                     FeedPage(),

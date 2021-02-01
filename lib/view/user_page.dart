@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:Pruuu/utils/assets.dart';
+import 'package:Pruuu/utils/strings.dart';
 import 'package:Pruuu/view_model/picture/picture_view_model.dart';
 import 'package:Pruuu/widgets/picture/upload_picture_widget.dart';
 import 'package:Pruuu/main_store.dart';
@@ -21,9 +23,6 @@ class _UserPageState extends State<UserPage> {
   AuthViewModel authViewModel;
   PictureViewModel pictureViewModel;
   ThemeStore themeStore;
-
-  String textoDisclaimer =
-      "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.";
 
   @override
   void initState() {
@@ -50,7 +49,7 @@ class _UserPageState extends State<UserPage> {
                 ),
                 PruuuButton(
                   child: Text(
-                    "Sair do app",
+                    Strings.exitApp,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
@@ -77,7 +76,7 @@ class _UserPageState extends State<UserPage> {
       Divider(height: 1),
       SwitchListTile(
         title: Text(
-          "Dark theme",
+          Strings.darkTheme,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         activeColor: Theme.of(context).accentColor,
@@ -103,7 +102,7 @@ class _UserPageState extends State<UserPage> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      "Usuário conectado",
+                      Strings.connectedUser,
                       style: Theme.of(context).textTheme.headline1,
                     ),
                   ),
@@ -211,7 +210,7 @@ class _UserPageState extends State<UserPage> {
               child: SizedBox(
                 width: maxSize * .25,
                 child: PruuuButton(
-                  child: Text("Salvar"),
+                  child: Text(Strings.save),
                   loading: authViewModel.fillUserInfoState ==
                       FillUserInfoState.loading,
                   onPressed: _allCorrect
@@ -248,7 +247,7 @@ class _UserPageState extends State<UserPage> {
             width: 50,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Image.asset("assets/images/perfil-leo.png"),
+              child: Image.asset(Assets.myProfile),
             ),
           ),
           SizedBox(width: 10),
@@ -258,7 +257,7 @@ class _UserPageState extends State<UserPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Leonardo Benedeti",
+                  Strings.me,
                   style: Theme.of(context).textTheme.headline3,
                 ),
                 Bubble(
@@ -270,24 +269,14 @@ class _UserPageState extends State<UserPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Disclaimer",
+                        Strings.disclaimer,
                         style: Theme.of(context).textTheme.headline3,
                       ),
                       SizedBox(
                         height: 8,
                       ),
                       Text(
-                        "App criado como um desafio para uma oportunidade de trabalho onde precisava criar um app com algumas funcionalidades parecidas com a do Twitter.",
-                        maxLines: 10,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        "Todo código do app permanecerá aberto e livre para todos.",
+                        Strings.myDisclaimer,
                         maxLines: 10,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:Pruuu/utils/assets.dart';
+import 'package:Pruuu/utils/strings.dart';
 import 'package:Pruuu/view_model/feed/feed_view_model.dart';
 import 'package:Pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
 import 'package:Pruuu/widgets/picture/picture_widget.dart';
@@ -107,7 +109,7 @@ class _FeedPageState extends State<FeedPage> {
                         width: 8,
                       ),
                       Text(
-                        "Novos pruuus",
+                        Strings.newPruuus,
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ],
@@ -137,7 +139,7 @@ class _FeedPageState extends State<FeedPage> {
           if (pruuu.authorUID == authViewModel.user.uid) ...[
             PruuuButton(
               fullButton: true,
-              child: Text("Remove pruuu"),
+              child: Text(Strings.removePruuu),
               buttonType: ButtonType.danger,
               onPressed: () {
                 feedViewModel.removePruuuFromFeed(pruuu);
@@ -148,14 +150,14 @@ class _FeedPageState extends State<FeedPage> {
           ] else ...[
             PruuuButton(
               fullButton: true,
-              child: Text("Re-Pruuu It"),
+              child: Text(Strings.rePruuuIt),
               buttonType: ButtonType.primary,
               onPressed: () => _repruuuit(pruuu),
             ),
           ],
           PruuuButton(
             fullButton: true,
-            child: Text("cancel"),
+            child: Text(Strings.cancel),
             buttonType: ButtonType.clear,
             onPressed: () => Navigator.pop(context),
           ),
@@ -262,14 +264,12 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   Widget _emptyState({bool withError = false}) {
-    var image = "assets/images/";
-    image += withError ? "error_state.png" : "empty_state.png";
     double sizeState = withError ? .6 : .8;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          withError ? "Something is wrong" : "No Pruuus yet",
+          withError ? Strings.somethingIsWrong : Strings.noPruuusYet,
           style: Theme.of(context).textTheme.headline1,
         ),
         SizedBox(
@@ -277,7 +277,9 @@ class _FeedPageState extends State<FeedPage> {
         ),
         Container(
           width: MediaQuery.of(context).size.width * sizeState,
-          child: Image.asset(image),
+          child: Image.asset(
+            withError ? Assets.errorState : Assets.emptyState,
+          ),
         ),
       ],
     );
