@@ -43,4 +43,10 @@ class Strings {
   static const noPruuusYet = "No Pruuus yet";
 
   static const pruuuItPlaceholder = "What's your pruuu for today?";
+
+  static const crop = "Crop";
+  static const done = "Concluído";
+  static const withoutCrop = "Continuar sem crop";
+  static const camera = "Câmera";
+  static const gallery = "Galeria";
 }

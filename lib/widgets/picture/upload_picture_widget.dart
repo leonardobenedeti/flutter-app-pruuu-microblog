@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Pruuu/utils/strings.dart';
 import 'package:Pruuu/view_model/picture/picture_view_model.dart';
 import 'package:Pruuu/main_store.dart';
 import 'package:Pruuu/view_model/auth/auth_view_model.dart';
@@ -118,7 +119,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                                 Icons.crop,
                                 size: 30,
                               ),
-                              Text("Cropp")
+                              Text(Strings.crop)
                             ],
                           ),
                           onPressed: () => print("do cropp"),
@@ -136,8 +137,8 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                               ),
                               Text(pictureViewModel.pictureState ==
                                       PictureState.uploaded
-                                  ? "Concluído"
-                                  : "Continuar sem crop")
+                                  ? Strings.done
+                                  : Strings.withoutCrop)
                             ],
                           ),
                           onPressed: () {
@@ -172,7 +173,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                                 Icons.photo_camera,
                                 size: 30,
                               ),
-                              Text("Câmera")
+                              Text(Strings.camera)
                             ],
                           ),
                           onPressed: () => pictureViewModel.pickImage(
@@ -186,7 +187,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                                 Icons.photo_library,
                                 size: 30,
                               ),
-                              Text("Galeria")
+                              Text(Strings.gallery)
                             ],
                           ),
                           onPressed: () => pictureViewModel.pickImage(
