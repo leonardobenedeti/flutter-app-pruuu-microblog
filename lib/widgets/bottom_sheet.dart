@@ -5,10 +5,11 @@ class PruuuBottomSheet extends StatelessWidget {
   final Widget child;
   final bool fullscreenDialog;
 
-  PruuuBottomSheet(
-      {@required this.context,
-      @required this.child,
-      this.fullscreenDialog = false});
+  PruuuBottomSheet({
+    required this.context,
+    required this.child,
+    this.fullscreenDialog = false,
+  });
 
   @override
   Widget build(BuildContext context) {

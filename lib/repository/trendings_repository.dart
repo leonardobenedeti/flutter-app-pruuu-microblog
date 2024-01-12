@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Pruuu/model/trending_model.dart';
+import 'package:pruuu/model/trending_model.dart';
 
 class TrendingsRepository {
   Trending defaultTrending = new Trending(

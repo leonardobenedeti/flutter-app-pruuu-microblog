@@ -1,27 +1,26 @@
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/model/user_model.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
-  final _firestore = Firestore.instance;
+  final _firestore = FirebaseFirestore.instance;
   final authViewModel = MainStore().authViewModel;
 
   Future<bool> get hasUser async => await getUser() != null;
 
-  Future<FirebaseUser> getUser() async {
-    return await _firebaseAuth.currentUser();
+  Future<User?> getUser() async {
+    return await _firebaseAuth.currentUser;
   }
 
-  Future<User> getUserInfo() async {
-    FirebaseUser user = await getUser();
-    return User.fromMap(
-      await _firestore.collection('users').document(user.uid).get(),
-    );
+  Future<UserModel> getUserInfo() async {
+    User? user = await getUser();
+    final result = await _firestore.collection('users').doc(user?.uid).get();
+    return UserModel.fromMap(result);
   }
 
-  Future<AuthResult> signIn(
+  Future<UserCredential> signIn(
     String email,
     String password,
   ) async {
@@ -32,7 +31,7 @@ class AuthRepository {
     return authResult;
   }
 
-  Future<AuthResult> signUp(String email, String password) async {
+  Future<UserCredential> signUp(String email, String password) async {
     var authResult = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
 
@@ -43,30 +42,28 @@ class AuthRepository {
     await _firebaseAuth.signOut();
   }
 
-  Future<bool> fillUserInfo(
-      {String displayName,
-      String userName,
-      String pictureUrl,
-      bool newUser = false}) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+  Future<bool> fillUserInfo({
+    String displayName = '',
+    String userName = '',
+    String pictureUrl = '',
+    bool newUser = false,
+  }) async {
+    final user = await _firebaseAuth.currentUser;
 
-    authViewModel.userInfo.displayName =
-        displayName != null && displayName.isNotEmpty
-            ? displayName
-            : authViewModel.userInfo.displayName;
-    authViewModel.userInfo.userName = userName != null && userName.isNotEmpty
-        ? userName
-        : authViewModel.userInfo.userName;
-    authViewModel.userInfo.profilePicture =
-        pictureUrl != null && pictureUrl.isNotEmpty
-            ? pictureUrl
-            : authViewModel.userInfo.profilePicture;
+    authViewModel.userInfo.displayName = displayName.isNotEmpty
+        ? displayName
+        : authViewModel.userInfo.displayName;
+    authViewModel.userInfo.userName =
+        userName.isNotEmpty ? userName : authViewModel.userInfo.userName;
+    authViewModel.userInfo.profilePicture = pictureUrl.isNotEmpty
+        ? pictureUrl
+        : authViewModel.userInfo.profilePicture;
 
     try {
       await _firestore
           .collection('users')
-          .document(user.uid)
-          .setData(authViewModel.userInfo.toMap());
+          .doc(user!.uid)
+          .set(authViewModel.userInfo.toMap());
       return true;
     } catch (e) {
       return false;

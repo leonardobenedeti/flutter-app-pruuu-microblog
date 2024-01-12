@@ -1,6 +1,6 @@
-import 'package:Pruuu/repository/feed_repository.dart';
-import 'package:Pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
-import 'package:Pruuu/model/pruuu_model.dart';
+import 'package:pruuu/repository/feed_repository.dart';
+import 'package:pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
+import 'package:pruuu/model/pruuu_model.dart';
 import 'package:mobx/mobx.dart';
 
 part 'feed_view_model.g.dart';

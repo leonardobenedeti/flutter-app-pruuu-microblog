@@ -1,20 +1,20 @@
-import 'package:Pruuu/utils/strings.dart';
-import 'package:Pruuu/view/user_page.dart';
-import 'package:Pruuu/view/home/screens/feed_page.dart';
-import 'package:Pruuu/view/home/home_tabs.dart';
-import 'package:Pruuu/view/home/screens/pruuu_it_widget.dart';
-import 'package:Pruuu/view/home/screens/trending_page.dart';
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/model/user_model.dart';
-import 'package:Pruuu/themes/theme_store.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
-import 'package:Pruuu/widgets/bottom_sheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/model/user_model.dart';
+import 'package:pruuu/themes/theme_store.dart';
+import 'package:pruuu/utils/strings.dart';
+import 'package:pruuu/view/home/home_tabs.dart';
+import 'package:pruuu/view/home/screens/feed_page.dart';
+import 'package:pruuu/view/home/screens/pruuu_it_widget.dart';
+import 'package:pruuu/view/home/screens/trending_page.dart';
+import 'package:pruuu/view/user_page.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
+import 'package:pruuu/widgets/bottom_sheet.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({super.key});
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ).show();
   }
 
-  Widget _pruuuFAB(FirebaseUser user) {
+  Widget _pruuuFAB(User? user) {
     return FloatingActionButton(
       onPressed: () => _openBottomSheet(PruuuWidget(user: user), false),
       child: Icon(
@@ -69,14 +69,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _userAreaFAB(User user) {
+  Widget _userAreaFAB(UserModel user) {
     return Container(
       height: 35,
       width: 35,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).canvasColor,
           width: 1.5,
         ),
       ),
@@ -87,10 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(
               builder: (context) => UserPage(), fullscreenDialog: true),
         ),
-        child: user.profilePicture != null
+        child: user.profilePicture!.isNotEmpty
             ? ClipOval(
                 child: Image.network(
-                  user.profilePicture,
+                  user.profilePicture!,
                   fit: BoxFit.cover,
                 ),
               )

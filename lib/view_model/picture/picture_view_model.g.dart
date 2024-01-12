@@ -6,10 +6,11 @@ part of 'picture_view_model.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PictureViewModel on _PictureViewModel, Store {
-  final _$picturePathAtom = Atom(name: '_PictureViewModel.picturePath');
+  late final _$picturePathAtom =
+      Atom(name: '_PictureViewModel.picturePath', context: context);
 
   @override
   String get picturePath {
@@ -24,7 +25,8 @@ mixin _$PictureViewModel on _PictureViewModel, Store {
     });
   }
 
-  final _$pictureStateAtom = Atom(name: '_PictureViewModel.pictureState');
+  late final _$pictureStateAtom =
+      Atom(name: '_PictureViewModel.pictureState', context: context);
 
   @override
   PictureState get pictureState {
@@ -39,7 +41,8 @@ mixin _$PictureViewModel on _PictureViewModel, Store {
     });
   }
 
-  final _$filePictureAtom = Atom(name: '_PictureViewModel.filePicture');
+  late final _$filePictureAtom =
+      Atom(name: '_PictureViewModel.filePicture', context: context);
 
   @override
   File get filePicture {
@@ -54,22 +57,24 @@ mixin _$PictureViewModel on _PictureViewModel, Store {
     });
   }
 
-  final _$fetchPictureAsyncAction =
-      AsyncAction('_PictureViewModel.fetchPicture');
+  late final _$fetchPictureAsyncAction =
+      AsyncAction('_PictureViewModel.fetchPicture', context: context);
 
   @override
   Future<PictureState> fetchPicture(String uid) {
     return _$fetchPictureAsyncAction.run(() => super.fetchPicture(uid));
   }
 
-  final _$pickImageAsyncAction = AsyncAction('_PictureViewModel.pickImage');
+  late final _$pickImageAsyncAction =
+      AsyncAction('_PictureViewModel.pickImage', context: context);
 
   @override
   Future<void> pickImage(ImageSource source, String uid) {
     return _$pickImageAsyncAction.run(() => super.pickImage(source, uid));
   }
 
-  final _$uploadImageAsyncAction = AsyncAction('_PictureViewModel.uploadImage');
+  late final _$uploadImageAsyncAction =
+      AsyncAction('_PictureViewModel.uploadImage', context: context);
 
   @override
   Future<void> uploadImage(String uid, {bool newUser = false}) {
@@ -77,8 +82,8 @@ mixin _$PictureViewModel on _PictureViewModel, Store {
         .run(() => super.uploadImage(uid, newUser: newUser));
   }
 
-  final _$_PictureViewModelActionController =
-      ActionController(name: '_PictureViewModel');
+  late final _$_PictureViewModelActionController =
+      ActionController(name: '_PictureViewModel', context: context);
 
   @override
   dynamic changeState() {

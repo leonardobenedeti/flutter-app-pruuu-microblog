@@ -11,13 +11,10 @@ extension PruuuSizes on PruuuSize {
     switch (this) {
       case PruuuSize.s:
         return 8.0;
-        break;
       case PruuuSize.m:
         return 16.0;
-        break;
       case PruuuSize.l:
         return 32.0;
-        break;
       default:
         return 0;
     }

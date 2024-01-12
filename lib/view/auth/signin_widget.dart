@@ -1,10 +1,10 @@
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/utils/string_validator.dart';
-import 'package:Pruuu/utils/strings.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
-import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/utils/string_validator.dart';
+import 'package:pruuu/utils/strings.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
+import 'package:pruuu/widgets/button.dart';
 
 class SignInWidget extends StatefulWidget {
   final _scaffoldKey;
@@ -41,7 +41,7 @@ class _SignInWidgetState extends State<SignInWidget> {
               children: [
                 Text(
                   Strings.signIn,
-                  style: Theme.of(context).textTheme.headline1,
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 PruuuButton(
                   child: Text(Strings.signUp),
@@ -53,13 +53,14 @@ class _SignInWidgetState extends State<SignInWidget> {
               height: 32,
             ),
             TextField(
-              cursorColor: Theme.of(context).accentColor,
+              cursorColor: Theme.of(context).cardColor,
               showCursor: true,
               controller: _emailController,
               onChanged: _handleChangeText,
               decoration: InputDecoration(hintText: Strings.email),
-              style: Theme.of(context).textTheme.bodyText1,
-              buildCounter: (context, {currentLength, isFocused, maxLength}) {
+              style: Theme.of(context).textTheme.bodyLarge,
+              buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) {
                 bool valid = _emailController.text.isValidEmail() ||
                     _emailController.text.isEmpty;
                 String text =
@@ -67,7 +68,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 return Text(
                   text,
                   style: valid
-                      ? Theme.of(context).textTheme.bodyText1
+                      ? Theme.of(context).textTheme.bodyLarge
                       : TextStyle(color: Colors.red),
                 );
               },
@@ -76,7 +77,7 @@ class _SignInWidgetState extends State<SignInWidget> {
               height: 16,
             ),
             TextField(
-              cursorColor: Theme.of(context).accentColor,
+              cursorColor: Theme.of(context).cardColor,
               showCursor: true,
               obscureText: obscurePassword,
               controller: _passwordController,
@@ -96,8 +97,9 @@ class _SignInWidgetState extends State<SignInWidget> {
                   ),
                 ),
               ),
-              style: Theme.of(context).textTheme.bodyText1,
-              buildCounter: (context, {currentLength, isFocused, maxLength}) {
+              style: Theme.of(context).textTheme.bodyLarge,
+              buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) {
                 bool valid = _passwordController.text.isValidPassword() ||
                     _passwordController.text.isEmpty;
                 String text =
@@ -105,7 +107,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                 return Text(
                   text,
                   style: valid
-                      ? Theme.of(context).textTheme.bodyText1
+                      ? Theme.of(context).textTheme.bodyLarge
                       : TextStyle(color: Colors.red),
                 );
               },

@@ -6,10 +6,11 @@ part of 'main_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$MainStore on _MainStore, Store {
-  final _$authViewModelAtom = Atom(name: '_MainStore.authViewModel');
+  late final _$authViewModelAtom =
+      Atom(name: '_MainStore.authViewModel', context: context);
 
   @override
   AuthViewModel get authViewModel {
@@ -24,7 +25,8 @@ mixin _$MainStore on _MainStore, Store {
     });
   }
 
-  final _$feedViewModelAtom = Atom(name: '_MainStore.feedViewModel');
+  late final _$feedViewModelAtom =
+      Atom(name: '_MainStore.feedViewModel', context: context);
 
   @override
   FeedViewModel get feedViewModel {
@@ -39,7 +41,8 @@ mixin _$MainStore on _MainStore, Store {
     });
   }
 
-  final _$pictureViewModelAtom = Atom(name: '_MainStore.pictureViewModel');
+  late final _$pictureViewModelAtom =
+      Atom(name: '_MainStore.pictureViewModel', context: context);
 
   @override
   PictureViewModel get pictureViewModel {
@@ -54,7 +57,8 @@ mixin _$MainStore on _MainStore, Store {
     });
   }
 
-  final _$themeStoreAtom = Atom(name: '_MainStore.themeStore');
+  late final _$themeStoreAtom =
+      Atom(name: '_MainStore.themeStore', context: context);
 
   @override
   ThemeStore get themeStore {

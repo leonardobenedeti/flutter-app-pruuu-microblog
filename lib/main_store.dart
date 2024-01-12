@@ -1,8 +1,8 @@
-import 'package:Pruuu/view_model/feed/feed_view_model.dart';
-import 'package:Pruuu/view_model/picture/picture_view_model.dart';
-import 'package:Pruuu/themes/theme_store.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pruuu/themes/theme_store.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
+import 'package:pruuu/view_model/feed/feed_view_model.dart';
+import 'package:pruuu/view_model/picture/picture_view_model.dart';
 
 part 'main_store.g.dart';
 

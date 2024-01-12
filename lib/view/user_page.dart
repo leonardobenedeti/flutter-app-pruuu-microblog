@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import 'package:Pruuu/utils/assets.dart';
-import 'package:Pruuu/utils/strings.dart';
-import 'package:Pruuu/view_model/picture/picture_view_model.dart';
-import 'package:Pruuu/widgets/picture/upload_picture_widget.dart';
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/themes/theme_store.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
-import 'package:Pruuu/widgets/button.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/themes/theme_store.dart';
+import 'package:pruuu/utils/assets.dart';
+import 'package:pruuu/utils/strings.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
+import 'package:pruuu/view_model/picture/picture_view_model.dart';
+import 'package:pruuu/widgets/button.dart';
+import 'package:pruuu/widgets/picture/upload_picture_widget.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -20,9 +20,9 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   MainStore mainStore = MainStore();
-  AuthViewModel authViewModel;
-  PictureViewModel pictureViewModel;
-  ThemeStore themeStore;
+  late AuthViewModel authViewModel;
+  late PictureViewModel pictureViewModel;
+  late ThemeStore themeStore;
 
   @override
   void initState() {
@@ -77,9 +77,9 @@ class _UserPageState extends State<UserPage> {
       SwitchListTile(
         title: Text(
           Strings.darkTheme,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
-        activeColor: Theme.of(context).accentColor,
+        activeColor: Theme.of(context).canvasColor,
         value: themeStore.isDark,
         onChanged: (value) => themeStore.changeCurrentTheme(),
       ),
@@ -103,7 +103,7 @@ class _UserPageState extends State<UserPage> {
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
                       Strings.connectedUser,
-                      style: Theme.of(context).textTheme.headline1,
+                      style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
                   PruuuButton(
@@ -160,11 +160,11 @@ class _UserPageState extends State<UserPage> {
           children: [
             Text(
               "${authViewModel.userInfo.displayName}",
-              style: Theme.of(context).textTheme.headline1,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
             Text(
               "${authViewModel.userInfo.userName}",
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
         ),
@@ -183,19 +183,19 @@ class _UserPageState extends State<UserPage> {
           SizedBox(
             width: maxSize * .65,
             child: TextField(
-              cursorColor: Theme.of(context).accentColor,
+              cursorColor: Theme.of(context).canvasColor,
               showCursor: true,
               onChanged: _handleChangeText,
               controller: _nameController,
               textInputAction: TextInputAction.next,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
               decoration: InputDecoration(
                 suffixIcon: SizedBox(
                   height: 20,
                   width: 20,
                   child: IconButton(
                       icon: Icon(Icons.close),
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).canvasColor,
                       onPressed: authViewModel.closeTextField),
                 ),
                 hintText: "${authViewModel.userInfo.displayName}",
@@ -258,7 +258,7 @@ class _UserPageState extends State<UserPage> {
               children: [
                 Text(
                   Strings.me,
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Bubble(
                   margin: BubbleEdges.only(top: 10),
@@ -270,7 +270,7 @@ class _UserPageState extends State<UserPage> {
                     children: [
                       Text(
                         Strings.disclaimer,
-                        style: Theme.of(context).textTheme.headline3,
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
                       SizedBox(
                         height: 8,
@@ -280,7 +280,7 @@ class _UserPageState extends State<UserPage> {
                         maxLines: 10,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       SizedBox(
                         height: 8,

@@ -1,38 +1,38 @@
-name: Pruuu
+name: pruuu
 description: A new Flutter project.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.18.0 <4.0.0"
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.3
-  bubble: ^1.1.9+1
-  intl: ^0.16.1  
-  mobx: ^1.0.0
-  flutter_mobx: ^1.0.0
-  flutter_secure_storage:
-  firebase_core: ^0.4.4+2
-  cloud_firestore: ^0.13.4+1
-  firebase_messaging: ^6.0.13
-  firebase_auth: ^0.16.0
-  firebase_storage: 3.0.4
-  firebase_remote_config:
-  image_cropper: 1.0.2
-  image_picker: 0.6.7+10
-  path_provider: ^1.6.16
-  percent_indicator: "^2.1.7+2"
-
+  cupertino_icons: ^1.0.6
+  bubble: ^1.2.1
+  intl: ^0.19.0
+  mobx: ^2.3.0+1
+  flutter_mobx: ^2.2.0+2
+  flutter_secure_storage: ^9.0.0
+  firebase_core: ^2.24.2
+  cloud_firestore: ^4.14.0
+  firebase_messaging: ^14.7.10
+  firebase_auth: ^4.16.0
+  firebase_storage: ^11.6.0
+  firebase_remote_config: ^4.3.8
+  image_cropper: ^5.0.1
+  image_picker: ^1.0.7
+  path_provider: ^2.1.2
+  percent_indicator: ^4.2.3
 
 dev_dependencies:
-  build_runner: ^1.7.2
-  mobx_codegen: ^1.0.0
+  build_runner: ^2.4.8
+  mobx_codegen: ^2.6.0+1
   flutter_test:
     sdk: flutter
 

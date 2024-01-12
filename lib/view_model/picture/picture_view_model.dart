@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
 
 part 'picture_view_model.g.dart';
 
@@ -18,14 +18,14 @@ abstract class _PictureViewModel with Store {
   PictureState pictureState = PictureState.initial;
 
   static String bucket = "gs://pruuu-214a1.appspot.com";
-  final FirebaseStorage _storage = FirebaseStorage(storageBucket: bucket);
+  final FirebaseStorage _storage = FirebaseStorage.instanceFor();
 
   @action
   Future<PictureState> fetchPicture(String uid) async {
     pictureState = PictureState.loading;
     try {
       String url = "$bucket/users/$uid.png";
-      StorageReference storageRef = await _storage.getReferenceFromUrl(url);
+      final storageRef = await _storage.ref(url);
       picturePath = await storageRef.getDownloadURL();
       pictureState = PictureState.ready;
     } catch (e) {
@@ -35,17 +35,22 @@ abstract class _PictureViewModel with Store {
   }
 
   @observable
-  File filePicture;
+  late File filePicture;
 
   @action
   Future<void> pickImage(ImageSource source, String uid) async {
     pictureState = PictureState.loading;
     try {
-      ImagePicker _picker = ImagePicker();
+      final picker = ImagePicker();
+      var images = <XFile>[];
+      final _images = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 60,
+        maxHeight: 500,
+      );
+      images = _images != null ? [_images] : [];
 
-      PickedFile pickedFile = await _picker.getImage(source: source);
-
-      filePicture = File(pickedFile.path);
+      filePicture = File(images.first.path);
 
       pictureState = PictureState.askforCrop;
     } catch (e) {
@@ -59,23 +64,19 @@ abstract class _PictureViewModel with Store {
 
     pictureState = PictureState.uploading;
 
-    StorageReference storage = _storage.ref().child("users/$uid.png");
-
     try {
-      StorageUploadTask putFile = storage.putFile(filePicture);
+      final reference = _storage.ref().child("users/$uid.png");
+      final taskSnapshot = await reference.putFile(filePicture);
 
-      await putFile.onComplete;
-      if (putFile.isSuccessful) {
+      if (taskSnapshot.state == TaskState.success) {
         bool userSyncronized = await authViewModel.fillUserInfo(
-          pictureUrl: await storage.getDownloadURL(),
+          pictureUrl: await reference.getDownloadURL(),
           newUser: newUser,
         );
         pictureState =
             userSyncronized ? PictureState.uploaded : PictureState.uploading;
-      } else if (putFile.isInProgress) {
-        pictureState = PictureState.uploading;
       } else {
-        pictureState = PictureState.error;
+        throw PictureState.error;
       }
     } catch (e) {
       pictureState = PictureState.error;

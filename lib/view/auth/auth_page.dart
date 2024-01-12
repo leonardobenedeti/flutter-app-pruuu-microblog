@@ -1,11 +1,11 @@
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/themes/theme_store.dart';
-import 'package:Pruuu/utils/assets.dart';
-import 'package:Pruuu/view/auth/signin_widget.dart';
-import 'package:Pruuu/view/auth/signup_widget.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/themes/theme_store.dart';
+import 'package:pruuu/utils/assets.dart';
+import 'package:pruuu/view/auth/signin_widget.dart';
+import 'package:pruuu/view/auth/signup_widget.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -17,8 +17,8 @@ class AuthPage extends StatefulWidget {
 class AuthPageState extends State<AuthPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   MainStore mainStore = MainStore();
-  AuthViewModel authViewModel;
-  ThemeStore themeStore;
+  late AuthViewModel authViewModel;
+  late ThemeStore themeStore;
 
   @override
   void initState() {

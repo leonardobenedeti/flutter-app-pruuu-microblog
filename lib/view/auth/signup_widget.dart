@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:Pruuu/utils/strings.dart';
-import 'package:Pruuu/widgets/picture/upload_picture_widget.dart';
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/utils/string_validator.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
-import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/utils/string_validator.dart';
+import 'package:pruuu/utils/strings.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
+import 'package:pruuu/widgets/button.dart';
+import 'package:pruuu/widgets/picture/upload_picture_widget.dart';
 
 class SignUpWidget extends StatefulWidget {
   final bool alreadySigned;
@@ -54,7 +54,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               children: [
                 Text(
                   Strings.signUp,
-                  style: Theme.of(context).textTheme.headline1,
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 PruuuButton(
                   child: Text(Strings.alreadyHaveAnAccount),
@@ -74,7 +74,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 lineHeight: 2.0,
                 percent: percentFilled,
                 backgroundColor: Theme.of(context).cardColor,
-                progressColor: Theme.of(context).accentColor,
+                progressColor: Theme.of(context).canvasColor,
                 animation: true,
                 animateFromLastPercent: true,
                 animationDuration: 1000,
@@ -103,7 +103,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     );
   }
 
-  Function _handlePressedButton() {
+  VoidCallback? _handlePressedButton() {
     if (_allCorrect1 &&
         !_allCorrect2 &&
         authViewModel.authPage != AuthPages.signupData) {
@@ -114,7 +114,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       return () => authViewModel.fillUserInfo(
             username: _usernameController.text,
             displayName: _displayNameController.text,
-            pictureUrl: authViewModel.user.photoUrl,
+            pictureUrl: authViewModel.user!.photoURL!,
             newUser: true,
           );
     }
@@ -132,33 +132,35 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           height: 16,
         ),
         TextFormField(
-          cursorColor: Theme.of(context).accentColor,
+          cursorColor: Theme.of(context).canvasColor,
           showCursor: true,
           controller: _displayNameController,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
           onChanged: _handleChangeText,
           decoration: InputDecoration(hintText: "Como podemos te chamar ?"),
-          style: Theme.of(context).textTheme.bodyText1,
-          buildCounter: (context, {currentLength, isFocused, maxLength}) =>
+          style: Theme.of(context).textTheme.bodyLarge,
+          buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) =>
               Text(
             "ex.: Tiozinho da praça",
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
         TextFormField(
-          cursorColor: Theme.of(context).accentColor,
+          cursorColor: Theme.of(context).cardColor,
           showCursor: true,
           controller: _usernameController,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
           onChanged: _handleChangeText,
           decoration: InputDecoration(hintText: "@usuario"),
-          style: Theme.of(context).textTheme.bodyText1,
-          buildCounter: (context, {currentLength, isFocused, maxLength}) =>
+          style: Theme.of(context).textTheme.bodyLarge,
+          buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) =>
               Text(
             "ex.: @tiozinho",
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
       ],
@@ -169,15 +171,16 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     return Column(
       children: [
         TextFormField(
-          cursorColor: Theme.of(context).accentColor,
+          cursorColor: Theme.of(context).cardColor,
           showCursor: true,
           controller: _emailController,
           onChanged: _handleChangeText,
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(hintText: "Email"),
-          style: Theme.of(context).textTheme.bodyText1,
-          buildCounter: (context, {currentLength, isFocused, maxLength}) {
+          style: Theme.of(context).textTheme.bodyLarge,
+          buildCounter: (context,
+              {required currentLength, required isFocused, maxLength}) {
             bool valid = _emailController.text.isValidEmail() ||
                 _emailController.text.isEmpty;
             String text =
@@ -185,7 +188,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             return Text(
               text,
               style: valid
-                  ? Theme.of(context).textTheme.bodyText1
+                  ? Theme.of(context).textTheme.bodyLarge
                   : TextStyle(color: Colors.red),
             );
           },
@@ -194,7 +197,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           height: 16,
         ),
         TextField(
-          cursorColor: Theme.of(context).accentColor,
+          cursorColor: Theme.of(context).canvasColor,
           showCursor: true,
           obscureText: obscurePassword,
           controller: _passwordController,
@@ -214,15 +217,16 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               ),
             ),
           ),
-          style: Theme.of(context).textTheme.bodyText1,
-          buildCounter: (context, {currentLength, isFocused, maxLength}) {
+          style: Theme.of(context).textTheme.bodyLarge,
+          buildCounter: (context,
+              {required currentLength, required isFocused, maxLength}) {
             bool valid = _passwordController.text.isValidPassword() ||
                 _passwordController.text.isEmpty;
             String text = valid ? "ex.: Senha@123" : "Digite uma senha válida";
             return Text(
               text,
               style: valid
-                  ? Theme.of(context).textTheme.bodyText1
+                  ? Theme.of(context).textTheme.bodyLarge
                   : TextStyle(color: Colors.red),
             );
           },
@@ -231,7 +235,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           height: 16,
         ),
         TextField(
-          cursorColor: Theme.of(context).accentColor,
+          cursorColor: Theme.of(context).canvasColor,
           showCursor: true,
           obscureText: obscurePassword,
           controller: _confirmController,
@@ -251,8 +255,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               ),
             ),
           ),
-          style: Theme.of(context).textTheme.bodyText1,
-          buildCounter: (context, {currentLength, isFocused, maxLength}) {
+          style: Theme.of(context).textTheme.bodyLarge,
+          buildCounter: (context,
+              {required currentLength, required isFocused, maxLength}) {
             bool valid = (_confirmController.text.isValidPassword() &&
                     _confirmController.text == _passwordController.text) ||
                 _confirmController.text.isEmpty;
@@ -264,7 +269,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             return Text(
               text,
               style: valid
-                  ? Theme.of(context).textTheme.bodyText1
+                  ? Theme.of(context).textTheme.bodyLarge
                   : TextStyle(color: Colors.red),
             );
           },
@@ -274,7 +279,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   }
 
   double percentFilled = 0;
-  File filePicture;
+  late File filePicture;
 
   _handleChangeText(String text) {
     setState(() {
@@ -283,7 +288,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       percentFilled += _emailController.text.contains("@") ? perStep : 0;
       percentFilled += _passwordController.text.length > 5 ? perStep : 0;
       percentFilled += _confirmController.text.length > 5 ? perStep : 0;
-      percentFilled += filePicture != null ? perStep : 0;
+      percentFilled += filePicture.isAbsolute ? perStep : 0;
       percentFilled += _usernameController.text.length >= 3 ? perStep : 0;
       percentFilled += _displayNameController.text.length >= 3 ? perStep : 0;
 

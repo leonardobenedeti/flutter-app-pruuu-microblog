@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:Pruuu/repository/pruuu_repository.dart';
-import 'package:Pruuu/model/pruuu_model.dart';
+import 'package:pruuu/repository/pruuu_repository.dart';
+import 'package:pruuu/model/pruuu_model.dart';
 import 'package:mobx/mobx.dart';
 
 part 'pruuuit_view_model.g.dart';

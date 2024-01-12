@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:Pruuu/repository/auth_repository.dart';
-import 'package:Pruuu/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
-import 'package:Pruuu/utils/error_handler.dart';
+import 'package:pruuu/model/user_model.dart';
+import 'package:pruuu/repository/auth_repository.dart';
+import 'package:pruuu/utils/error_handler.dart';
 
 part 'auth_view_model.g.dart';
 
@@ -31,12 +31,12 @@ abstract class _AuthViewModel with Store {
   AuthState authState = AuthState.signedOut;
 
   @observable
-  FirebaseUser user;
+  User? user;
 
   @action
   Future<void> getUser({bool newUser = false}) async {
     try {
-      FirebaseUser firebaseUser = await AuthRepository().getUser();
+      User? firebaseUser = await AuthRepository().getUser();
       await getUserInfo();
       _handleUserResult(firebaseUser: firebaseUser, newUser: newUser);
     } catch (e) {
@@ -46,7 +46,7 @@ abstract class _AuthViewModel with Store {
   }
 
   @observable
-  User userInfo = User();
+  UserModel userInfo = UserModel();
 
   @action
   Future<void> getUserInfo() async {
@@ -67,13 +67,14 @@ abstract class _AuthViewModel with Store {
   void closeTextField() => fillUserInfoState = FillUserInfoState.filled;
 
   @action
-  Future fillUserInfo(
-      {String username,
-      String pictureUrl,
-      String displayName,
-      bool newUser = false}) async {
+  Future fillUserInfo({
+    String username = '',
+    String pictureUrl = '',
+    String displayName = '',
+    bool newUser = false,
+  }) async {
     try {
-      fillUserInfoState = username != null
+      fillUserInfoState = username.isNotEmpty
           ? FillUserInfoState.loading
           : FillUserInfoState.loadingPicture;
       bool userUpdated = await AuthRepository().fillUserInfo(
@@ -95,7 +96,8 @@ abstract class _AuthViewModel with Store {
   Future doSignIn(String email, String password, _scaffoldKey) async {
     try {
       authState = AuthState.signing;
-      AuthResult authResult = await AuthRepository().signIn(email, password);
+      UserCredential authResult =
+          await AuthRepository().signIn(email, password);
       await getUser();
       _handleUserResult(firebaseUser: authResult.user);
     } on PlatformException catch (e) {
@@ -110,7 +112,8 @@ abstract class _AuthViewModel with Store {
   Future doSignUp(String email, String password, _scaffoldKey) async {
     try {
       authState = AuthState.signing;
-      AuthResult authResult = await AuthRepository().signUp(email, password);
+      UserCredential authResult =
+          await AuthRepository().signUp(email, password);
       _handleUserResult(firebaseUser: authResult.user, newUser: true);
     } on PlatformException catch (e) {
       authState = AuthState.signError;
@@ -133,7 +136,7 @@ abstract class _AuthViewModel with Store {
     }
   }
 
-  _handleUserResult({FirebaseUser firebaseUser, bool newUser = false}) {
+  _handleUserResult({User? firebaseUser, bool newUser = false}) {
     if (firebaseUser != null) {
       user = firebaseUser;
       if (newUser) {
@@ -148,7 +151,7 @@ abstract class _AuthViewModel with Store {
         authState = AuthState.signed;
       }
     } else {
-      Timer(Duration(milliseconds: 800), () => userInfo = User());
+      Timer(Duration(milliseconds: 800), () => userInfo = UserModel());
       authState = AuthState.signedOut;
       authPage = AuthPages.signin;
     }
@@ -156,5 +159,7 @@ abstract class _AuthViewModel with Store {
 }
 
 enum AuthPages { signin, signup, signupData }
+
 enum AuthState { newUser, signed, signedOut, signedUp, signError, signing }
+
 enum FillUserInfoState { openField, filled, fillError, loading, loadingPicture }

@@ -42,50 +42,46 @@ abstract class _ThemeStore with Store {
     brightness: Brightness.light,
     primaryColor: Colors.white,
     cardColor: Colors.white, // Color bubble
-    accentColor: Colors.black, // Loading color
-    backgroundColor: Colors.transparent, // background danger button
-    buttonColor: Colors.black87,
-    errorColor: Colors.red[900],
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Colors.black,
     ),
     textTheme: TextTheme(
       // Tab Selected
-      headline1: TextStyle(
+      displayLarge: TextStyle(
         color: Colors.black,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
 
       // Tab Unselected
-      headline2: TextStyle(
+      displayMedium: TextStyle(
         color: Colors.grey,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
 
       // pruuu displayName
-      headline3: TextStyle(
+      displaySmall: TextStyle(
         color: Colors.black,
         fontSize: 14,
         fontWeight: FontWeight.bold,
       ),
 
       // pruuu userName and timestamp
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
         color: Colors.black,
         fontSize: 12,
         fontWeight: FontWeight.w300,
       ),
 
       // pruuu content
-      bodyText1: TextStyle(
+      bodyLarge: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w400,
       ),
 
       // Body text reverso em relação ao 1
-      bodyText2: TextStyle(
+      bodyMedium: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.w400,
       ),
@@ -110,51 +106,47 @@ abstract class _ThemeStore with Store {
   final ThemeData _darkTheme = ThemeData.dark().copyWith(
     brightness: Brightness.dark,
     primaryColor: Colors.black,
-    cardColor: Colors.grey[800], // Color bubble
-    accentColor: Colors.grey[50], // Loading color
-    buttonColor: Colors.grey[50],
-    errorColor: Colors.red[900],
-    backgroundColor: Colors.white, // background danger button
+    cardColor: Colors.grey[800], // background danger button
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Colors.white,
     ),
     textTheme: TextTheme(
       // Tab Selected
-      headline1: TextStyle(
+      displayLarge: TextStyle(
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
 
       // Tab Unselected
-      headline2: TextStyle(
+      displayMedium: TextStyle(
         color: Colors.grey,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
 
       // pruuu displayName and trending title
-      headline3: TextStyle(
+      displaySmall: TextStyle(
         color: Colors.white,
         fontSize: 14,
         fontWeight: FontWeight.bold,
       ),
 
       // pruuu userName
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
         color: Colors.white,
         fontSize: 12,
         fontWeight: FontWeight.w300,
       ),
 
       // pruuu content
-      bodyText1: TextStyle(
+      bodyLarge: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.w400,
       ),
 
       // Body text reverso em relação ao 1
-      bodyText2: TextStyle(
+      bodyMedium: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w400,
       ),

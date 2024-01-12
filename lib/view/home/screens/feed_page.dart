@@ -1,20 +1,20 @@
 import 'dart:async';
 
-import 'package:Pruuu/utils/assets.dart';
-import 'package:Pruuu/utils/strings.dart';
-import 'package:Pruuu/view_model/feed/feed_view_model.dart';
-import 'package:Pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
-import 'package:Pruuu/widgets/picture/picture_widget.dart';
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/model/pruuu_model.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
-import 'package:Pruuu/widgets/bottom_sheet.dart';
-import 'package:Pruuu/widgets/button.dart';
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/model/pruuu_model.dart';
+import 'package:pruuu/utils/assets.dart';
+import 'package:pruuu/utils/strings.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
+import 'package:pruuu/view_model/feed/feed_view_model.dart';
+import 'package:pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
+import 'package:pruuu/widgets/bottom_sheet.dart';
+import 'package:pruuu/widgets/button.dart';
+import 'package:pruuu/widgets/picture/picture_widget.dart';
 
 class FeedPage extends StatefulWidget {
   @override
@@ -48,19 +48,14 @@ class _FeedPageState extends State<FeedPage> {
               return Center(
                 child: CircularProgressIndicator(),
               );
-              break;
             case FeedState.error:
               return _emptyState(withError: true);
-              break;
             case FeedState.empty:
               return _emptyState();
-              break;
             case FeedState.ready:
               return _build(context, false);
-              break;
             case FeedState.reload:
               return _build(context, true);
-              break;
             default:
               return Center(
                 child: CircularProgressIndicator(),
@@ -96,21 +91,21 @@ class _FeedPageState extends State<FeedPage> {
             Align(
                 alignment: Alignment.topCenter,
                 child: MaterialButton(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).canvasColor,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.arrow_upward,
                         size: 14,
-                        color: Theme.of(context).textTheme.bodyText2.color,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                       SizedBox(
                         width: 8,
                       ),
                       Text(
                         Strings.newPruuus,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
                   ),
@@ -136,7 +131,7 @@ class _FeedPageState extends State<FeedPage> {
       child: new Wrap(
         alignment: WrapAlignment.center,
         children: <Widget>[
-          if (pruuu.authorUID == authViewModel.user.uid) ...[
+          if (pruuu.authorUID == authViewModel.user!.uid) ...[
             PruuuButton(
               fullButton: true,
               child: Text(Strings.removePruuu),
@@ -169,7 +164,7 @@ class _FeedPageState extends State<FeedPage> {
   void _repruuuit(Pruuu pruuu) {
     var newPruuu = Pruuu();
     newPruuu.content = "RP: ${pruuu.authorUsername}\n${pruuu.content}";
-    newPruuu.authorUID = authViewModel.user.uid;
+    newPruuu.authorUID = authViewModel.user!.uid;
     newPruuu.timestamp = Timestamp.now();
 
     pruuuItViewModel.pruuublish(newPruuu);
@@ -182,7 +177,7 @@ class _FeedPageState extends State<FeedPage> {
 
   Widget _pruuu(Pruuu pruuu) {
     DateTime now = DateTime.now().subtract(Duration(days: 1));
-    DateTime datePruuu = pruuu.timestamp.toDate();
+    DateTime datePruuu = pruuu.timestamp!.toDate();
     var format =
         datePruuu.isAfter(now) ? DateFormat('HH:mm') : DateFormat('dd/MM/yyyy');
     String timeStamp = format.format(datePruuu);
@@ -200,7 +195,7 @@ class _FeedPageState extends State<FeedPage> {
                   width: 50,
                   height: 50,
                   margin: EdgeInsets.only(right: 10),
-                  child: PictureWidget(pruuu.authorUID)),
+                  child: PictureWidget(pruuu.authorUID!)),
               Container(
                 width: constraints.maxWidth * .8,
                 child: Column(
@@ -212,12 +207,12 @@ class _FeedPageState extends State<FeedPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              pruuu.displayName,
-                              style: Theme.of(context).textTheme.headline3,
+                              pruuu.displayName!,
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                             Text(
-                              pruuu.authorUsername,
-                              style: Theme.of(context).textTheme.headline4,
+                              pruuu.authorUsername!,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ],
                         ),
@@ -225,7 +220,7 @@ class _FeedPageState extends State<FeedPage> {
                           children: [
                             Text(
                               timeStamp,
-                              style: Theme.of(context).textTheme.headline4,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                             SizedBox(
                               height: 20,
@@ -249,8 +244,8 @@ class _FeedPageState extends State<FeedPage> {
                       nip: BubbleNip.leftTop,
                       color: Theme.of(context).cardColor,
                       child: Text(
-                        pruuu.content,
-                        style: Theme.of(context).textTheme.bodyText1,
+                        pruuu.content!,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ],
@@ -270,7 +265,7 @@ class _FeedPageState extends State<FeedPage> {
       children: [
         Text(
           withError ? Strings.somethingIsWrong : Strings.noPruuusYet,
-          style: Theme.of(context).textTheme.headline1,
+          style: Theme.of(context).textTheme.displayLarge,
         ),
         SizedBox(
           height: 16,

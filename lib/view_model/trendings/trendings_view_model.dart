@@ -1,6 +1,6 @@
-import 'package:Pruuu/model/trending_model.dart';
-import 'package:Pruuu/repository/trendings_repository.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pruuu/model/trending_model.dart';
+import 'package:pruuu/repository/trendings_repository.dart';
 
 part 'trendings_view_model.g.dart';
 

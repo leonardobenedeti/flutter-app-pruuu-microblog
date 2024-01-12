@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:Pruuu/utils/strings.dart';
-import 'package:Pruuu/view_model/feed/feed_view_model.dart';
-import 'package:Pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/model/pruuu_model.dart';
-import 'package:Pruuu/widgets/button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/model/pruuu_model.dart';
+import 'package:pruuu/utils/strings.dart';
+import 'package:pruuu/view_model/feed/feed_view_model.dart';
+import 'package:pruuu/view_model/pruuu_it/pruuuit_view_model.dart';
+import 'package:pruuu/widgets/button.dart';
 
 class PruuuWidget extends StatefulWidget {
-  final FirebaseUser user;
+  final User? user;
 
   PruuuWidget({this.user});
 
@@ -38,7 +38,7 @@ class _PruuuState extends State<PruuuWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FlatButton(
+              ElevatedButton(
                 child: Text(
                   Strings.cancel,
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -53,19 +53,22 @@ class _PruuuState extends State<PruuuWidget> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: TextField(
               autofocus: true,
-              cursorColor: Theme.of(context).accentColor,
+              cursorColor: Theme.of(context).colorScheme.secondary,
               showCursor: true,
               maxLength: _maxLengthField,
               minLines: 8,
               maxLines: 8,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
               onChanged: _handleChangeText,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 hintText: Strings.pruuuItPlaceholder,
               ),
-              buildCounter: (context, {currentLength, isFocused, maxLength}) =>
+              buildCounter: (context,
+                      {required currentLength,
+                      required isFocused,
+                      maxLength}) =>
                   Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -75,12 +78,12 @@ class _PruuuState extends State<PruuuWidget> {
                       padding: EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: Theme.of(context).accentColor),
+                          color: Theme.of(context).colorScheme.secondary),
                       child: Text(
                         "$currentLength ",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Theme.of(context).errorColor,
+                          color: Theme.of(context).colorScheme.error,
                         ),
                       ),
                     )
@@ -88,13 +91,13 @@ class _PruuuState extends State<PruuuWidget> {
                     Text(
                       "$currentLength ",
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   ],
                   Text(
                     "/ $_maxLengthPruuu",
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   )
                 ],
               ),
@@ -132,9 +135,9 @@ class _PruuuState extends State<PruuuWidget> {
     });
   }
 
-  _pruuuIt(BuildContext context, String content, FirebaseUser user) {
+  _pruuuIt(BuildContext context, String content, User? user) {
     var pruuu = new Pruuu();
-    pruuu.authorUID = user.uid;
+    pruuu.authorUID = user!.uid;
     pruuu.timestamp = Timestamp.now();
     pruuu.content = content;
     pruuuItViewModel.pruuublish(pruuu);

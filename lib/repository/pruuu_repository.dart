@@ -1,21 +1,20 @@
 import 'dart:async';
 
-import 'package:Pruuu/model/pruuu_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pruuu/model/pruuu_model.dart';
 
 class PruuuRepository {
-  final _firestoreInstance = Firestore.instance;
+  final _firestoreInstance = FirebaseFirestore.instance;
 
   Future<bool> pruuublish(Pruuu pruuu) async {
-    var documentReference =
-        await _firestoreInstance.collection('feed').add(pruuu.toMap());
-    return documentReference != null;
+    await _firestoreInstance.collection('feed').add(pruuu.toMap());
+    return true;
   }
 
   Future<void> removePruuu(Pruuu pruuu) async {
     await _firestoreInstance
         .collection('feed')
-        .document(pruuu.documentId())
+        .doc(pruuu.documentId())
         .delete();
   }
 }

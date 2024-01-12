@@ -1,6 +1,6 @@
-import 'package:Pruuu/view_model/picture/picture_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pruuu/view_model/picture/picture_view_model.dart';
 
 class PictureWidget extends StatefulWidget {
   final String authorUID;
@@ -26,7 +26,7 @@ class _PictureWidgetState extends State<PictureWidget> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).cardColor,
           width: 1.5,
         ),
       ),

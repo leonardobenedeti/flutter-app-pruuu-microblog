@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomePageTabs extends StatefulWidget {
@@ -6,8 +5,8 @@ class HomePageTabs extends StatefulWidget {
   final List<Widget> childTabs;
 
   HomePageTabs({
-    @required this.tabs,
-    @required this.childTabs,
+    required this.tabs,
+    required this.childTabs,
   }) : assert(tabs.length == childTabs.length);
 
   @override
@@ -18,7 +17,7 @@ class HomePageTabs extends StatefulWidget {
 
 class HomeWidgetState extends State<HomePageTabs>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
 
   @override
   void initState() {
@@ -37,9 +36,9 @@ class HomeWidgetState extends State<HomePageTabs>
     return new Scaffold(
       appBar: new TabBar(
         isScrollable: true,
-        labelColor: Theme.of(context).textTheme.headline1.color,
-        unselectedLabelColor: Theme.of(context).textTheme.headline2.color,
-        labelStyle: Theme.of(context).textTheme.headline1,
+        labelColor: Theme.of(context).textTheme.displayLarge?.color,
+        unselectedLabelColor: Theme.of(context).textTheme.displayMedium?.color,
+        labelStyle: Theme.of(context).textTheme.displayLarge,
         indicatorSize: TabBarIndicatorSize.tab,
         indicator: BoxDecoration(),
         tabs: widget.tabs,

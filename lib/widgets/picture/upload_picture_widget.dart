@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:Pruuu/utils/strings.dart';
-import 'package:Pruuu/view_model/picture/picture_view_model.dart';
-import 'package:Pruuu/main_store.dart';
-import 'package:Pruuu/view_model/auth/auth_view_model.dart';
-import 'package:Pruuu/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pruuu/main_store.dart';
+import 'package:pruuu/utils/strings.dart';
+import 'package:pruuu/view_model/auth/auth_view_model.dart';
+import 'package:pruuu/view_model/picture/picture_view_model.dart';
+import 'package:pruuu/widgets/button.dart';
 
 class UploadPictureWidget extends StatefulWidget {
   final bool newUser;
@@ -20,8 +20,8 @@ class UploadPictureWidget extends StatefulWidget {
 
 class _UploadPictureWidgetState extends State<UploadPictureWidget> {
   MainStore mainStore = MainStore();
-  PictureViewModel pictureViewModel;
-  AuthViewModel authViewModel;
+  late PictureViewModel pictureViewModel;
+  late AuthViewModel authViewModel;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).cardColor,
                 width: pictureViewModel.pictureState == PictureState.uploading
                     ? .5
                     : 1.5,
@@ -64,7 +64,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                   child: authViewModel.userInfo.profilePicture != null
                       ? ClipOval(
                           child: Image.network(
-                            authViewModel.userInfo.profilePicture,
+                            authViewModel.userInfo.profilePicture!,
                             fit: BoxFit.cover,
                           ),
                         )
@@ -143,7 +143,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                           ),
                           onPressed: () {
                             pictureViewModel.uploadImage(
-                              authViewModel.user.uid,
+                              authViewModel.user!.uid,
                               newUser: widget.newUser,
                             );
                             Timer(Duration(milliseconds: 300),
@@ -177,7 +177,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                             ],
                           ),
                           onPressed: () => pictureViewModel.pickImage(
-                              ImageSource.camera, authViewModel.user.uid),
+                              ImageSource.camera, authViewModel.user!.uid),
                           buttonType: ButtonType.clear,
                         ),
                         PruuuButton(
@@ -191,7 +191,7 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                             ],
                           ),
                           onPressed: () => pictureViewModel.pickImage(
-                              ImageSource.gallery, authViewModel.user.uid),
+                              ImageSource.gallery, authViewModel.user!.uid),
                           buttonType: ButtonType.clear,
                         )
                       ],

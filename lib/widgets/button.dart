@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class PruuuButton extends StatelessWidget {
   final Widget child;
-  final Function onPressed;
+  final VoidCallback? onPressed;
   final bool loading;
   final ButtonType buttonType;
   final bool fullButton;
 
   PruuuButton({
-    @required this.child,
-    @required this.onPressed,
+    required this.child,
+    this.onPressed,
     this.loading = false,
     this.buttonType = ButtonType.primary,
     this.fullButton = false,
@@ -32,15 +32,10 @@ class PruuuButton extends StatelessWidget {
             ),
           ),
         );
-        break;
       default:
-        return FlatButton(
+        return ElevatedButton(
           child: _fullWrap(context, loading ? _loading(context) : child),
           onPressed: onPressed,
-          color: buttonType.getColor(context),
-          textColor: buttonType.getTextColor(context),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         );
     }
   }
@@ -79,11 +74,9 @@ extension ThemeForType on ButtonType {
   Color getTextColor(BuildContext context) {
     switch (this) {
       case ButtonType.clear:
-        return Theme.of(context).accentColor;
-        break;
+        return Theme.of(context).colorScheme.secondary;
       case ButtonType.danger:
-        return Theme.of(context).errorColor;
-        break;
+        return Theme.of(context).colorScheme.error;
       default:
         return Theme.of(context).primaryColor;
     }
@@ -93,12 +86,10 @@ extension ThemeForType on ButtonType {
     switch (this) {
       case ButtonType.clear:
         return Colors.transparent;
-        break;
       case ButtonType.danger:
-        return Theme.of(context).backgroundColor;
-        break;
+        return Theme.of(context).colorScheme.background;
       default:
-        return Theme.of(context).accentColor;
+        return Theme.of(context).colorScheme.secondary;
     }
   }
 }

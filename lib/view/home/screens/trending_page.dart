@@ -1,7 +1,7 @@
-import 'package:Pruuu/model/trending_model.dart';
-import 'package:Pruuu/view_model/trendings/trendings_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pruuu/model/trending_model.dart';
+import 'package:pruuu/view_model/trendings/trendings_view_model.dart';
 
 class TrendingPage extends StatefulWidget {
   @override
@@ -43,7 +43,7 @@ class _TrendingPageState extends State<TrendingPage> {
                 Container(
                   width: double.infinity,
                   child: Image.network(
-                    trending.picture,
+                    trending.picture!,
                     fit: BoxFit.fitHeight,
                   ),
                 ),
@@ -87,18 +87,18 @@ class _TrendingPageState extends State<TrendingPage> {
               children: [
                 Text(
                   trending.hashtag,
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(trending.description,
-                      style: Theme.of(context).textTheme.headline4),
+                      style: Theme.of(context).textTheme.headlineMedium),
                 ),
                 if (!last) ...[
                   Container(
                     margin: EdgeInsets.only(top: 16),
                     height: .5,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).canvasColor,
                   )
                 ]
               ],

@@ -1,16 +1,16 @@
-import 'package:Pruuu/model/base_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pruuu/model/base_model.dart';
 
-class User extends BaseModel {
-  String _documentId;
-  String userName;
-  String displayName;
-  String profilePicture;
+class UserModel extends BaseModel {
+  String? _documentId;
+  String? userName;
+  String? displayName;
+  String? profilePicture;
 
-  User();
+  UserModel();
 
   @override
-  String documentId() => _documentId;
+  String? documentId() => _documentId;
 
   @override
   toMap() {
@@ -21,10 +21,11 @@ class User extends BaseModel {
     return map;
   }
 
-  User.fromMap(DocumentSnapshot documentSnapshot) {
-    _documentId = documentSnapshot.documentID;
-    this.userName = documentSnapshot.data['userName'];
-    this.displayName = documentSnapshot.data['displayName'];
-    this.profilePicture = documentSnapshot.data['profilePicture'];
+  UserModel.fromMap(DocumentSnapshot documentSnapshot) {
+    _documentId = documentSnapshot.id;
+    final data = documentSnapshot.data() as Map<String, dynamic>;
+    this.userName = data['userName'];
+    this.displayName = data['displayName'];
+    this.profilePicture = data['profilePicture'];
   }
 }

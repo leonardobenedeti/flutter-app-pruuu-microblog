@@ -6,10 +6,11 @@ part of 'auth_view_model.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthViewModel on _AuthViewModel, Store {
-  final _$authPageAtom = Atom(name: '_AuthViewModel.authPage');
+  late final _$authPageAtom =
+      Atom(name: '_AuthViewModel.authPage', context: context);
 
   @override
   AuthPages get authPage {
@@ -24,7 +25,8 @@ mixin _$AuthViewModel on _AuthViewModel, Store {
     });
   }
 
-  final _$authStateAtom = Atom(name: '_AuthViewModel.authState');
+  late final _$authStateAtom =
+      Atom(name: '_AuthViewModel.authState', context: context);
 
   @override
   AuthState get authState {
@@ -39,38 +41,39 @@ mixin _$AuthViewModel on _AuthViewModel, Store {
     });
   }
 
-  final _$userAtom = Atom(name: '_AuthViewModel.user');
+  late final _$userAtom = Atom(name: '_AuthViewModel.user', context: context);
 
   @override
-  FirebaseUser get user {
+  User? get user {
     _$userAtom.reportRead();
     return super.user;
   }
 
   @override
-  set user(FirebaseUser value) {
+  set user(User? value) {
     _$userAtom.reportWrite(value, super.user, () {
       super.user = value;
     });
   }
 
-  final _$userInfoAtom = Atom(name: '_AuthViewModel.userInfo');
+  late final _$userInfoAtom =
+      Atom(name: '_AuthViewModel.userInfo', context: context);
 
   @override
-  User get userInfo {
+  UserModel get userInfo {
     _$userInfoAtom.reportRead();
     return super.userInfo;
   }
 
   @override
-  set userInfo(User value) {
+  set userInfo(UserModel value) {
     _$userInfoAtom.reportWrite(value, super.userInfo, () {
       super.userInfo = value;
     });
   }
 
-  final _$fillUserInfoStateAtom =
-      Atom(name: '_AuthViewModel.fillUserInfoState');
+  late final _$fillUserInfoStateAtom =
+      Atom(name: '_AuthViewModel.fillUserInfoState', context: context);
 
   @override
   FillUserInfoState get fillUserInfoState {
@@ -85,27 +88,30 @@ mixin _$AuthViewModel on _AuthViewModel, Store {
     });
   }
 
-  final _$getUserAsyncAction = AsyncAction('_AuthViewModel.getUser');
+  late final _$getUserAsyncAction =
+      AsyncAction('_AuthViewModel.getUser', context: context);
 
   @override
   Future<void> getUser({bool newUser = false}) {
     return _$getUserAsyncAction.run(() => super.getUser(newUser: newUser));
   }
 
-  final _$getUserInfoAsyncAction = AsyncAction('_AuthViewModel.getUserInfo');
+  late final _$getUserInfoAsyncAction =
+      AsyncAction('_AuthViewModel.getUserInfo', context: context);
 
   @override
   Future<void> getUserInfo() {
     return _$getUserInfoAsyncAction.run(() => super.getUserInfo());
   }
 
-  final _$fillUserInfoAsyncAction = AsyncAction('_AuthViewModel.fillUserInfo');
+  late final _$fillUserInfoAsyncAction =
+      AsyncAction('_AuthViewModel.fillUserInfo', context: context);
 
   @override
   Future<dynamic> fillUserInfo(
-      {String username,
-      String pictureUrl,
-      String displayName,
+      {String username = '',
+      String pictureUrl = '',
+      String displayName = '',
       bool newUser = false}) {
     return _$fillUserInfoAsyncAction.run(() => super.fillUserInfo(
         username: username,
@@ -114,7 +120,8 @@ mixin _$AuthViewModel on _AuthViewModel, Store {
         newUser: newUser));
   }
 
-  final _$doSignInAsyncAction = AsyncAction('_AuthViewModel.doSignIn');
+  late final _$doSignInAsyncAction =
+      AsyncAction('_AuthViewModel.doSignIn', context: context);
 
   @override
   Future<dynamic> doSignIn(
@@ -123,7 +130,8 @@ mixin _$AuthViewModel on _AuthViewModel, Store {
         .run(() => super.doSignIn(email, password, _scaffoldKey));
   }
 
-  final _$doSignUpAsyncAction = AsyncAction('_AuthViewModel.doSignUp');
+  late final _$doSignUpAsyncAction =
+      AsyncAction('_AuthViewModel.doSignUp', context: context);
 
   @override
   Future<dynamic> doSignUp(
@@ -132,15 +140,16 @@ mixin _$AuthViewModel on _AuthViewModel, Store {
         .run(() => super.doSignUp(email, password, _scaffoldKey));
   }
 
-  final _$doSignOutAsyncAction = AsyncAction('_AuthViewModel.doSignOut');
+  late final _$doSignOutAsyncAction =
+      AsyncAction('_AuthViewModel.doSignOut', context: context);
 
   @override
   Future<dynamic> doSignOut(dynamic _scaffoldKey) {
     return _$doSignOutAsyncAction.run(() => super.doSignOut(_scaffoldKey));
   }
 
-  final _$_AuthViewModelActionController =
-      ActionController(name: '_AuthViewModel');
+  late final _$_AuthViewModelActionController =
+      ActionController(name: '_AuthViewModel', context: context);
 
   @override
   void changePage() {
