@@ -38,12 +38,15 @@ class _PruuuState extends State<PruuuWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ElevatedButton(
+              TextButton(
                 child: Text(
                   Strings.cancel,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 onPressed: () => Navigator.pop(context),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.grey,
+                ),
               ),
               _pruuuButton(context)
             ],

@@ -45,9 +45,7 @@ class _FeedPageState extends State<FeedPage> {
         builder: (_) {
           switch (feedViewModel.feedState) {
             case FeedState.loading:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return Center(child: CircularProgressIndicator());
             case FeedState.error:
               return _emptyState(withError: true);
             case FeedState.empty:
@@ -57,9 +55,7 @@ class _FeedPageState extends State<FeedPage> {
             case FeedState.reload:
               return _build(context, true);
             default:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return Center(child: CircularProgressIndicator());
           }
         },
       ),

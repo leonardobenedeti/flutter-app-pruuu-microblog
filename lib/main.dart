@@ -14,7 +14,7 @@ ThemeStore themeStore = MainStore().themeStore;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await authViewModel.getUser();
+  await authViewModel.getUser();
   runApp(MyApp());
 }
 

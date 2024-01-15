@@ -36,6 +36,12 @@ class PruuuButton extends StatelessWidget {
         return ElevatedButton(
           child: _fullWrap(context, loading ? _loading(context) : child),
           onPressed: onPressed,
+          style: TextButton.styleFrom(
+            backgroundColor: Theme.of(context).highlightColor,
+            foregroundColor: Theme.of(context).hintColor,
+            disabledBackgroundColor: Colors.transparent,
+            disabledForegroundColor: Theme.of(context).hintColor,
+          ),
         );
     }
   }

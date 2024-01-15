@@ -141,8 +141,8 @@ class _UploadPictureWidgetState extends State<UploadPictureWidget> {
                                   : Strings.withoutCrop)
                             ],
                           ),
-                          onPressed: () {
-                            pictureViewModel.uploadImage(
+                          onPressed: () async {
+                            await pictureViewModel.uploadImage(
                               authViewModel.user!.uid,
                               newUser: widget.newUser,
                             );

@@ -17,14 +17,13 @@ abstract class _PictureViewModel with Store {
   @observable
   PictureState pictureState = PictureState.initial;
 
-  static String bucket = "gs://pruuu-214a1.appspot.com";
   final FirebaseStorage _storage = FirebaseStorage.instanceFor();
 
   @action
   Future<PictureState> fetchPicture(String uid) async {
     pictureState = PictureState.loading;
     try {
-      String url = "$bucket/users/$uid.png";
+      String url = "users/$uid.png";
       final storageRef = await _storage.ref(url);
       picturePath = await storageRef.getDownloadURL();
       pictureState = PictureState.ready;
@@ -35,22 +34,22 @@ abstract class _PictureViewModel with Store {
   }
 
   @observable
-  late File filePicture;
+  File filePicture = File('');
 
   @action
   Future<void> pickImage(ImageSource source, String uid) async {
     pictureState = PictureState.loading;
     try {
       final picker = ImagePicker();
-      var images = <XFile>[];
-      final _images = await picker.pickImage(
+      XFile? image = XFile('');
+      final _image = await picker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 60,
         maxHeight: 500,
       );
-      images = _images != null ? [_images] : [];
+      image = _image;
 
-      filePicture = File(images.first.path);
+      filePicture = File(image!.path);
 
       pictureState = PictureState.askforCrop;
     } catch (e) {
@@ -69,13 +68,14 @@ abstract class _PictureViewModel with Store {
       final taskSnapshot = await reference.putFile(filePicture);
 
       if (taskSnapshot.state == TaskState.success) {
-        bool userSyncronized = await authViewModel.fillUserInfo(
+        bool userSynchronized = await authViewModel.fillUserInfo(
           pictureUrl: await reference.getDownloadURL(),
           newUser: newUser,
         );
         pictureState =
-            userSyncronized ? PictureState.uploaded : PictureState.uploading;
+            userSynchronized ? PictureState.uploaded : PictureState.uploading;
       } else {
+        pictureState = PictureState.error;
         throw PictureState.error;
       }
     } catch (e) {

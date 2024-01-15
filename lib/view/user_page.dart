@@ -79,7 +79,7 @@ class _UserPageState extends State<UserPage> {
           Strings.darkTheme,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        activeColor: Theme.of(context).canvasColor,
+        activeColor: Theme.of(context).focusColor,
         value: themeStore.isDark,
         onChanged: (value) => themeStore.changeCurrentTheme(),
       ),
